@@ -263,6 +263,137 @@
   /* ── ANIMATIONS ── */
   @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: none; } }
   .job-card, .outreach-card { animation: fadeIn 0.3s ease both; }
+
+/* ─── EMAIL MODAL ─────────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10,15,40,0.6);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 28px;
+  width: 100%;
+  max-width: 580px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.modal-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy-dark);
+  margin: 0;
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: 4px 8px;
+  border-radius: 6px;
+  line-height: 1;
+}
+.modal-close:hover { background: var(--bg); }
+.modal-already-applied {
+  background: #E8F5E9;
+  border: 1.5px solid #A5D6A7;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 0.85rem;
+  color: #2E7D32;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+.modal-field { margin-bottom: 14px; }
+.modal-field label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 6px;
+}
+.modal-field input[type=text],
+.modal-field textarea {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.875rem;
+  color: var(--navy-dark);
+  background: var(--bg);
+  font-family: inherit;
+  box-sizing: border-box;
+  resize: vertical;
+}
+.modal-field input[type=text]:focus,
+.modal-field textarea:focus {
+  outline: none;
+  border-color: var(--navy-mid);
+}
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.btn-modal-copy {
+  background: var(--navy-dark);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-modal-copy:hover { opacity: 0.85; }
+.btn-modal-gmail {
+  background: var(--gold);
+  color: var(--navy-dark);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-modal-gmail:hover { opacity: 0.85; }
+.btn-modal-cancel {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.btn-modal-cancel:hover { background: var(--bg); }
+.modal-resume-note {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin: 12px 0 0;
+  font-style: italic;
+}
+.source-tag { color: var(--navy-mid) !important; }
 </style>
 </head>
 <body>
@@ -386,7 +517,9 @@ const JOBS = [
     firmWebsite: 'https://pf.plus',
     why: "Revit-heavy CD production role with full-phase responsibility from SD through CA, plus consultant coordination — directly matching Alex's professional strengths. Multi-family and mixed-use project types offer transferable skills from Alex's commercial TI background. No license required. Salary range of $70–85K overlaps with Alex's target. Certified MBE/WBE firm with 4+ years minimum experience requirement.",
     defaultStatus: 'not-started',
-    gmailStatus: null
+    gmailStatus: 'Application Sent',
+    gmailDate: 'March 10, 2026',
+    gmailBadge: 'gmail-sent'
   },
   {
     id: 'scb',
@@ -405,7 +538,9 @@ const JOBS = [
     firmWebsite: 'https://scb.com',
     why: "SCB's Chicago studio handles adaptive reuse, mixed-use multifamily, and aviation projects — the adaptive reuse work aligns well with Alex's background. Revit is the primary production tool, matching Alex's proficiency. No license required. The role involves all design and CD phases with consultant coordination. SCB is a recognized multi-disciplinary Chicago firm with a strong reputation for design quality.",
     defaultStatus: 'not-started',
-    gmailStatus: null
+    gmailStatus: 'Application Sent',
+    gmailDate: 'March 4, 2026',
+    gmailBadge: 'gmail-sent'
   },
   {
     id: 'arda',
@@ -506,24 +641,130 @@ const JOBS = [
     defaultStatus: 'not-started',
     gmailStatus: null
   }
+,
+  {
+    id: 'gensler',
+    company: 'Gensler',
+    title: 'Architectural Designer',
+    score: 4,
+    salary: 'Not posted',
+    location: 'Chicago, IL',
+    remote: 'Unknown',
+    posted: 'Unknown',
+    source: 'Workday / Direct Application',
+    deadline: 'None listed',
+    howToApply: 'Applied via Gensler Workday portal on March 1, 2026',
+    applyLink: 'https://www.gensler.com/careers',
+    postingLink: 'https://www.gensler.com/careers',
+    firmWebsite: 'https://www.gensler.com',
+    why: "Gensler is the world's largest architecture firm with a major Chicago studio. Applied via Workday on March 1, 2026 — confirmation email received same day. Gensler's broad practice (commercial, hospitality, mixed-use, corporate) aligns with Alex's background. Strong training culture supports unlicensed designers pursuing ARE.",
+    defaultStatus: 'applied',
+    gmailStatus: 'Application Received — Gensler HR',
+    gmailDate: 'March 1, 2026',
+    gmailBadge: 'gmail-verified'
+  },
+  {
+    id: 'pappageorge',
+    company: 'Pappageorge Haymes Partners',
+    title: 'Architect / Senior Designer',
+    score: 4,
+    salary: 'Not posted',
+    location: 'Chicago, IL',
+    remote: 'Unknown',
+    posted: 'Unknown',
+    source: 'Direct Email Outreach',
+    deadline: 'None listed',
+    howToApply: 'Emailed HR@pappageorgehaymes.com on March 10, 2026',
+    applyLink: 'mailto:HR@pappageorgehaymes.com',
+    postingLink: 'https://pappageorgehaymes.com',
+    firmWebsite: 'https://pappageorgehaymes.com',
+    why: "Pappageorge Haymes Partners is a prominent Chicago firm known for adaptive reuse, mixed-use, and hospitality projects — strong sector overlap with Alex's background. Direct email sent March 10, 2026. The firm's portfolio in West Loop and Fulton Market aligns closely with Alex's TI and renovation experience.",
+    defaultStatus: 'applied',
+    gmailStatus: 'Application Sent — Direct Email',
+    gmailDate: 'March 10, 2026',
+    gmailBadge: 'gmail-sent'
+  },
+  {
+    id: 'bearconstruction',
+    company: 'BEAR Construction',
+    title: 'Unknown (LinkedIn Easy Apply)',
+    score: 3,
+    salary: 'Not posted',
+    location: 'Chicago, IL',
+    remote: 'Unknown',
+    posted: 'Unknown',
+    source: 'LinkedIn',
+    deadline: 'None listed',
+    howToApply: 'Applied via LinkedIn Easy Apply on March 10, 2026',
+    applyLink: 'https://www.linkedin.com/company/bear-construction-company',
+    postingLink: 'https://www.linkedin.com',
+    firmWebsite: 'https://www.bearconstruction.com',
+    why: "Applied via LinkedIn Easy Apply on March 10, 2026 — LinkedIn confirmation received. BEAR Construction is a Chicago-area commercial GC. Check LinkedIn for the exact role title and any company response.",
+    defaultStatus: 'applied',
+    gmailStatus: 'Application Sent — LinkedIn',
+    gmailDate: 'March 10, 2026',
+    gmailBadge: 'gmail-verified'
+  },
+  {
+    id: 'flowtec',
+    company: 'Flowtec Group',
+    title: 'Unknown (LinkedIn Easy Apply)',
+    score: 3,
+    salary: 'Not posted',
+    location: 'Unknown',
+    remote: 'Unknown',
+    posted: 'Unknown',
+    source: 'LinkedIn',
+    deadline: 'None listed',
+    howToApply: 'Applied via LinkedIn Easy Apply on February 24, 2026',
+    applyLink: 'https://www.linkedin.com',
+    postingLink: 'https://www.linkedin.com',
+    firmWebsite: '',
+    why: "Applied via LinkedIn Easy Apply on February 24, 2026. Application was viewed by Flowtec Group the same day — a positive signal. Check LinkedIn for the role title and any follow-up messages.",
+    defaultStatus: 'applied',
+    gmailStatus: 'Application Viewed — Feb 24, 2026',
+    gmailDate: 'February 24, 2026',
+    gmailBadge: 'gmail-verified'
+  },
+  {
+    id: 'designseed',
+    company: 'Design Seed',
+    title: 'Construction Superintendent',
+    score: 3,
+    salary: 'Not posted',
+    location: 'Unknown',
+    remote: 'Unknown',
+    posted: 'Unknown',
+    source: 'Direct Email Outreach',
+    deadline: 'None listed',
+    howToApply: 'Emailed info@designseed.info on February 27, 2026',
+    applyLink: 'mailto:info@designseed.info',
+    postingLink: 'https://designseed.info',
+    firmWebsite: 'https://designseed.info',
+    why: "Applied for a Construction Superintendent role on February 27, 2026 via direct email. Note: stretch role — Superintendent is more field-focused than Alex's design/documentation core. The application leveraged Alex's 6 years of CA and project management experience. Check email for any response.",
+    defaultStatus: 'applied',
+    gmailStatus: 'Application Sent — Direct Email',
+    gmailDate: 'February 27, 2026',
+    gmailBadge: 'gmail-sent'
+  }
 ];
 
 const OUTREACH = [
-  { id: 'dspace', company: 'dSPACE Studio', location: 'Lincoln Ave / Lakeview (~1 mi)', type: 'Architecture', contact: 'careers@dspacestudio.com', website: 'https://www.dspacestudio.com', why: "Award-winning residential firm within 1 mile of home. Recent AIA Chicago posting signals active hiring. Local proximity makes this a natural cold outreach target.", angle: "Lead with design-forward work and adaptive reuse experience; emphasize Revit CD documentation depth and all-phase project delivery." },
-  { id: 'moss', company: 'moss design', location: 'Logan Square (~2 mi)', type: 'Architecture', contact: 'laura@moss-design.com', website: 'https://moss-design.com', why: "Adaptive reuse, hospitality (breweries), and commercial work — near-perfect sector alignment. Recent expired posting suggests cyclical hiring. Laura is the direct hiring contact.", angle: "Lead with hospitality TI and adaptive reuse work; showcase Revit CD documentation and construction observation experience. Reference their brewery and restaurant portfolio." },
-  { id: 'pmpc', company: 'PMPC Architects', location: 'Lakeview (local)', type: 'Architecture', contact: 'info@pmpcarch.com', website: 'https://pmpcarch.com', why: "Small commercial and residential firm in the Lakeview neighborhood. Local boutique firms often hire through outreach rather than formal postings.", angle: "Lead with commercial TI experience and CD documentation depth; reference neighborhood familiarity and interest in a local practice." },
-  { id: '34ten', company: '34-TEN Architecture', location: 'Roscoe Village (~0.5 mi)', type: 'Architecture', contact: 'info@34-ten.com', website: 'https://34tenarchitecture.com', why: "Literally in Roscoe Village — active new construction project in the neighborhood signals ongoing workload. Direct local proximity makes outreach natural.", angle: "Lead with neighborhood familiarity and strong Revit + CD documentation background; highlight adaptive reuse and renovation experience." },
-  { id: 'enmasse', company: 'En Masse Architecture', location: 'Chicago (Wicker Park area)', type: 'Architecture', contact: 'info@en-masse.com', website: 'https://en-masse.com', why: "Mixed-use and adaptive reuse project types with a local boutique approach. Strong design culture aligned with Alex's background.", angle: "Lead with mixed-use and commercial TI experience; emphasize Revit proficiency and all-phase project delivery." },
-  { id: 'bldg', company: 'BLDG Projects', location: 'Chicago (North Side)', type: 'Architecture', contact: 'info@bldgprojects.com', website: 'https://bldgprojects.com', why: "Design-build studio focused on commercial and residential adaptive reuse and TI. Design-build firms highly value CD-fluent candidates who bridge design and construction.", angle: "Lead with construction documentation depth and Bluebeam + BIM 360 skills; emphasize ability to coordinate directly with contractors." },
-  { id: 'vdt', company: 'Valerio Dewalt Train', location: 'Chicago, IL (River North)', type: 'Architecture', contact: 'contact@buildordie.com', website: 'https://www.buildordie.com', why: "Nationally recognized Chicago firm doing corporate, retail, entertainment, and hospitality work — strong sector overlap. Glassdoor flagged active hiring cycles.", angle: "Lead with TI and hospitality design experience; showcase Revit-based CD production and reference VDT's hospitality and retail portfolio." },
-  { id: 'farr', company: 'Farr Associates', location: 'Chicago, IL (River North)', type: 'Architecture', contact: 'jobs@farrassociates.net', website: 'https://www.farrassociates.net', why: "Sustainable design firm with a March 2026 AIA Chicago posting (Project Manager), suggesting active hiring season. A Designer role may open. AIA 2030 signatory with strong culture.", angle: "Lead with CD documentation depth and sustainability-conscious design approach; reference BIM 360 and Revit proficiency for documentation-heavy projects." },
-  { id: 'summit', company: 'Summit Design + Build', location: 'Chicago, IL', type: 'GC', contact: 'careers@summitdesignandbuild.com', website: 'https://www.summitdesignandbuild.com', why: "Chicago GC specializing in commercial TI and restaurant/hospitality renovations — direct overlap with Alex's experience. In-house design staff at GCs need Revit-proficient designers who understand CDs and field coordination.", angle: "Lead with commercial TI and hospitality renovation CDs; highlight permit-ready documentation and direct contractor coordination experience." },
-  { id: 'skender', company: 'Skender Construction', location: 'Chicago, IL', type: 'GC', contact: 'careers@skender.com', website: 'https://www.skender.com', why: "Top Chicago commercial GC with an in-house design team doing significant TI and hospitality work. Design-build model values architects with CD documentation fluency.", angle: "Lead with commercial TI CD documentation and Revit/BIM 360 skills; emphasize permit process knowledge and contractor coordination." },
-  { id: 'bulley', company: 'Bulley & Andrews', location: 'Chicago, IL', type: 'GC', contact: 'careers@bulley.com', website: 'https://www.bulley.com', why: "Chicago GC with history of hiring in-house architectural designers, particularly on institutional and adaptive reuse projects.", angle: "Lead with adaptive reuse and CD documentation experience; highlight Revit and Bluebeam proficiency for permit and construction administration work." },
-  { id: 'hyatt', company: 'Hyatt Hotels (In-House Design)', location: 'Chicago, IL (HQ)', type: 'Corporate', contact: 'jobs.hyatt.com', website: 'https://jobs.hyatt.com', why: "Hyatt's global HQ is in Chicago. In-house design team handles brand standards, renovation programs, and new hotel projects. Alex's hospitality TI experience is a direct match.", angle: "Lead with hospitality renovation and TI experience; showcase Revit documentation for hospitality projects and ability to coordinate with brand standards teams." },
-  { id: 'cb', company: 'Crate & Barrel (In-House Design)', location: 'Northbrook, IL', type: 'Corporate', contact: 'careers.crateandbarrel.com', website: 'https://www.crateandbarrel.com/careers', why: "Corporate design team handles retail store rollouts, TI, and fixture design — direct alignment with Alex's retail and TI experience. In-house roles often don't require licensure.", angle: "Lead with retail TI experience and Revit documentation for commercial rollout projects; highlight ability to manage multiple concurrent scopes." },
-  { id: 'sterling', company: 'Sterling Bay', location: 'Chicago, IL', type: 'RealEstate', contact: 'careers@sterlingbay.com', website: 'https://www.sterlingbay.com/careers', why: "One of Chicago's most active commercial real estate developers managing a large portfolio of adaptive reuse and new development projects. In-house design staff roles focus on design management and CD coordination.", angle: "Lead with adaptive reuse and commercial TI experience; reference Revit BIM management and consultant coordination skills." },
-  { id: 'related', company: 'Related Midwest', location: 'Chicago, IL', type: 'RealEstate', contact: 'careers@relatedmidwest.com', website: 'https://www.relatedmidwest.com/careers', why: "Major Chicago residential and mixed-use developer with significant multi-family, hospitality, and retail portfolio. In-house design and project coordination roles open regularly.", angle: "Lead with mixed-use and hospitality TI documentation experience; highlight consultant coordination and BIM 360 project management skills." }
+  { id: 'dspace', company: 'dSPACE Studio', location: 'Lincoln Ave / Lakeview (~1 mi)', type: 'Architecture', contact: 'careers@dspacestudio.com', website: 'https://www.dspacestudio.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: "Award-winning residential firm within 1 mile of home. Recent AIA Chicago posting signals active hiring. Local proximity makes this a natural cold outreach target.", angle: "Lead with design-forward work and adaptive reuse experience; emphasize Revit CD documentation depth and all-phase project delivery." },
+  { id: 'moss', company: 'moss design', location: 'Logan Square (~2 mi)', type: 'Architecture', contact: 'laura@moss-design.com', website: 'https://moss-design.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: "Adaptive reuse, hospitality (breweries), and commercial work — near-perfect sector alignment. Recent expired posting suggests cyclical hiring. Laura is the direct hiring contact.", angle: "Lead with hospitality TI and adaptive reuse work; showcase Revit CD documentation and construction observation experience. Reference their brewery and restaurant portfolio." },
+  { id: 'pmpc', company: 'PMPC Architects', location: 'Lakeview (local)', type: 'Architecture', contact: 'info@pmpcarch.com', website: 'https://pmpcarch.com', date: 'March 3, 2026', dateISO: '2026-03-03', source: 'Google / Local Research', why: "Small commercial and residential firm in the Lakeview neighborhood. Local boutique firms often hire through outreach rather than formal postings.", angle: "Lead with commercial TI experience and CD documentation depth; reference neighborhood familiarity and interest in a local practice." },
+  { id: '34ten', company: '34-TEN Architecture', location: 'Roscoe Village (~0.5 mi)', type: 'Architecture', contact: 'info@34-ten.com', website: 'https://34tenarchitecture.com', date: 'March 3, 2026', dateISO: '2026-03-03', source: 'Local Observation', why: "Literally in Roscoe Village — active new construction project in the neighborhood signals ongoing workload. Direct local proximity makes outreach natural.", angle: "Lead with neighborhood familiarity and strong Revit + CD documentation background; highlight adaptive reuse and renovation experience." },
+  { id: 'enmasse', company: 'En Masse Architecture', location: 'Chicago (Wicker Park area)', type: 'Architecture', contact: 'info@en-masse.com', website: 'https://en-masse.com', date: 'February 28, 2026', dateISO: '2026-02-28', source: 'LinkedIn', why: "Mixed-use and adaptive reuse project types with a local boutique approach. Strong design culture aligned with Alex's background.", angle: "Lead with mixed-use and commercial TI experience; emphasize Revit proficiency and all-phase project delivery." },
+  { id: 'bldg', company: 'BLDG Projects', location: 'Chicago (North Side)', type: 'Architecture', contact: 'info@bldgprojects.com', website: 'https://bldgprojects.com', date: 'February 28, 2026', dateISO: '2026-02-28', source: 'LinkedIn', why: "Design-build studio focused on commercial and residential adaptive reuse and TI. Design-build firms highly value CD-fluent candidates who bridge design and construction.", angle: "Lead with construction documentation depth and Bluebeam + BIM 360 skills; emphasize ability to coordinate directly with contractors." },
+  { id: 'vdt', company: 'Valerio Dewalt Train', location: 'Chicago, IL (River North)', type: 'Architecture', contact: 'contact@buildordie.com', website: 'https://www.buildordie.com', date: 'February 25, 2026', dateISO: '2026-02-25', source: 'Glassdoor', why: "Nationally recognized Chicago firm doing corporate, retail, entertainment, and hospitality work — strong sector overlap. Glassdoor flagged active hiring cycles.", angle: "Lead with TI and hospitality design experience; showcase Revit-based CD production and reference VDT's hospitality and retail portfolio." },
+  { id: 'farr', company: 'Farr Associates', location: 'Chicago, IL (River North)', type: 'Architecture', contact: 'jobs@farrassociates.net', website: 'https://www.farrassociates.net', date: 'March 8, 2026', dateISO: '2026-03-08', source: 'AIA Chicago Job Board', why: "Sustainable design firm with a March 2026 AIA Chicago posting (Project Manager), suggesting active hiring season. A Designer role may open. AIA 2030 signatory with strong culture.", angle: "Lead with CD documentation depth and sustainability-conscious design approach; reference BIM 360 and Revit proficiency for documentation-heavy projects." },
+  { id: 'summit', company: 'Summit Design + Build', location: 'Chicago, IL', type: 'GC', contact: 'careers@summitdesignandbuild.com', website: 'https://www.summitdesignandbuild.com', date: 'February 20, 2026', dateISO: '2026-02-20', source: 'LinkedIn / Web Research', why: "Chicago GC specializing in commercial TI and restaurant/hospitality renovations — direct overlap with Alex's experience. In-house design staff at GCs need Revit-proficient designers who understand CDs and field coordination.", angle: "Lead with commercial TI and hospitality renovation CDs; highlight permit-ready documentation and direct contractor coordination experience." },
+  { id: 'skender', company: 'Skender Construction', location: 'Chicago, IL', type: 'GC', contact: 'careers@skender.com', website: 'https://www.skender.com', date: 'February 20, 2026', dateISO: '2026-02-20', source: 'LinkedIn', why: "Top Chicago commercial GC with an in-house design team doing significant TI and hospitality work. Design-build model values architects with CD documentation fluency.", angle: "Lead with commercial TI CD documentation and Revit/BIM 360 skills; emphasize permit process knowledge and contractor coordination." },
+  { id: 'bulley', company: 'Bulley & Andrews', location: 'Chicago, IL', type: 'GC', contact: 'careers@bulley.com', website: 'https://www.bulley.com', date: 'February 18, 2026', dateISO: '2026-02-18', source: 'LinkedIn / Web Research', why: "Chicago GC with history of hiring in-house architectural designers, particularly on institutional and adaptive reuse projects.", angle: "Lead with adaptive reuse and CD documentation experience; highlight Revit and Bluebeam proficiency for permit and construction administration work." },
+  { id: 'hyatt', company: 'Hyatt Hotels (In-House Design)', location: 'Chicago, IL (HQ)', type: 'Corporate', contact: 'jobs.hyatt.com', website: 'https://jobs.hyatt.com', date: 'February 17, 2026', dateISO: '2026-02-17', source: 'Web Research', why: "Hyatt's global HQ is in Chicago. In-house design team handles brand standards, renovation programs, and new hotel projects. Alex's hospitality TI experience is a direct match.", angle: "Lead with hospitality renovation and TI experience; showcase Revit documentation for hospitality projects and ability to coordinate with brand standards teams." },
+  { id: 'cb', company: 'Crate & Barrel (In-House Design)', location: 'Northbrook, IL', type: 'Corporate', contact: 'careers.crateandbarrel.com', website: 'https://www.crateandbarrel.com/careers', date: 'February 17, 2026', dateISO: '2026-02-17', source: 'LinkedIn', why: "Corporate design team handles retail store rollouts, TI, and fixture design — direct alignment with Alex's retail and TI experience. In-house roles often don't require licensure.", angle: "Lead with retail TI experience and Revit documentation for commercial rollout projects; highlight ability to manage multiple concurrent scopes." },
+  { id: 'sterling', company: 'Sterling Bay', location: 'Chicago, IL', type: 'RealEstate', contact: 'careers@sterlingbay.com', website: 'https://www.sterlingbay.com/careers', date: 'February 10, 2026', dateISO: '2026-02-10', source: 'LinkedIn', why: "One of Chicago's most active commercial real estate developers managing a large portfolio of adaptive reuse and new development projects. In-house design staff roles focus on design management and CD coordination.", angle: "Lead with adaptive reuse and commercial TI experience; reference Revit BIM management and consultant coordination skills." },
+  { id: 'related', company: 'Related Midwest', location: 'Chicago, IL', type: 'RealEstate', contact: 'careers@relatedmidwest.com', website: 'https://www.relatedmidwest.com/careers', date: 'February 10, 2026', dateISO: '2026-02-10', source: 'LinkedIn', why: "Major Chicago residential and mixed-use developer with significant multi-family, hospitality, and retail portfolio. In-house design and project coordination roles open regularly.", angle: "Lead with mixed-use and hospitality TI documentation experience; highlight consultant coordination and BIM 360 project management skills." }
 ];
 
 // ─────────────────────────────────────────────────────────
@@ -543,6 +784,7 @@ let state = loadState();
 let activeFilter = 'all';
 let searchTerm = '';
 let outreachFilter = 'all';
+let hideOldOutreach = true;
 
 function getJobState(id) {
   const job = JOBS.find(j => j.id === id);
@@ -674,7 +916,7 @@ function renderJobCard(job) {
       </div>
 
       <div class="card-footer">
-        <button class="btn-apply" onclick="openLink('${job.applyLink}')">Apply →</button>
+        <button class="btn-apply" onclick="openEmailModal('${job.id}')">Apply →</button>
         <button class="btn-details" onclick="toggleDetails('${job.id}')">Details ▾</button>
       </div>
 
@@ -747,14 +989,16 @@ const TYPE_CLASSES = {
 
 function renderOutreach() {
   const container = document.getElementById('outreachCards');
-  container.innerHTML = OUTREACH.map(o => {
+  const sorted = [...OUTREACH].sort((a, b) => b.dateISO.localeCompare(a.dateISO));
+  container.innerHTML = sorted.map(o => {
     const os = getOutreachState(o.id);
     const typeClass = TYPE_CLASSES[o.type] || 'type-architecture';
     const typeLabel = o.type === 'RealEstate' ? 'Real Estate Dev' : o.type;
     return `
       <div class="outreach-card" id="oc-${o.id}"
            data-type="${o.type}"
-           data-contacted="${os.status}">
+           data-contacted="${os.status}"
+           data-dateiso="${o.dateISO}">
         <div class="card-score-bar"></div>
         <div class="card-body">
           <div class="card-top">
@@ -767,6 +1011,8 @@ function renderOutreach() {
           <div class="card-meta">
             <span class="meta-tag"><span class="icon">🌐</span><a href="${o.website}" target="_blank" style="color:inherit;text-decoration:none;">${o.website.replace('https://','')}</a></span>
             ${o.contact.includes('@') ? `<span class="meta-tag"><span class="icon">✉️</span>${o.contact}</span>` : ''}
+            <span class="meta-tag"><span class="icon">📅</span>${o.date}</span>
+            <span class="meta-tag source-tag"><span class="icon">🔍</span>${o.source}</span>
           </div>
         </div>
 
@@ -785,7 +1031,7 @@ function renderOutreach() {
         </div>
 
         <div class="card-footer">
-          <button class="btn-contact" onclick="openLink('mailto:${o.contact.includes('@') ? o.contact : ''}')">Contact →</button>
+          <button class="btn-contact" onclick="openOutreachModal('${o.id}')">Contact →</button>
           <button class="btn-details" onclick="toggleDetails('oc${o.id}')">Details ▾</button>
         </div>
 
@@ -812,6 +1058,13 @@ function renderOutreach() {
         </div>
       </div>`;
   }).join('');
+  applyOutreachFilter();
+}
+
+function toggleAgeFilter(btn) {
+  hideOldOutreach = !hideOldOutreach;
+  btn.classList.toggle('active', hideOldOutreach);
+  btn.textContent = hideOldOutreach ? '📅 Last 30 Days' : '📅 Show All';
   applyOutreachFilter();
 }
 
@@ -858,12 +1111,17 @@ function setOutreachFilter(f, btn) {
   applyOutreachFilter();
 }
 function applyOutreachFilter() {
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - 30);
   document.querySelectorAll('.outreach-card').forEach(card => {
     const t = card.dataset.type;
-    const match = outreachFilter === 'all' || t === outreachFilter ||
+    const iso = card.dataset.dateiso || '';
+    const cardDate = iso ? new Date(iso) : new Date();
+    const typeMatch = outreachFilter === 'all' || t === outreachFilter ||
       (outreachFilter === 'GC' && (t === 'GC')) ||
       (outreachFilter === 'Corporate' && (t === 'Corporate' || t === 'RealEstate'));
-    card.classList.toggle('hidden', !match);
+    const ageMatch = hideOldOutreach ? cardDate >= cutoffDate : true;
+    card.classList.toggle('hidden', !typeMatch || !ageMatch);
   });
 }
 
@@ -923,6 +1181,490 @@ function openLink(url) {
 renderJobs();
 renderOutreach();
 updateStats();
+
+// ─────────────────────────────────────────────────────────
+// EMAIL DRAFTS
+// ─────────────────────────────────────────────────────────
+const EMAIL_DRAFTS = {
+  okw: {
+    to: 'kkarcher@actalentservices.com',
+    subject: 'Re: OKW Architects — Unlicensed Designer Role | Alex Karshis',
+    body: `Hi Kacy,
+
+Just following up on the OKW Architects opportunity. I wanted to reiterate my strong interest — OKW's commercial TI focus is exactly where my experience runs deepest, and I'm confident I can contribute from day one.
+
+At DxU Architects I spent four years as the primary Revit documentation lead across office, retail, and mixed-use TI projects. I have hands-on experience coordinating with structural, MEP, and specialty consultants through both CD and CA phases, and I'm comfortable taking ownership of a full documentation scope.
+
+I'm available for an interview at any time. Please let me know what the next steps look like.
+
+Thanks,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  parkfowler: {
+    to: 'careers@pf.plus',
+    subject: 'Application for Intermediate Architect / Designer: Alex Karshis',
+    body: `Hi ParkFowler Plus Team,
+
+I'm writing to apply for the Intermediate Architect / Designer position. I'm a multidisciplinary architectural designer based in Chicago with 4+ years of experience at DxU Architects spanning commercial TI, mixed-use, and renovation projects.
+
+This role is a direct match: all-phase Revit CD production, full-phase project delivery from SD through CA, and consultant coordination are exactly how I've worked throughout my career. I'm comfortable taking ownership of a documentation scope, keeping consultants on track, and delivering permit-ready and construction-ready sets.
+
+I'm a RISD M.Arch graduate currently pursuing ARE examinations, and I've been in Chicago long enough to know the local code and permit landscape well.
+
+My resume is attached — portfolio available on request. Happy to come in for a conversation.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  scb: {
+    to: 'reception@scb.com',
+    subject: 'Architectural Designer Application — Alex Karshis',
+    body: `Hi SCB Team,
+
+I'm reaching out to apply for the Architectural Designer position at SCB. Your firm's reputation for design quality in adaptive reuse, mixed-use multifamily, and aviation is well established in Chicago, and it's exactly the kind of rigorous multi-discipline practice I'm looking to grow within.
+
+I bring 4+ years of Revit-based CD documentation at DxU Architects, working across all phases on commercial TI and mixed-use projects. SCB's adaptive reuse work is a particularly strong match — I have direct experience working through existing conditions documents, navigating structural and MEP consultant coordination, and maintaining documentation quality under tight delivery timelines.
+
+I'm a RISD M.Arch graduate based in Chicago's Lakeview neighborhood. Resume attached; portfolio available on request.
+
+Best regards,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  arda: {
+    to: 'hr@ardadesign.com',
+    subject: 'Architectural Designer Application — Alex Karshis',
+    body: `Hi Arda Team,
+
+I'm writing to apply for the Architectural Designer position. Arda's focus on historic preservation, adaptive reuse, and hospitality is a near-perfect match for my background — and it's the kind of work I find most meaningful.
+
+At DxU Architects I spent four years on commercial TI, mixed-use, and renovation projects with primary responsibility for Revit and Bluebeam documentation across all phases. I'm comfortable leading CDs from SD through CA, coordinating structural and MEP consultants, and attending construction observation — every phase your posting describes. Adaptive reuse in particular is where I've done some of my most careful documentation work, navigating existing condition constraints while keeping the CD set clean and contractor-ready.
+
+I appreciate that Arda supports ARE licensure progression — I'm actively working toward that. I'm based in Chicago's Lakeview neighborhood and available for in-person work as needed.
+
+Resume attached. Happy to share portfolio samples on request.
+
+Sincerely,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  koo: {
+    to: 'employment@kooarchitecture.com',
+    subject: 'Architectural Design Team Member Application — Alex Karshis',
+    body: `Hi KOO Team,
+
+I'm writing to apply for the Architectural Design Team Member position. KOO's portfolio — hospitality, multi-family, and adaptive reuse — closely mirrors the project types I've built my career on, and the all-phase project responsibility you describe is exactly how I prefer to work.
+
+I bring 4+ years at DxU Architects where I served as the primary Revit documentation lead on multiple concurrent TI and mixed-use projects. My experience spans programming through construction administration, including direct consultant coordination, permit submissions, and field observation. High-quality CDs are where I do my most thorough and confident work.
+
+I'm a RISD M.Arch graduate currently pursuing ARE examinations. I've included my resume and a portfolio link below. I'd welcome the chance to talk about the team and the current project pipeline.
+
+Portfolio: [link available on request]
+
+Thank you for your consideration.
+
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  latent: {
+    to: 'hello@latentdesign.net',
+    subject: 'Latent | PM Position | Alex Karshis',
+    body: `Hello Latent Team,
+
+I'm writing to apply for the Project Manager position. I want to be transparent: your posting lists 8 years minimum experience, and I have just over 6. But I've moved through project responsibility quickly — leading CD production, consultant coordination, and construction observation earlier than most in my cohort — and I believe the depth of my CA and documentation experience is genuinely competitive.
+
+What draws me to Latent specifically is your community-centered design practice. The work you pursue reflects a value system I share, and the scale of your studio means individual contribution is visible and consequential. I'm not looking for a role at a firm where I'll disappear into a team — I want to be accountable to the outcomes.
+
+I'm a RISD M.Arch graduate based in Chicago. Resume attached; happy to discuss further.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  pappageorge: {
+    to: 'HR@pappageorgehaymes.com',
+    subject: 'Architect / Senior Designer | Alex Karshis',
+    body: `Howdy,
+
+I'd like to be considered for an open position at Pappageorge Haymes Partners. Your firm's work in adaptive reuse, mixed-use, and hospitality closely mirrors my background, and I've long admired PHP's projects throughout Chicago's West Loop and Fulton Market corridors.
+
+I bring 4+ years at DxU Architects leading Revit documentation across commercial TI, mixed-use, and renovation projects from SD through CA. I'm a RISD M.Arch graduate based in Chicago's Lakeview neighborhood, currently pursuing ARE examinations.
+
+Resume and portfolio attached. I'd welcome a conversation if you have capacity on your team.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  }
+};
+
+// Outreach email drafts
+const OUTREACH_DRAFTS = {
+  dspace: {
+    to: 'careers@dspacestudio.com',
+    subject: 'Architectural Designer — Cold Outreach | Alex Karshis',
+    body: `Hi dSPACE Studio Team,
+
+I'm reaching out to introduce myself and express my interest in joining your team, whether or not a formal opening is currently posted.
+
+I'm an architectural designer based a few blocks away in Lakeview with 4+ years at DxU Architects. My background spans commercial TI, adaptive reuse, and mixed-use projects — work that aligns well with dSPACE's residential and boutique commercial portfolio. I'm a strong Revit production designer and comfortable across all project phases from SD through CA.
+
+I'm a RISD M.Arch graduate currently pursuing ARE licensure. I'd love to share my portfolio and have a brief conversation about your work and any opportunities that might fit.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  moss: {
+    to: 'laura@moss-design.com',
+    subject: 'Architectural Designer — Outreach | Alex Karshis',
+    body: `Hi Laura,
+
+I'm reaching out because moss design's portfolio — hospitality, adaptive reuse, and commercial work in Logan Square — is exactly the type of practice I'm looking to join.
+
+I'm a Chicago-based architectural designer with 4+ years at DxU Architects, where I worked on commercial TI, brewery and restaurant renovations, and mixed-use projects. I'm a strong Revit production designer with all-phase experience through CA. I'm a RISD M.Arch graduate based two miles from your studio in Lakeview.
+
+I know your recent AIA posting has lapsed, but I wanted to reach out directly in case you're building toward another hire. Happy to share my portfolio.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  pmpc: {
+    to: 'info@pmpcarch.com',
+    subject: 'Architectural Designer — Outreach | Alex Karshis',
+    body: `Hi PMPC Team,
+
+I'm reaching out to introduce myself as a local architectural designer who'd be interested in joining your team.
+
+I have 4+ years of experience at DxU Architects in Chicago, focusing on commercial TI, mixed-use, and renovation projects. I'm a strong Revit production designer with all-phase experience (SD through CA) and a RISD M.Arch graduate. I'm based in Lakeview and interested in smaller, neighborhood-scale practices where individual contribution is direct.
+
+I'd love to share my portfolio if you have any capacity or upcoming project needs.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  '34ten': {
+    to: 'info@34-ten.com',
+    subject: 'Architectural Designer — Local Outreach | Alex Karshis',
+    body: `Hi 34-TEN Team,
+
+I live in Roscoe Village and have been watching your new construction project here with admiration. It prompted me to reach out directly.
+
+I'm an architectural designer with 4+ years at DxU Architects, working on commercial TI, adaptive reuse, and mixed-use projects throughout Chicago. I'm a strong Revit production designer with full-phase experience and a RISD M.Arch graduate. I'm genuinely interested in the work of local practices where the project impact is visible in the neighborhood.
+
+I'd be glad to share my portfolio and have a conversation about your pipeline.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  enmasse: {
+    to: 'info@en-masse.com',
+    subject: 'Architectural Designer — Outreach | Alex Karshis',
+    body: `Hi En Masse Team,
+
+I'm reaching out to introduce myself and express my interest in your practice. En Masse's mixed-use and adaptive reuse portfolio resonates strongly with my background.
+
+I'm a Chicago-based architectural designer with 4+ years at DxU Architects, focused on commercial TI, mixed-use, and renovation projects. Strong Revit production designer with all-phase experience through CA. RISD M.Arch graduate pursuing ARE licensure.
+
+I'd be happy to share my portfolio if there's a conversation worth having.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  bldg: {
+    to: 'info@bldgprojects.com',
+    subject: 'Architectural Designer — Outreach | Alex Karshis',
+    body: `Hi BLDG Projects,
+
+I'm reaching out because your design-build approach to commercial and residential adaptive reuse closely matches my background and the kind of integrated practice I'm looking for.
+
+I bring 4+ years of Revit CD documentation and construction observation at DxU Architects, with strong experience in Bluebeam and BIM 360. I'm comfortable coordinating directly with contractors and translating design intent into field-ready documentation. RISD M.Arch graduate based in Chicago's Lakeview neighborhood.
+
+Happy to share portfolio and discuss your current workload.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  vdt: {
+    to: 'contact@buildordie.com',
+    subject: 'Architectural Designer — Outreach | Alex Karshis',
+    body: `Hi Valerio Dewalt Train Team,
+
+I'm reaching out to introduce myself and express my interest in joining VDT, particularly given your active work in hospitality, corporate interiors, and entertainment design.
+
+I'm a Chicago-based architectural designer with 4+ years at DxU Architects focused on commercial TI, hospitality, and mixed-use projects — strong alignment with VDT's core sectors. I'm a Revit production designer with full-phase CD and CA experience. RISD M.Arch graduate, currently pursuing ARE.
+
+I'd welcome the chance to share my portfolio and discuss any fit.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  farr: {
+    to: 'jobs@farrassociates.net',
+    subject: 'Architectural Designer — Outreach | Alex Karshis',
+    body: `Hi Farr Associates,
+
+I'm reaching out in response to your active hiring season signaled by the recent AIA Chicago posting. Even if the PM role is filled, I wanted to introduce myself for any designer openings.
+
+I'm a Chicago-based architectural designer with 4+ years of CD documentation and BIM-heavy project delivery at DxU Architects. I bring strong Revit and BIM 360 proficiency and a genuine interest in sustainable design practice — Farr's AIA 2030 commitment is directly aligned with the direction I want to grow professionally.
+
+RISD M.Arch graduate, pursuing ARE licensure. Happy to share my portfolio.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  summit: {
+    to: 'careers@summitdesignandbuild.com',
+    subject: 'In-House Designer — Outreach | Alex Karshis',
+    body: `Hi Summit Design + Build,
+
+I'm reaching out to express my interest in an in-house designer role with your team. Summit's commercial TI and hospitality renovation work is a direct match for my experience.
+
+I bring 4+ years of Revit CD documentation and construction administration at DxU Architects, with strong background in restaurant, retail, and commercial TI projects — exactly the scopes Summit handles. I'm comfortable creating permit-ready documentation and coordinating directly with contractors throughout construction.
+
+RISD M.Arch graduate based in Chicago. Happy to discuss further.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  skender: {
+    to: 'careers@skender.com',
+    subject: 'In-House Designer / BIM Coordinator — Outreach | Alex Karshis',
+    body: `Hi Skender,
+
+I'm reaching out to explore in-house design or BIM coordination opportunities. Skender's integrated design-build model and commercial TI focus align directly with my professional background.
+
+I bring 4+ years of Revit and BIM 360 production at DxU Architects across commercial TI, office, and mixed-use projects. I understand both the design side of documentation and the contractor's perspective on what makes a set buildable. RISD M.Arch graduate based in Chicago.
+
+Happy to share my portfolio and discuss your current team needs.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  bulley: {
+    to: 'careers@bulley.com',
+    subject: 'In-House Designer — Outreach | Alex Karshis',
+    body: `Hi Bulley & Andrews,
+
+I'm reaching out to explore in-house design opportunities with your firm. Bulley's institutional and adaptive reuse project portfolio aligns well with my architectural background.
+
+I have 4+ years of CD documentation experience at DxU Architects with strong Revit and Bluebeam proficiency. I'm experienced in adaptive reuse documentation — navigating existing conditions, coordinating permit submissions, and supporting construction administration. RISD M.Arch graduate based in Chicago.
+
+Happy to discuss further if there's a fit.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  hyatt: {
+    to: '',
+    subject: 'In-House Designer — Hyatt Corporate | Alex Karshis',
+    body: `[Note: Apply via jobs.hyatt.com — no direct email contact available]
+
+Hi Hyatt Design Team,
+
+I'm interested in in-house designer roles within Hyatt's corporate design group. My hospitality TI experience at DxU Architects — working on hotel renovation and branded environments — maps directly to the type of work Hyatt's internal team manages.
+
+I bring 4+ years of Revit documentation across hospitality and commercial TI scopes, with experience coordinating brand standard compliance on renovation projects. RISD M.Arch graduate based in Chicago.
+
+Please apply through the Hyatt careers portal at jobs.hyatt.com.
+
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  cb: {
+    to: '',
+    subject: 'In-House Designer — Crate & Barrel | Alex Karshis',
+    body: `[Note: Apply via crateandbarrel.com/careers — no direct email contact available]
+
+Hi Crate & Barrel Design Team,
+
+I'm interested in any in-house designer roles related to retail store rollouts or TI projects. My background in commercial TI documentation — multiple concurrent scopes, Revit production, permit coordination — maps directly to how in-house retail design teams operate.
+
+I bring 4+ years at DxU Architects with strong Revit proficiency and multi-project coordination experience. RISD M.Arch graduate based in the Chicago metro.
+
+Please apply through the Crate & Barrel careers portal.
+
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  sterling: {
+    to: 'careers@sterlingbay.com',
+    subject: 'Design Manager / Coordinator — Outreach | Alex Karshis',
+    body: `Hi Sterling Bay,
+
+I'm reaching out to explore design coordination or in-house designer roles within your development portfolio. Sterling Bay's adaptive reuse and commercial development pipeline in Chicago is a strong match for my background.
+
+I bring 4+ years of CD documentation, consultant coordination, and BIM management at DxU Architects, with direct experience on adaptive reuse and commercial TI projects. I understand how design documentation needs to serve both permit submissions and construction teams. RISD M.Arch graduate based in Chicago.
+
+Happy to share my portfolio and resume.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  },
+  related: {
+    to: 'careers@relatedmidwest.com',
+    subject: 'Design Coordinator — Outreach | Alex Karshis',
+    body: `Hi Related Midwest,
+
+I'm reaching out to explore design coordinator or in-house designer roles within your development team. Related's multi-family, hospitality, and retail portfolio in Chicago aligns closely with my documentation and project coordination background.
+
+I bring 4+ years at DxU Architects focused on mixed-use, hospitality, and commercial TI projects, with strong Revit, BIM 360, and consultant coordination experience. RISD M.Arch graduate based in Chicago.
+
+Happy to discuss further and share my portfolio.
+
+Best,
+Alex Karshis
+alexkarshis@gmail.com`
+  }
+};
+
+// ─────────────────────────────────────────────────────────
+// EMAIL MODAL FUNCTIONS
+// ─────────────────────────────────────────────────────────
+function openEmailModal(jobId) {
+  const job = JOBS.find(j => j.id === jobId);
+  if (!job) return;
+
+  // Fall through for non-email apply links with no draft
+  if (!job.applyLink.startsWith('mailto:') && !EMAIL_DRAFTS[jobId]) {
+    openLink(job.applyLink);
+    return;
+  }
+
+  const draft = EMAIL_DRAFTS[jobId];
+  const js = getJobState(jobId);
+  const alreadyApplied = js.status === 'applied' || js.status === 'interviewing' || js.status === 'offer';
+
+  document.getElementById('modalTitle').textContent = 'Apply to ' + job.company;
+
+  const alertBox = document.getElementById('modalAlreadyApplied');
+  if (alreadyApplied) {
+    alertBox.style.display = '';
+    alertBox.textContent = '✅ You\'ve already applied' + (js.dateApplied ? ' on ' + js.dateApplied : '') + '. This is your reference email.';
+  } else {
+    alertBox.style.display = 'none';
+  }
+
+  if (draft) {
+    document.getElementById('modalTo').value = draft.to;
+    document.getElementById('modalSubject').value = draft.subject;
+    document.getElementById('modalBody').value = draft.body;
+  } else {
+    // Extract email from mailto link
+    const email = job.applyLink.replace('mailto:', '');
+    document.getElementById('modalTo').value = email;
+    document.getElementById('modalSubject').value = 'Application — ' + job.title + ' | Alex Karshis';
+    document.getElementById('modalBody').value = '';
+  }
+
+  document.getElementById('emailModal').classList.add('open');
+}
+
+function openOutreachModal(outreachId) {
+  const o = OUTREACH.find(x => x.id === outreachId);
+  if (!o) return;
+
+  // If no email contact, fall through to website
+  if (!o.contact.includes('@')) {
+    openLink(o.website);
+    return;
+  }
+
+  const draft = OUTREACH_DRAFTS[outreachId];
+  document.getElementById('modalTitle').textContent = 'Contact ' + o.company;
+  document.getElementById('modalAlreadyApplied').style.display = 'none';
+
+  if (draft) {
+    document.getElementById('modalTo').value = draft.to || o.contact;
+    document.getElementById('modalSubject').value = draft.subject;
+    document.getElementById('modalBody').value = draft.body;
+  } else {
+    document.getElementById('modalTo').value = o.contact;
+    document.getElementById('modalSubject').value = 'Architectural Designer — Outreach | Alex Karshis';
+    document.getElementById('modalBody').value = '';
+  }
+
+  document.getElementById('emailModal').classList.add('open');
+}
+
+function closeEmailModal() {
+  document.getElementById('emailModal').classList.remove('open');
+}
+
+function handleModalOverlayClick(e) {
+  if (e.target === document.getElementById('emailModal')) closeEmailModal();
+}
+
+function copyModalEmail() {
+  const to = document.getElementById('modalTo').value;
+  const subject = document.getElementById('modalSubject').value;
+  const body = document.getElementById('modalBody').value;
+  const full = 'To: ' + to + '\nSubject: ' + subject + '\n\n' + body;
+  navigator.clipboard.writeText(full).catch(() => {
+    // Fallback for browsers without clipboard API
+    const ta = document.createElement('textarea');
+    ta.value = full;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+  const btn = document.querySelector('.btn-modal-copy');
+  const orig = btn.textContent;
+  btn.textContent = '✅ Copied!';
+  setTimeout(() => btn.textContent = orig, 2000);
+}
+
+function openModalInGmail() {
+  const to = encodeURIComponent(document.getElementById('modalTo').value);
+  const subject = encodeURIComponent(document.getElementById('modalSubject').value);
+  const body = encodeURIComponent(document.getElementById('modalBody').value);
+  window.open('https://mail.google.com/mail/?view=cm&to=' + to + '&su=' + subject + '&body=' + body, '_blank');
+}
+
 </script>
+
+<!-- ─── EMAIL DRAFT MODAL ─────────────────────────────── -->
+<div id="emailModal" class="modal-overlay" onclick="handleModalOverlayClick(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modalTitle">Draft Email</h3>
+      <button class="modal-close" onclick="closeEmailModal()">✕</button>
+    </div>
+    <div id="modalAlreadyApplied" class="modal-already-applied" style="display:none"></div>
+    <div class="modal-field">
+      <label>To</label>
+      <input type="text" id="modalTo" readonly>
+    </div>
+    <div class="modal-field">
+      <label>Subject</label>
+      <input type="text" id="modalSubject">
+    </div>
+    <div class="modal-field">
+      <label>Email Body</label>
+      <textarea id="modalBody" rows="14"></textarea>
+    </div>
+    <p class="modal-resume-note">📎 Attach your resume before sending. Portfolio link can be added to the body.</p>
+    <div class="modal-footer">
+      <button class="btn-modal-copy" onclick="copyModalEmail()">📋 Copy Email</button>
+      <button class="btn-modal-gmail" onclick="openModalInGmail()">📧 Open in Gmail</button>
+      <button class="btn-modal-cancel" onclick="closeEmailModal()">Close</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
+
