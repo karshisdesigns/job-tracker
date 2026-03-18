@@ -1070,8 +1070,9 @@ body::before {
             <div class="modal-resume-note">Attach your resume before sending.</div>
         </div>
         <div class="modal-footer">
-            <button class="btn-modal-copy" onclick="copyModalEmail()">Copy</button>
-            <button class="btn-modal-gmail" onclick="openModalInGmail()">Open Gmail</button>
+            <button class="btn-modal-copy" onclick="copyModalEmail()">Copy Body</button>
+            <button class="btn-modal-gmail" onclick="openModalInAppleMail()">Apple Mail</button>
+            <button class="btn-modal-gmail" style="background:var(--haring-red);color:white;" onclick="openModalInGmail()">Gmail</button>
             <button class="btn-modal-cancel" onclick="closeEmailModal()">Close</button>
         </div>
     </div>
@@ -2189,13 +2190,7 @@ function openEmailModal(jobId) {
     const email = job.applyLink.replace('mailto:', '');
     document.getElementById('modalTo').value = email;
     document.getElementById('modalSubject').value = job.title + ' Application - Alex Karshis';
-    document.getElementById('modalBody').value = `Howdy,
-I'm reaching out about the ${job.title} position at ${job.company}.
-Previously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.
-My resume is attached. My portfolio is available at karshisdesigns.com - and click the photo on the About Me page for a surprise.
-Best regards,
-Alex Karshis
-alexkarshis@gmail.com`;
+    document.getElementById('modalBody').value = `Howdy,\n\nI'm reaching out about the ${job.title} position at ${job.company}. Your firm's work caught my eye, and I think my background would be a strong fit.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed use projects across all phases. I'm looking for a team where documentation quality and design both matter.\n\nMy resume is attached. My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`;
   }
   document.getElementById('emailModal').classList.add('open');
 }
@@ -2216,12 +2211,7 @@ function openOutreachModal(outreachId) {
   } else {
     document.getElementById('modalTo').value = o.contact;
     document.getElementById('modalSubject').value = 'Reaching Out - Alex Karshis, Architectural Designer';
-    document.getElementById('modalBody').value = `Howdy,
-I wanted to introduce myself. I'm an architectural designer with 4+ years at DxU Architects doing commercial TI and mixed-use projects in Chicago.
-My resume is attached. My portfolio is available at karshisdesigns.com
-Best regards,
-Alex Karshis
-alexkarshis@gmail.com`;
+    document.getElementById('modalBody').value = `Howdy,\n\nI wanted to introduce myself. I'm an architectural designer with 6+ years of experience in commercial TI, adaptive reuse, and hospitality projects in Chicago.\n\nI'm currently pursuing new opportunities and would love to learn more about what ${o.company} has coming up. My strengths are in full CD sets, consultant coordination, and Revit based documentation.\n\nMy resume is attached. My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`;
   }
   document.getElementById('emailModal').classList.add('open');
 }
@@ -2231,23 +2221,37 @@ function closeEmailModal() {
 function handleModalOverlayClick(e) {
   if (e.target === document.getElementById('emailModal')) closeEmailModal();
 }
-function copyModalEmail() {
-  const to = document.getElementById('modalTo').value;
-  const subject = document.getElementById('modalSubject').value;
-  const body = document.getElementById('modalBody').value;
-  const full = 'To: ' + to + '\nSubject: ' + subject + '\n\n' + body;
-  navigator.clipboard.writeText(full).catch(() => {
+function copyPlainText(text, btnSelector) {
+  // Force plain text copy — no HTML, no rich text, clean for Apple Mail
+  const blob = new Blob([text], { type: 'text/plain' });
+  const item = new ClipboardItem({ 'text/plain': blob });
+  navigator.clipboard.write([item]).catch(() => {
+    // Fallback: textarea method (always plain text)
     const ta = document.createElement('textarea');
-    ta.value = full;
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
     document.body.appendChild(ta);
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
   });
-  const btn = document.querySelector('.btn-modal-copy');
-  const orig = btn.textContent;
-  btn.textContent = 'Copied!';
-  setTimeout(() => btn.textContent = orig, 2000);
+  const btn = document.querySelector(btnSelector);
+  if (btn) {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  }
+}
+function copyModalEmail() {
+  const body = document.getElementById('modalBody').value;
+  copyPlainText(body, '.btn-modal-copy');
+}
+function openModalInAppleMail() {
+  const to = encodeURIComponent(document.getElementById('modalTo').value);
+  const subject = encodeURIComponent(document.getElementById('modalSubject').value);
+  const body = encodeURIComponent(document.getElementById('modalBody').value);
+  window.location.href = 'mailto:' + to + '?subject=' + subject + '&body=' + body;
 }
 function openModalInGmail() {
   const to = encodeURIComponent(document.getElementById('modalTo').value);
