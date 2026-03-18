@@ -1,275 +1,571 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alex Karshis — Chicago Architecture Job Search</title>
-<style>
-  :root {
-    --navy: #1A2B4E;
-    --navy-mid: #2D4A7A;
-    --navy-light: #3D5E9A;
-    --green: #2E7D32;
-    --green-bg: #E8F5E9;
-    --green-bright: #43A047;
-    --blue-bg: #E3F2FD;
-    --blue-accent: #1565C0;
-    --grey-bg: #F5F5F5;
-    --grey-accent: #757575;
-    --purple-bg: #EDE7F6;
-    --purple-accent: #6A1B9A;
-    --orange: #E65100;
-    --orange-bg: #FFF3E0;
-    --red: #C62828;
-    --red-bg: #FFEBEE;
-    --yellow-bg: #FFFDE7;
-    --yellow-accent: #F9A825;
-    --white: #FFFFFF;
-    --bg: #F0F4F8;
-    --card-bg: #FFFFFF;
-    --border: #E0E7EF;
-    --text: #1A2433;
-    --text-muted: #5A6A7A;
-    --shadow: 0 2px 12px rgba(26,43,78,0.10);
-    --shadow-hover: 0 6px 28px rgba(26,43,78,0.18);
-    --radius: 14px;
-    --radius-sm: 8px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-
-  /* ── HEADER ── */
-  .site-header {
-    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
-    color: white; padding: 28px 32px 0; position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.25);
-  }
-  .header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; }
-  .header-title h1 { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.3px; }
-  .header-title p { font-size: 0.85rem; opacity: 0.75; margin-top: 3px; }
-  .stats-bar { display: flex; gap: 16px; flex-wrap: wrap; }
-  .stat-pill {
-    background: rgba(255,255,255,0.12); border-radius: 20px;
-    padding: 6px 14px; font-size: 0.78rem; display: flex; align-items: center; gap: 6px;
-    border: 1px solid rgba(255,255,255,0.2);
-  }
-  .stat-pill strong { font-size: 1.1rem; font-weight: 700; }
-  .stat-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .tabs { display: flex; gap: 0; margin-top: 20px; }
-  .tab-btn {
-    background: transparent; border: none; color: rgba(255,255,255,0.65);
-    font-size: 0.92rem; font-weight: 600; padding: 12px 24px; cursor: pointer;
-    border-bottom: 3px solid transparent; transition: all 0.2s; letter-spacing: 0.2px;
-  }
-  .tab-btn:hover { color: white; }
-  .tab-btn.active { color: white; border-bottom-color: #60A5FA; }
-
-  /* ── MAIN ── */
-  .main { max-width: 1200px; margin: 0 auto; padding: 28px 24px; }
-
-  /* ── FILTERS ── */
-  .filter-bar { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; align-items: center; }
-  .filter-label { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-right: 4px; }
-  .filter-btn {
-    background: white; border: 1.5px solid var(--border); border-radius: 20px;
-    padding: 6px 14px; font-size: 0.8rem; font-weight: 500; cursor: pointer;
-    color: var(--text-muted); transition: all 0.15s;
-  }
-  .filter-btn:hover { border-color: var(--navy-mid); color: var(--navy); }
-  .filter-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
-  .search-box {
-    margin-left: auto; background: white; border: 1.5px solid var(--border);
-    border-radius: 20px; padding: 7px 16px; font-size: 0.85rem; outline: none;
-    width: 220px; transition: border-color 0.15s;
-  }
-  .search-box:focus { border-color: var(--navy-mid); }
-
-  /* ── SECTION HEADER ── */
-  .section-divider {
-    display: flex; align-items: center; gap: 12px; margin: 8px 0 16px;
-  }
-  .section-divider span {
-    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.8px; padding: 3px 10px; border-radius: 10px;
-    white-space: nowrap;
-  }
-  .score5-label { background: var(--green-bg); color: var(--green); }
-  .score4-label { background: var(--blue-bg); color: var(--blue-accent); }
-  .score3-label { background: var(--grey-bg); color: var(--grey-accent); }
-  .divider-line { flex: 1; height: 1px; background: var(--border); }
-
-  /* ── GRID ── */
-  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; margin-bottom: 12px; }
-
-  /* ── JOB CARD ── */
-  .job-card {
-    background: var(--card-bg); border-radius: var(--radius);
-    border: 1.5px solid var(--border); box-shadow: var(--shadow);
-    transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
-    overflow: hidden; display: flex; flex-direction: column;
-  }
-  .job-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); border-color: #B0C4DE; }
-  .job-card.hidden { display: none; }
-  .card-score-bar { height: 4px; }
-  .score5 .card-score-bar { background: linear-gradient(90deg, #2E7D32, #43A047); }
-  .score4 .card-score-bar { background: linear-gradient(90deg, #1565C0, #42A5F5); }
-  .score3 .card-score-bar { background: linear-gradient(90deg, #757575, #BDBDBD); }
-
-  .card-body { padding: 18px 18px 14px; flex: 1; }
-  .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
-  .card-company { font-size: 0.78rem; font-weight: 700; color: var(--navy-mid); text-transform: uppercase; letter-spacing: 0.5px; }
-  .score-badge {
-    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
-    font-size: 0.8rem; font-weight: 800; display: flex; align-items: center; justify-content: center;
-  }
-  .score5 .score-badge { background: var(--green-bg); color: var(--green); }
-  .score4 .score-badge { background: var(--blue-bg); color: var(--blue-accent); }
-  .score3 .score-badge { background: var(--grey-bg); color: var(--grey-accent); }
-
-  .card-title { font-size: 1.0rem; font-weight: 700; color: var(--text); margin-bottom: 10px; line-height: 1.35; }
-  .card-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-  .meta-tag {
-    display: flex; align-items: center; gap: 4px; font-size: 0.75rem;
-    background: var(--bg); border-radius: 6px; padding: 3px 8px; color: var(--text-muted);
-  }
-  .meta-tag .icon { font-size: 0.85rem; }
-  .salary-tag { color: var(--green); background: var(--green-bg); font-weight: 600; }
-  .remote-tag { color: var(--blue-accent); background: var(--blue-bg); }
-
-  /* Status badge */
-  .status-section { padding: 0 18px 14px; }
-  .status-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .status-select {
-    flex: 1; min-width: 180px; background: var(--bg); border: 1.5px solid var(--border);
-    border-radius: 8px; padding: 7px 10px; font-size: 0.82rem; font-weight: 600;
-    color: var(--text); cursor: pointer; outline: none; transition: border-color 0.15s;
-    -webkit-appearance: none; appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%235A6A7A'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
-  }
-  .status-select:focus { border-color: var(--navy-mid); }
-  .status-select.status-not-started { color: var(--text-muted); }
-  .status-select.status-applied { background-color: var(--blue-bg); border-color: #90CAF9; color: var(--blue-accent); }
-  .status-select.status-interviewing { background-color: var(--yellow-bg); border-color: #FFE082; color: #E65100; }
-  .status-select.status-offer { background-color: var(--green-bg); border-color: #A5D6A7; color: var(--green); }
-  .status-select.status-rejected { background-color: var(--red-bg); border-color: #EF9A9A; color: var(--red); }
-  .status-select.status-in-progress { background-color: var(--purple-bg); border-color: #CE93D8; color: var(--purple-accent); }
-
-  /* Card footer */
-  .card-footer { padding: 0 18px 16px; display: flex; gap: 8px; }
-  .btn-apply {
-    flex: 1; background: var(--navy); color: white; border: none;
-    border-radius: var(--radius-sm); padding: 10px 16px; font-size: 0.83rem;
-    font-weight: 700; cursor: pointer; transition: background 0.15s, transform 0.1s;
-    letter-spacing: 0.2px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px;
-  }
-  .btn-apply:hover { background: var(--navy-mid); transform: translateY(-1px); }
-  .btn-details {
-    background: var(--bg); color: var(--text-muted); border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm); padding: 10px 14px; font-size: 0.82rem;
-    font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap;
-  }
-  .btn-details:hover { border-color: var(--navy-mid); color: var(--navy); background: white; }
-
-  /* Expanded details */
-  .card-details { display: none; padding: 0 18px 18px; border-top: 1px solid var(--border); margin-top: 0; }
-  .card-details.open { display: block; padding-top: 14px; }
-  .detail-row { margin-bottom: 10px; }
-  .detail-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 3px; }
-  .detail-value { font-size: 0.84rem; color: var(--text); line-height: 1.5; }
-  .detail-value a { color: var(--blue-accent); text-decoration: none; }
-  .detail-value a:hover { text-decoration: underline; }
-  .why-fit-box {
-    background: linear-gradient(135deg, #F0F7FF, #E8F5E9);
-    border-radius: 8px; padding: 12px 14px; font-size: 0.83rem;
-    color: var(--text); line-height: 1.6; border-left: 3px solid var(--green);
-  }
-  .notes-input {
-    width: 100%; background: var(--bg); border: 1.5px solid var(--border);
-    border-radius: 8px; padding: 8px 12px; font-size: 0.82rem; font-family: inherit;
-    resize: vertical; min-height: 60px; outline: none; color: var(--text);
-    transition: border-color 0.15s;
-  }
-  .notes-input:focus { border-color: var(--navy-mid); }
-  .date-applied-input {
-    background: var(--bg); border: 1.5px solid var(--border);
-    border-radius: 8px; padding: 7px 10px; font-size: 0.82rem; outline: none;
-    color: var(--text); transition: border-color 0.15s;
-  }
-  .date-applied-input:focus { border-color: var(--navy-mid); }
-
-  /* applied badge overlay */
-  .applied-badge {
-    display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem;
-    font-weight: 700; padding: 3px 9px; border-radius: 10px; white-space: nowrap;
-  }
-  .gmail-verified { background: var(--green-bg); color: var(--green); }
-  .gmail-sent { background: var(--orange-bg); color: var(--orange); }
-
-  /* ── OUTREACH CARD ── */
-  .outreach-card {
-    background: white; border-radius: var(--radius); border: 1.5px solid var(--border);
-    box-shadow: var(--shadow); transition: box-shadow 0.2s, transform 0.15s;
-    overflow: hidden;
-  }
-  .outreach-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
-  .outreach-card .card-score-bar { background: linear-gradient(90deg, #6A1B9A, #AB47BC); }
-  .firm-type-tag {
-    font-size: 0.72rem; font-weight: 700; padding: 3px 9px; border-radius: 10px;
-    text-transform: uppercase; letter-spacing: 0.4px;
-  }
-  .type-architecture { background: var(--blue-bg); color: var(--blue-accent); }
-  .type-gc { background: var(--orange-bg); color: var(--orange); }
-  .type-corporate { background: var(--purple-bg); color: var(--purple-accent); }
-  .type-realestate { background: var(--yellow-bg); color: #E65100; }
-  .type-designbuild { background: var(--green-bg); color: var(--green); }
-
-  .btn-contact {
-    flex: 1; background: var(--purple-accent); color: white; border: none;
-    border-radius: var(--radius-sm); padding: 10px 16px; font-size: 0.83rem;
-    font-weight: 700; cursor: pointer; transition: background 0.15s;
-    text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px;
-  }
-  .btn-contact:hover { background: #7B1FA2; }
-
-  /* ── EMPTY STATE ── */
-  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
-  .empty-state .icon { font-size: 2.5rem; margin-bottom: 12px; }
-  .empty-state p { font-size: 0.9rem; }
-
-  /* ── PROGRESS BAR ── */
-  .progress-section { background: white; border-radius: var(--radius); border: 1.5px solid var(--border); padding: 18px 22px; margin-bottom: 24px; }
-  .progress-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 12px; }
-  .progress-steps { display: flex; gap: 0; width: 100%; }
-  .progress-step { flex: 1; text-align: center; }
-  .progress-step-inner { padding: 8px 6px; border-radius: 8px; transition: background 0.15s; }
-  .p-num { font-size: 1.3rem; font-weight: 800; color: var(--navy); }
-  .p-label { font-size: 0.7rem; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
-  .p-applied .p-num { color: var(--blue-accent); }
-  .p-interview .p-num { color: var(--orange); }
-  .p-offer .p-num { color: var(--green); }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    .site-header { padding: 18px 16px 0; }
-    .header-title h1 { font-size: 1.3rem; }
-    .main { padding: 18px 14px; }
-    .cards-grid { grid-template-columns: 1fr; }
-    .search-box { width: 100%; margin-left: 0; }
-    .stats-bar { gap: 8px; }
-    .stat-pill { font-size: 0.72rem; padding: 5px 10px; }
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: none; } }
-  .job-card, .outreach-card { animation: fadeIn 0.3s ease both; }
-
-/* ─── EMAIL MODAL ─────────────────────────────────────── */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Karshis — Job Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+:root {
+  --haring-red: #E4312B;
+  --haring-yellow: #FFD000;
+  --haring-green: #00A651;
+  --haring-blue: #0072CE;
+  --haring-pink: #F472B6;
+  --haring-orange: #FF6B2B;
+  --eames-cream: #FFF8F0;
+  --eames-warm: #F5EDE3;
+  --eames-tan: #E8DCC8;
+  --eames-charcoal: #2C2C2C;
+  --eames-brown: #6B4226;
+  --eames-olive: #5C6B3C;
+  --ink: #1A1A1A;
+  --ink-light: #555;
+  --border-thick: 3px solid var(--ink);
+  --border-thin: 2px solid var(--ink);
+  --shadow-brutal: 4px 4px 0 var(--ink);
+  --shadow-brutal-sm: 3px 3px 0 var(--ink);
+  --radius: 0px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  background: var(--eames-cream);
+  color: var(--ink);
+  min-height: 100vh;
+}
+/* ── HARING DECORATIVE BORDER ── */
+body::before {
+  content: '';
+  display: block;
+  height: 8px;
+  background: repeating-linear-gradient(90deg,
+    var(--haring-red) 0px, var(--haring-red) 60px,
+    var(--haring-yellow) 60px, var(--haring-yellow) 120px,
+    var(--haring-green) 120px, var(--haring-green) 180px,
+    var(--haring-blue) 180px, var(--haring-blue) 240px,
+    var(--haring-pink) 240px, var(--haring-pink) 300px,
+    var(--haring-orange) 300px, var(--haring-orange) 360px
+  );
+}
+/* ── HEADER ── */
+.site-header {
+  background: var(--ink);
+  color: white;
+  padding: 24px 32px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 4px solid var(--haring-yellow);
+}
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.header-title h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.header-title h1 .accent { color: var(--haring-yellow); }
+.header-title p {
+  font-size: 0.82rem;
+  opacity: 0.6;
+  margin-top: 4px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.stats-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.stat-pill {
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 0;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.stat-pill strong {
+  font-size: 1.2rem;
+}
+.stat-dot {
+  width: 10px;
+  height: 10px;
+  border: 2px solid white;
+}
+.tabs {
+  display: flex;
+  gap: 0;
+  margin-top: 18px;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 12px 24px;
+  cursor: pointer;
+  border-bottom: 4px solid transparent;
+  transition: all 0.15s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.tab-btn:hover { color: white; }
+.tab-btn.active {
+  color: var(--haring-yellow);
+  border-bottom-color: var(--haring-yellow);
+}
+/* ── MAIN ── */
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 28px 24px 80px;
+}
+/* ── PIPELINE ── */
+.progress-section {
+  background: white;
+  border: var(--border-thick);
+  box-shadow: var(--shadow-brutal);
+  padding: 18px 22px;
+  margin-bottom: 28px;
+}
+.progress-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--ink-light);
+  margin-bottom: 14px;
+}
+.progress-steps {
+  display: flex;
+  gap: 0;
+  width: 100%;
+}
+.progress-step { flex: 1; text-align: center; }
+.p-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+.p-label {
+  font-size: 0.68rem;
+  color: var(--ink-light);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+.p-total .p-num { color: var(--ink); }
+.p-applied .p-num { color: var(--haring-blue); }
+.p-interview .p-num { color: var(--haring-orange); }
+.p-offer .p-num { color: var(--haring-green); }
+/* ── FILTERS ── */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-right: 4px;
+}
+.filter-btn {
+  background: white;
+  border: var(--border-thin);
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--ink);
+  transition: all 0.1s;
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.filter-btn:hover {
+  background: var(--haring-yellow);
+}
+.filter-btn.active {
+  background: var(--ink);
+  color: white;
+}
+.search-box {
+  margin-left: auto;
+  background: white;
+  border: var(--border-thin);
+  padding: 7px 14px;
+  font-size: 0.82rem;
+  outline: none;
+  width: 220px;
+  font-family: 'DM Sans', sans-serif;
+}
+.search-box:focus {
+  box-shadow: var(--shadow-brutal-sm);
+}
+/* ── TIMELINE ── */
+.timeline {
+  position: relative;
+  padding-left: 0;
+}
+.timeline-date-group {
+  margin-bottom: 28px;
+}
+.timeline-date-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--ink);
+  padding: 6px 14px;
+  background: var(--haring-yellow);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-brutal-sm);
+  display: inline-block;
+  margin-bottom: 14px;
+}
+/* ── JOB CARD — HORIZONTAL ── */
+.job-card {
+  background: white;
+  border: var(--border-thick);
+  box-shadow: var(--shadow-brutal);
+  transition: transform 0.1s, box-shadow 0.1s;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+.job-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.job-card.hidden { display: none; }
+.card-color-bar {
+  height: 6px;
+}
+.score5 .card-color-bar { background: var(--haring-green); }
+.score4 .card-color-bar { background: var(--haring-blue); }
+.score3 .card-color-bar { background: var(--haring-orange); }
+.entertainment .card-color-bar { background: var(--haring-pink); }
+.card-inner {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+}
+/* Left: main info */
+.card-main {
+  flex: 1;
+  padding: 16px 18px;
+  min-width: 0;
+}
+.card-row-1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+.card-date {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ink-light);
+}
+.card-source {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  background: var(--eames-warm);
+  border: 1.5px solid var(--eames-tan);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ink-light);
+}
+.card-row-2 {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 2px;
+  flex-wrap: wrap;
+}
+.card-company {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.card-salary {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--haring-green);
+}
+.card-row-3 {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.card-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.card-address {
+  font-size: 0.78rem;
+  color: var(--ink-light);
+}
+.card-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.meta-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border: 1.5px solid var(--eames-tan);
+  background: var(--eames-warm);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: var(--ink-light);
+}
+.tag-remote { background: #DBEAFE; border-color: #93C5FD; color: var(--haring-blue); }
+.tag-hybrid { background: #FEF3C7; border-color: #FCD34D; color: #92400E; }
+.tag-entertainment { background: #FCE7F3; border-color: #F9A8D4; color: #9D174D; }
+.gmail-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.gmail-verified { background: #D1FAE5; border: 1.5px solid #6EE7B7; color: #065F46; }
+.gmail-sent { background: #FEF3C7; border: 1.5px solid #FCD34D; color: #92400E; }
+.gmail-in-progress { background: #EDE9FE; border: 1.5px solid #C4B5FD; color: #5B21B6; }
+/* Right: actions */
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  border-left: var(--border-thick);
+  min-width: 180px;
+  background: var(--eames-warm);
+}
+.status-select {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--eames-tan);
+  padding: 10px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--ink);
+  cursor: pointer;
+  outline: none;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%231A1A1A'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 28px;
+}
+.status-select.status-applied { background-color: #DBEAFE; color: var(--haring-blue); }
+.status-select.status-in-progress { background-color: #EDE9FE; color: #7C3AED; }
+.status-select.status-interviewing { background-color: #FEF3C7; color: #D97706; }
+.status-select.status-offer { background-color: #D1FAE5; color: var(--haring-green); }
+.status-select.status-rejected { background-color: #FEE2E2; color: var(--haring-red); }
+.status-select.status-not-started { color: var(--ink-light); }
+.card-btns {
+  display: flex;
+  flex: 1;
+}
+.btn-apply {
+  flex: 1;
+  background: var(--haring-red);
+  color: white;
+  border: none;
+  border-right: 2px solid var(--ink);
+  padding: 12px 14px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background 0.1s;
+}
+.btn-apply:hover { background: #C42B25; }
+.btn-details {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 12px 14px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: background 0.1s;
+}
+.btn-details:hover { background: var(--eames-tan); }
+/* ── CARD DETAILS EXPAND ── */
+.card-details {
+  display: none;
+  border-top: var(--border-thick);
+  padding: 16px 18px;
+  background: var(--eames-cream);
+}
+.card-details.open { display: block; }
+.detail-row { margin-bottom: 12px; }
+.detail-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--ink-light);
+  margin-bottom: 4px;
+}
+.detail-value {
+  font-size: 0.84rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.detail-value a {
+  color: var(--haring-blue);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 2px solid var(--haring-blue);
+}
+.detail-value a:hover { background: #DBEAFE; }
+.role-sketch-box {
+  background: white;
+  border: var(--border-thin);
+  padding: 12px 14px;
+  font-size: 0.84rem;
+  color: var(--ink);
+  line-height: 1.6;
+  border-left: 4px solid var(--haring-blue);
+}
+.notes-input {
+  width: 100%;
+  background: white;
+  border: var(--border-thin);
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 50px;
+  outline: none;
+  color: var(--ink);
+}
+.notes-input:focus { box-shadow: var(--shadow-brutal-sm); }
+.date-applied-input {
+  background: white;
+  border: var(--border-thin);
+  padding: 7px 10px;
+  font-size: 0.82rem;
+  outline: none;
+  color: var(--ink);
+}
+.date-applied-input:focus { box-shadow: var(--shadow-brutal-sm); }
+/* ── OUTREACH CARD ── */
+.outreach-card {
+  background: white;
+  border: var(--border-thick);
+  box-shadow: var(--shadow-brutal);
+  transition: transform 0.1s, box-shadow 0.1s;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.outreach-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.outreach-card .card-color-bar {
+  background: linear-gradient(90deg, var(--haring-pink), var(--haring-orange));
+}
+.firm-type-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1.5px solid var(--ink);
+}
+.type-architecture { background: #DBEAFE; color: var(--haring-blue); }
+.type-gc { background: #FEF3C7; color: #92400E; }
+.type-corporate { background: #EDE9FE; color: #5B21B6; }
+.type-realestate { background: #FEF3C7; color: #D97706; }
+.type-designbuild { background: #D1FAE5; color: var(--haring-green); }
+.type-entertainment { background: #FCE7F3; color: #9D174D; }
+.btn-contact {
+  flex: 1;
+  background: var(--haring-blue);
+  color: white;
+  border: none;
+  border-right: 2px solid var(--ink);
+  padding: 12px 14px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background 0.1s;
+}
+.btn-contact:hover { background: #005CAA; }
+/* ── EMPTY ── */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--ink-light);
+}
+.empty-state .icon { font-size: 2.5rem; margin-bottom: 12px; }
+.empty-state p { font-size: 0.9rem; }
+/* ── MODAL ── */
 .modal-overlay {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(10,15,40,0.6);
+  background: rgba(0,0,0,0.7);
   z-index: 1000;
   align-items: center;
   justify-content: center;
@@ -277,329 +573,389 @@
 }
 .modal-overlay.open { display: flex; }
 .modal-box {
-  background: var(--surface);
-  border-radius: 14px;
-  padding: 28px;
+  background: var(--eames-cream);
+  border: var(--border-thick);
+  box-shadow: 8px 8px 0 var(--ink);
+  padding: 0;
   width: 100%;
-  max-width: 580px;
+  max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
 }
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  padding: 18px 22px;
+  background: var(--ink);
+  color: white;
+  border-bottom: 4px solid var(--haring-yellow);
 }
 .modal-header h3 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--navy-dark);
-  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 .modal-close {
   background: none;
-  border: none;
-  font-size: 1.3rem;
+  border: 2px solid rgba(255,255,255,0.3);
+  font-size: 1rem;
   cursor: pointer;
-  color: var(--text-secondary);
-  padding: 4px 8px;
-  border-radius: 6px;
-  line-height: 1;
+  color: white;
+  padding: 4px 10px;
+  font-weight: 800;
+  font-family: 'Space Grotesk', sans-serif;
 }
-.modal-close:hover { background: var(--bg); }
+.modal-close:hover { background: rgba(255,255,255,0.1); }
+.modal-body { padding: 22px; }
 .modal-already-applied {
-  background: #E8F5E9;
-  border: 1.5px solid #A5D6A7;
-  border-radius: 8px;
-  padding: 12px 14px;
-  font-size: 0.85rem;
-  color: #2E7D32;
+  background: #D1FAE5;
+  border: var(--border-thin);
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  color: #065F46;
   margin-bottom: 16px;
-  font-weight: 500;
+  font-weight: 600;
 }
 .modal-field { margin-bottom: 14px; }
 .modal-field label {
   display: block;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--text-secondary);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--ink-light);
   text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 1.5px;
   margin-bottom: 6px;
 }
 .modal-field input[type=text],
 .modal-field textarea {
   width: 100%;
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
+  border: var(--border-thin);
   padding: 10px 12px;
-  font-size: 0.875rem;
-  color: var(--navy-dark);
-  background: var(--bg);
-  font-family: inherit;
+  font-size: 0.85rem;
+  color: var(--ink);
+  background: white;
+  font-family: 'DM Sans', sans-serif;
   box-sizing: border-box;
   resize: vertical;
 }
 .modal-field input[type=text]:focus,
 .modal-field textarea:focus {
   outline: none;
-  border-color: var(--navy-mid);
+  box-shadow: var(--shadow-brutal-sm);
 }
 .modal-footer {
   display: flex;
-  gap: 10px;
-  margin-top: 18px;
-  flex-wrap: wrap;
+  gap: 0;
+  border-top: var(--border-thick);
+}
+.btn-modal-copy,
+.btn-modal-gmail,
+.btn-modal-cancel {
+  flex: 1;
+  border: none;
+  padding: 14px 16px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: opacity 0.15s;
 }
 .btn-modal-copy {
-  background: var(--navy-dark);
+  background: var(--ink);
   color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.15s;
+  border-right: 2px solid var(--ink);
+}
+.btn-modal-gmail {
+  background: var(--haring-yellow);
+  color: var(--ink);
+  border-right: 2px solid var(--ink);
+}
+.btn-modal-cancel {
+  background: var(--eames-warm);
+  color: var(--ink-light);
 }
 .btn-modal-copy:hover { opacity: 0.85; }
-.btn-modal-gmail {
-  background: var(--gold);
-  color: var(--navy-dark);
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.15s;
-}
 .btn-modal-gmail:hover { opacity: 0.85; }
-.btn-modal-cancel {
-  background: transparent;
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 16px;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  cursor: pointer;
-}
-.btn-modal-cancel:hover { background: var(--bg); }
+.btn-modal-cancel:hover { background: var(--eames-tan); }
 .modal-resume-note {
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  margin: 12px 0 0;
+  font-size: 0.75rem;
+  color: var(--ink-light);
+  margin: 10px 0 0;
   font-style: italic;
 }
-.source-tag { color: var(--navy-mid) !important; }
-</style>
+/* ── HARING DOODLE ACCENTS ── */
+.doodle-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 50;
+  opacity: 0.08;
+  pointer-events: none;
+}
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .card-inner { flex-direction: column; }
+  .card-actions {
+    border-left: none;
+    border-top: var(--border-thick);
+    min-width: auto;
+  }
+  .search-box { width: 100%; margin-left: 0; }
+  .header-title h1 { font-size: 1.4rem; }
+  .main { padding: 18px 14px 60px; }
+  .stat-pill { font-size: 0.7rem; padding: 4px 10px; }
+}
+@media (max-width: 480px) {
+  .card-row-2 { flex-direction: column; gap: 2px; }
+  .card-row-3 { flex-direction: column; gap: 2px; }
+}
+/* ── ANIMATIONS ── */
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+.job-card, .outreach-card {
+  animation: fadeSlideIn 0.25s ease both;
+}
+/* Score color accent for score badge in card */
+.score-pip {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  border: 2px solid var(--ink);
+  flex-shrink: 0;
+}
+.score5 .score-pip { background: var(--haring-green); color: white; }
+.score4 .score-pip { background: var(--haring-blue); color: white; }
+.score3 .score-pip { background: var(--haring-orange); color: white; }
+    </style>
 </head>
 <body>
-
+<!-- Haring-inspired SVG doodle watermark -->
+<div class="doodle-container">
+  <svg width="120" height="160" viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M60 10 L60 70 M40 30 L80 30 M60 70 L40 110 M60 70 L80 110 M40 110 L30 150 M80 110 L90 150 M50 5 Q60 -5 70 5 Q80 15 70 25 Q60 35 50 25 Q40 15 50 5Z" stroke="#1A1A1A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M20 40 L10 50 M100 40 L110 50 M25 60 L15 55 M95 60 L105 55" stroke="#1A1A1A" stroke-width="4" stroke-linecap="round"/>
+  </svg>
+</div>
 <header class="site-header">
-  <div class="header-top">
-    <div class="header-title">
-      <h1>🏙️ Alex Karshis — Job Search</h1>
-      <p>Commercial & Residential Architecture · Chicago · $70K–$95K Target</p>
+    <div class="header-top">
+        <div class="header-title">
+            <h1>Alex Karshis <span class="accent">Job Search</span></h1>
+            <p>Architecture + Design &bull; Chicago &bull; $70K-$95K</p>
+        </div>
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-pill"><strong>0</strong> Roles</div>
+        </div>
     </div>
-    <div class="stats-bar" id="statsBar"></div>
-  </div>
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('active')">🎯 Active Postings</button>
-    <button class="tab-btn" onclick="showTab('outreach')">📬 Cold Outreach</button>
-  </div>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('active')">Active Postings</button>
+        <button class="tab-btn" onclick="showTab('outreach')">Cold Outreach</button>
+    </div>
 </header>
-
-<main class="main">
-
-  <!-- ACTIVE POSTINGS TAB -->
-  <div id="tab-active">
-    <div class="progress-section">
-      <div class="progress-title">Application Pipeline</div>
-      <div class="progress-steps">
-        <div class="progress-step">
-          <div class="progress-step-inner">
-            <div class="p-num" id="p-total">0</div>
-            <div class="p-label">Total Roles</div>
-          </div>
+<div class="main">
+    <!-- Active Tab -->
+    <div id="tab-active">
+        <div class="progress-section">
+            <div class="progress-title">Application Pipeline</div>
+            <div class="progress-steps">
+                <div class="progress-step">
+                    <div class="p-total"><div class="p-num" id="p-total">0</div><div class="p-label">Total</div></div>
+                </div>
+                <div class="progress-step">
+                    <div class="p-applied"><div class="p-num" id="p-applied">0</div><div class="p-label">Applied</div></div>
+                </div>
+                <div class="progress-step">
+                    <div class="p-interview"><div class="p-num" id="p-interview">0</div><div class="p-label">Interviewing</div></div>
+                </div>
+                <div class="progress-step">
+                    <div class="p-offer"><div class="p-num" id="p-offer">0</div><div class="p-label">Offers</div></div>
+                </div>
+            </div>
         </div>
-        <div class="progress-step p-applied">
-          <div class="progress-step-inner">
-            <div class="p-num" id="p-applied">0</div>
-            <div class="p-label">Applied</div>
-          </div>
+        <div class="filter-bar">
+            <span class="filter-label">Status:</span>
+            <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+            <button class="filter-btn" onclick="setFilter('not-started', this)">Not Started</button>
+            <button class="filter-btn" onclick="setFilter('applied', this)">Applied</button>
+            <button class="filter-btn" onclick="setFilter('interviewing', this)">Interviewing</button>
+            <input type="text" class="search-box" placeholder="Search company or role..." onkeyup="searchCards(this.value)">
         </div>
-        <div class="progress-step p-interview">
-          <div class="progress-step-inner">
-            <div class="p-num" id="p-interview">0</div>
-            <div class="p-label">Interviewing</div>
-          </div>
-        </div>
-        <div class="progress-step p-offer">
-          <div class="progress-step-inner">
-            <div class="p-num" id="p-offer">0</div>
-            <div class="p-label">Offer</div>
-          </div>
-        </div>
-      </div>
+        <div id="activeCards" class="timeline"></div>
     </div>
-
-    <div class="filter-bar">
-      <span class="filter-label">Filter:</span>
-      <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-      <button class="filter-btn" onclick="setFilter('score5', this)">⭐ Best Fit</button>
-      <button class="filter-btn" onclick="setFilter('not-started', this)">Not Started</button>
-      <button class="filter-btn" onclick="setFilter('applied', this)">Applied</button>
-      <button class="filter-btn" onclick="setFilter('interviewing', this)">Interviewing</button>
-      <input class="search-box" type="text" placeholder="🔍 Search companies or roles…" oninput="searchCards(this.value)">
+    <!-- Outreach Tab -->
+    <div id="tab-outreach" style="display:none;">
+        <div class="filter-bar">
+            <span class="filter-label">Type:</span>
+            <button class="filter-btn active" onclick="setOutreachFilter('all', this)">All</button>
+            <button class="filter-btn" onclick="setOutreachFilter('Architecture', this)">Architecture</button>
+            <button class="filter-btn" onclick="setOutreachFilter('GC', this)">GC</button>
+            <button class="filter-btn" onclick="setOutreachFilter('Corporate', this)">Corporate</button>
+            <button class="filter-btn" onclick="toggleAgeFilter(this)">Last 30 Days</button>
+        </div>
+        <div id="outreachCards" class="timeline"></div>
     </div>
-
-    <div id="activeCards"></div>
-  </div>
-
-  <!-- COLD OUTREACH TAB -->
-  <div id="tab-outreach" style="display:none">
-    <div class="filter-bar">
-      <span class="filter-label">Type:</span>
-      <button class="filter-btn active" onclick="setOutreachFilter('all', this)">All</button>
-      <button class="filter-btn" onclick="setOutreachFilter('Architecture', this)">Architecture</button>
-      <button class="filter-btn" onclick="setOutreachFilter('GC', this)">GC / Design-Build</button>
-      <button class="filter-btn" onclick="setOutreachFilter('Corporate', this)">Corporate</button>
+</div>
+<!-- Apply / Email Modal -->
+<div class="modal-overlay" id="emailModal" onclick="handleModalOverlayClick(event)">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 id="modalTitle">Apply</h3>
+            <button class="modal-close" onclick="closeEmailModal()">X</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-already-applied" id="modalAlreadyApplied" style="display:none;"></div>
+            <div class="modal-field">
+                <label>To</label>
+                <input type="text" id="modalTo" readonly>
+            </div>
+            <div class="modal-field">
+                <label>Subject</label>
+                <input type="text" id="modalSubject">
+            </div>
+            <div class="modal-field">
+                <label>Email</label>
+                <textarea id="modalBody" rows="12"></textarea>
+            </div>
+            <div class="modal-resume-note">Attach your resume before sending.</div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-modal-copy" onclick="copyModalEmail()">Copy</button>
+            <button class="btn-modal-gmail" onclick="openModalInGmail()">Open Gmail</button>
+            <button class="btn-modal-cancel" onclick="closeEmailModal()">Close</button>
+        </div>
     </div>
-    <div id="outreachCards" class="cards-grid"></div>
-  </div>
-
-</main>
-
+</div>
 <script>
 // ─────────────────────────────────────────────────────────
 // DATA
 // ─────────────────────────────────────────────────────────
-
 const JOBS = [
   {
     id: 'okw',
     company: 'OKW Architects',
     title: 'Unlicensed Design Role (via Actalent Recruiter)',
     score: 4,
-    salary: 'Market est. $75,000–$95,000',
+    salary: 'Market est. $75,000-$95,000',
     location: 'Chicago, IL',
+    address: 'Chicago, IL',
     remote: 'Unknown',
     posted: 'March 4, 2026',
+    postedISO: '2026-03-04',
     source: 'AIA Chicago / Recruiter (Actalent)',
     deadline: 'None listed',
-    howToApply: 'Contact Kacy Furjanic at Actalent — kkarcher@actalentservices.com',
+    howToApply: 'Contact Kacy Furjanic at Actalent - kkarcher@actalentservices.com',
     applyLink: 'mailto:kkarcher@actalentservices.com',
     postingLink: 'https://aiachicago.org/job_posting/okw-architects-senior-project-architect/',
     firmWebsite: 'https://www.okwarchitects.com',
-    why: "OKW is a prominent Chicago commercial architecture firm with active TI and hospitality work. Alex is actively being submitted for a role through Actalent recruiter Kacy Furjanic — bypassing the posted 'Senior Project Architect' listing (which requires licensure) and targeting an unlicensed designer opening. The firm's TI-focused practice aligns directly with Alex's core strengths in Revit CD documentation and consultant coordination.",
+    roleSketch: 'You would be producing Revit CD sets for commercial TI projects, coordinating with structural and MEP consultants, and attending construction observation meetings. Day-to-day involves leading documentation on hospitality and retail buildouts across Chicago.',
     defaultStatus: 'in-progress',
-    gmailStatus: 'In Progress — Recruiter Engaged (Kacy Furjanic / Actalent)',
+    gmailStatus: 'verified',
     gmailDate: 'March 9, 2026',
-    gmailBadge: 'in-progress'
+    gmailBadge: 'in-progress',
   },
   {
     id: 'parkfowler',
     company: 'ParkFowler Plus',
     title: 'Intermediate Architect / Designer',
     score: 4,
-    salary: '$70,000–$85,000',
+    salary: '$70,000-$85,000',
     location: 'Chicago, IL',
+    address: 'Chicago, IL',
     remote: 'Hybrid',
     posted: 'March 10, 2026',
+    postedISO: '2026-03-10',
     source: 'AIA Chicago',
     deadline: 'None listed',
     howToApply: 'Email careers@pf.plus',
     applyLink: 'mailto:careers@pf.plus',
     postingLink: 'https://aiachicago.org/job_posting/parkfowler-plus-intermediate-architect-designer-2/',
     firmWebsite: 'https://pf.plus',
-    why: "Revit-heavy CD production role with full-phase responsibility from SD through CA, plus consultant coordination — directly matching Alex's professional strengths. Multi-family and mixed-use project types offer transferable skills from Alex's commercial TI background. No license required. Salary range of $70–85K overlaps with Alex's target. Certified MBE/WBE firm with 4+ years minimum experience requirement.",
-    defaultStatus: 'not-started',
-    gmailStatus: 'Application Sent',
+    roleSketch: 'You would be running Revit CD production on multi-family residential projects, coordinating consultant drawings, and working through all phases from SD to CA. It\'s a hands-on documentation role with real project ownership at a woman-owned, minority-owned firm.',
+    defaultStatus: 'applied',
+    gmailStatus: 'sent-no-confirm',
     gmailDate: 'March 10, 2026',
-    gmailBadge: 'gmail-sent'
+    gmailBadge: 'gmail-sent',
   },
   {
     id: 'scb',
     company: 'SCB',
     title: 'Architectural Designer',
     score: 4,
-    salary: '$65,000–$85,000',
+    salary: '$65,000-$85,000',
     location: 'Chicago, IL',
+    address: 'Chicago, IL',
     remote: 'Hybrid',
     posted: 'March 2, 2026',
+    postedISO: '2026-03-02',
     source: 'AIA Chicago',
     deadline: 'None listed',
     howToApply: 'Email reception@scb.com',
     applyLink: 'mailto:reception@scb.com',
     postingLink: 'https://aiachicago.org/job_posting/scb-architectural-designer/',
     firmWebsite: 'https://scb.com',
-    why: "SCB's Chicago studio handles adaptive reuse, mixed-use multifamily, and aviation projects — the adaptive reuse work aligns well with Alex's background. Revit is the primary production tool, matching Alex's proficiency. No license required. The role involves all design and CD phases with consultant coordination. SCB is a recognized multi-disciplinary Chicago firm with a strong reputation for design quality.",
-    defaultStatus: 'not-started',
-    gmailStatus: 'Application Sent',
+    roleSketch: 'You would be working on adaptive reuse and mixed-use multifamily projects in SCB\'s Chicago studio. Day-to-day includes Revit documentation, consultant coordination, and contributing to design across all phases. SCB supports licensure with study resources and exam reimbursement.',
+    defaultStatus: 'applied',
+    gmailStatus: 'sent-no-confirm',
     gmailDate: 'March 4, 2026',
-    gmailBadge: 'gmail-sent'
+    gmailBadge: 'gmail-sent',
   },
   {
     id: 'arda',
     company: 'Arda Design',
     title: 'Architectural Designer',
     score: 4,
-    salary: '$60,000–$70,000 (market est. $65,000–$80,000)',
+    salary: '$60,000-$70,000 (market est. $65,000-$80,000)',
     location: 'Chicago, IL (Loop)',
+    address: 'Loop, Chicago, IL',
     remote: 'Hybrid',
     posted: 'February 24, 2026',
+    postedISO: '2026-02-24',
     source: 'AIA Chicago',
     deadline: 'None listed',
     howToApply: 'Email hr@ardadesign.com',
     applyLink: 'mailto:hr@ardadesign.com',
     postingLink: 'https://aiachicago.org/job_posting/arda-design-architectural-designer/',
     firmWebsite: 'https://ardadesign.com',
-    why: "Arda Design works in historic preservation, adaptive reuse, commercial, and hospitality — near-perfect overlap with Alex's TI and adaptive reuse experience. Both Revit and Bluebeam are required, matching Alex's exact toolset. No license required; licensure support is offered. Projects span renovation through construction observation, aligning with Alex's SD through CA expertise.",
+    roleSketch: 'You would be documenting historic preservation and adaptive reuse projects using Revit and Bluebeam. Expect field verification of existing buildings, as-built documentation, and producing construction-ready CD sets for renovation and hospitality projects.',
     defaultStatus: 'not-started',
-    gmailStatus: null
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: '',
   },
   {
     id: 'koo',
     company: 'KOO',
     title: 'Architectural Design Team Member',
     score: 4,
-    salary: '$60,000–$75,000 (market est. $65,000–$80,000)',
+    salary: '$60,000-$75,000 (market est. $65,000-$80,000)',
     location: 'Chicago, IL',
+    address: 'Chicago, IL',
     remote: 'In-office (optional WFH Wed)',
     posted: 'February 17, 2026',
+    postedISO: '2026-02-17',
     source: 'AIA Chicago',
     deadline: 'None listed',
-    howToApply: 'Email employment@kooarchitecture.com — include resume, cover letter, and portfolio link',
+    howToApply: 'Email employment@kooarchitecture.com - include resume, cover letter, and portfolio link',
     applyLink: 'mailto:employment@kooarchitecture.com',
     postingLink: 'https://aiachicago.org/job_posting/koo-architectural-design-team-member/',
     firmWebsite: 'https://kooarchitecture.com',
-    why: "KOO's project portfolio includes hospitality, multi-family, and adaptive reuse — strong sector alignment with Alex's background. High Revit proficiency for CDs is a core requirement, directly matching Alex's skills. All phases from programming through construction administration are covered. No license required. The experience range creates room for a mid-level candidate at Alex's level to step into a leadership position.",
+    roleSketch: 'You would be producing CDs in Revit for hospitality, multi-family, and adaptive reuse projects. The role covers all phases from programming through CA, including direct consultant coordination and field observation. A mid-size studio where your work is visible.',
     defaultStatus: 'not-started',
-    gmailStatus: null
-  },
-  {
-    id: 'indeed-jc',
-    company: 'Unknown — Applied via Indeed',
-    title: 'Job Captain, Architecture',
-    score: 4,
-    salary: 'Not posted',
-    location: 'Chicago, IL (assumed)',
-    remote: 'Unknown',
-    posted: 'Unknown',
-    source: 'Indeed',
-    deadline: 'None listed',
-    howToApply: 'Applied via Indeed on March 4, 2026 — check Indeed account for company details',
-    applyLink: 'https://www.indeed.com',
-    postingLink: 'https://www.indeed.com',
-    firmWebsite: '',
-    why: "Job Captain is a direct target title for Alex — the role involves leading CD production, consultant coordination, and construction administration, all core strengths. No indication of licensure requirement. Applied via Indeed on March 4, 2026; check Indeed account to confirm the company name and any response.",
-    defaultStatus: 'applied',
-    gmailStatus: 'Applied — Confirmation Received',
-    gmailDate: 'March 4, 2026',
-    gmailBadge: 'gmail-verified'
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: '',
   },
   {
     id: 'latent',
@@ -608,40 +964,45 @@ const JOBS = [
     score: 3,
     salary: 'Not posted (BOE)',
     location: 'Chicago, IL (South Loop)',
+    address: 'South Loop, Chicago, IL',
     remote: 'Hybrid (Fri remote)',
     posted: 'March 1, 2026',
+    postedISO: '2026-03-01',
     source: 'AIA Chicago',
     deadline: 'None listed',
-    howToApply: "Email hello@latentdesign.net — Subject: 'Latent | PM Position | First Name Last Name'",
+    howToApply: 'Email hello@latentdesign.net',
     applyLink: 'mailto:hello@latentdesign.net',
     postingLink: 'https://aiachicago.org/job_posting/latent-project-manager/',
     firmWebsite: 'https://latent.design',
-    why: "Latent is a minority/women-led Chicago architecture and urban design firm focused on community-centered placemaking. The PM role spans all project phases including CDs and construction meetings. No license required. Alex has already applied and received a reply confirming rolling interviews. Note: the posting requires 8 years minimum, placing it slightly above Alex's 6+ year level — but the response suggests they're considering his application.",
+    roleSketch: 'You would be managing project timelines and deliverables across all phases, attending construction meetings, and coordinating with consultants. Latent is a small, community-centered architecture and urban design firm - you would have significant project ownership.',
     defaultStatus: 'applied',
-    gmailStatus: 'Application Submitted — Rolling Interviews',
+    gmailStatus: 'verified',
     gmailDate: 'March 5, 2026',
-    gmailBadge: 'gmail-verified'
+    gmailBadge: 'gmail-verified',
   },
   {
     id: 'hed',
     company: 'HED (Harley Ellis Devereaux)',
     title: 'Architectural Designer',
     score: 3,
-    salary: '$25–$45/hr (~$52,000–$94,000/yr)',
+    salary: '$25-$45/hr (~$52,000-$94,000/yr)',
     location: 'Chicago, IL',
+    address: 'Chicago, IL',
     remote: 'Unknown',
     posted: 'Active as of March 2026',
+    postedISO: '2026-03-01',
     source: 'ZipRecruiter / LinkedIn',
     deadline: 'None listed',
     howToApply: 'Apply via hed.co/careers or ZipRecruiter',
     applyLink: 'https://hed.co/careers',
     postingLink: 'https://hed.co/careers',
     firmWebsite: 'https://hed.co',
-    why: "HED is a large multi-disciplinary firm with a Chicago office. The Architectural Designer role supports project delivery across all phases. No license required based on title and responsibilities. Revit is the primary production tool. HED's primary sectors are healthcare and higher education — less direct TI/hospitality overlap, but CD documentation and BIM coordination skills transfer directly.",
+    roleSketch: 'You would be supporting project delivery across healthcare and higher education projects. Day-to-day involves Revit documentation, detail development, and consultant coordination. HED is a large multi-office firm - expect structured workflows and team-based production.',
     defaultStatus: 'not-started',
-    gmailStatus: null
-  }
-,
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: '',
+  },
   {
     id: 'gensler',
     company: 'Gensler',
@@ -649,19 +1010,21 @@ const JOBS = [
     score: 4,
     salary: 'Not posted',
     location: 'Chicago, IL',
+    address: 'Chicago, IL',
     remote: 'Unknown',
     posted: 'Unknown',
+    postedISO: '2026-03-01',
     source: 'Workday / Direct Application',
     deadline: 'None listed',
     howToApply: 'Applied via Gensler Workday portal on March 1, 2026',
     applyLink: 'https://www.gensler.com/careers',
     postingLink: 'https://www.gensler.com/careers',
     firmWebsite: 'https://www.gensler.com',
-    why: "Gensler is the world's largest architecture firm with a major Chicago studio. Applied via Workday on March 1, 2026 — confirmation email received same day. Gensler's broad practice (commercial, hospitality, mixed-use, corporate) aligns with Alex's background. Strong training culture supports unlicensed designers pursuing ARE.",
+    roleSketch: 'You would be working in the world\'s largest architecture firm on commercial, hospitality, and mixed-use interiors projects. Expect Revit-based CD production within large multi-discipline teams, with structured mentorship and training opportunities.',
     defaultStatus: 'applied',
-    gmailStatus: 'Application Received — Gensler HR',
+    gmailStatus: 'verified',
     gmailDate: 'March 1, 2026',
-    gmailBadge: 'gmail-verified'
+    gmailBadge: 'gmail-verified',
   },
   {
     id: 'pappageorge',
@@ -670,19 +1033,21 @@ const JOBS = [
     score: 4,
     salary: 'Not posted',
     location: 'Chicago, IL',
+    address: 'Chicago, IL',
     remote: 'Unknown',
     posted: 'Unknown',
+    postedISO: '2026-03-10',
     source: 'Direct Email Outreach',
     deadline: 'None listed',
     howToApply: 'Emailed HR@pappageorgehaymes.com on March 10, 2026',
     applyLink: 'mailto:HR@pappageorgehaymes.com',
     postingLink: 'https://pappageorgehaymes.com',
     firmWebsite: 'https://pappageorgehaymes.com',
-    why: "Pappageorge Haymes Partners is a prominent Chicago firm known for adaptive reuse, mixed-use, and hospitality projects — strong sector overlap with Alex's background. Direct email sent March 10, 2026. The firm's portfolio in West Loop and Fulton Market aligns closely with Alex's TI and renovation experience.",
+    roleSketch: 'You would be working on adaptive reuse, mixed-use residential, and hospitality projects throughout Chicago\'s West Loop and Fulton Market. Expect Revit documentation across all phases with significant design input on high-profile urban projects.',
     defaultStatus: 'applied',
-    gmailStatus: 'Application Sent — Direct Email',
+    gmailStatus: 'sent-no-confirm',
     gmailDate: 'March 10, 2026',
-    gmailBadge: 'gmail-sent'
+    gmailBadge: 'gmail-sent',
   },
   {
     id: 'bearconstruction',
@@ -691,19 +1056,21 @@ const JOBS = [
     score: 3,
     salary: 'Not posted',
     location: 'Chicago, IL',
+    address: 'Chicago, IL',
     remote: 'Unknown',
     posted: 'Unknown',
+    postedISO: '2026-03-10',
     source: 'LinkedIn',
     deadline: 'None listed',
     howToApply: 'Applied via LinkedIn Easy Apply on March 10, 2026',
     applyLink: 'https://www.linkedin.com/company/bear-construction-company',
     postingLink: 'https://www.linkedin.com',
     firmWebsite: 'https://www.bearconstruction.com',
-    why: "Applied via LinkedIn Easy Apply on March 10, 2026 — LinkedIn confirmation received. BEAR Construction is a Chicago-area commercial GC. Check LinkedIn for the exact role title and any company response.",
+    roleSketch: 'You would be supporting design and documentation for commercial construction projects at a Chicago-area GC. Check LinkedIn for the exact role details and any company response.',
     defaultStatus: 'applied',
-    gmailStatus: 'Application Sent — LinkedIn',
+    gmailStatus: 'verified',
     gmailDate: 'March 10, 2026',
-    gmailBadge: 'gmail-verified'
+    gmailBadge: 'gmail-verified',
   },
   {
     id: 'flowtec',
@@ -712,19 +1079,21 @@ const JOBS = [
     score: 3,
     salary: 'Not posted',
     location: 'Unknown',
+    address: 'Unknown',
     remote: 'Unknown',
     posted: 'Unknown',
+    postedISO: '2026-02-24',
     source: 'LinkedIn',
     deadline: 'None listed',
     howToApply: 'Applied via LinkedIn Easy Apply on February 24, 2026',
     applyLink: 'https://www.linkedin.com',
     postingLink: 'https://www.linkedin.com',
     firmWebsite: '',
-    why: "Applied via LinkedIn Easy Apply on February 24, 2026. Application was viewed by Flowtec Group the same day — a positive signal. Check LinkedIn for the role title and any follow-up messages.",
+    roleSketch: 'Application viewed by Flowtec Group the same day - a positive signal. Check LinkedIn for the role title and any follow-up messages.',
     defaultStatus: 'applied',
-    gmailStatus: 'Application Viewed — Feb 24, 2026',
+    gmailStatus: 'verified',
     gmailDate: 'February 24, 2026',
-    gmailBadge: 'gmail-verified'
+    gmailBadge: 'gmail-verified',
   },
   {
     id: 'designseed',
@@ -733,59 +1102,410 @@ const JOBS = [
     score: 3,
     salary: 'Not posted',
     location: 'Unknown',
+    address: 'Chicago, IL',
     remote: 'Unknown',
     posted: 'Unknown',
+    postedISO: '2026-02-27',
     source: 'Direct Email Outreach',
     deadline: 'None listed',
     howToApply: 'Emailed info@designseed.info on February 27, 2026',
     applyLink: 'mailto:info@designseed.info',
     postingLink: 'https://designseed.info',
     firmWebsite: 'https://designseed.info',
-    why: "Applied for a Construction Superintendent role on February 27, 2026 via direct email. Note: stretch role — Superintendent is more field-focused than Alex's design/documentation core. The application leveraged Alex's 6 years of CA and project management experience. Check email for any response.",
+    roleSketch: 'Stretch role - Superintendent is more field-focused than your design/documentation core. But your 6 years of CA and project management experience make a case. Check email for any response.',
     defaultStatus: 'applied',
-    gmailStatus: 'Application Sent — Direct Email',
+    gmailStatus: 'sent-no-confirm',
     gmailDate: 'February 27, 2026',
-    gmailBadge: 'gmail-sent'
+    gmailBadge: 'gmail-sent',
+  },
+  {
+    id: 'som',
+    company: 'Skidmore, Owings & Merrill (SOM)',
+    title: 'Designer - Architecture',
+    score: 4,
+    salary: '$70,000-$83,000',
+    location: 'Chicago, IL',
+    address: '224 S Michigan Ave, Chicago, IL',
+    remote: 'Hybrid',
+    posted: 'May 5, 2025 (reposted)',
+    postedISO: '2025-05-05',
+    source: 'Indeed',
+    deadline: 'None listed',
+    howToApply: 'Apply via SOM careers portal with portfolio (PDF, 10-20 pages, max 5MB)',
+    applyLink: 'https://to.indeed.com/aa2h8plgfypr',
+    postingLink: 'https://to.indeed.com/aa2h8plgfypr',
+    firmWebsite: 'https://www.som.com',
+    roleSketch: 'You would be leading distinct portions of projects at one of the world\'s most prestigious firms. Day-to-day involves producing and coordinating presentations, 3D models, drawings, and renderings. Expect to integrate interdisciplinary criteria and mentor less experienced staff. Revit, Rhino, and parametric tools are the standard toolset.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: '',
+  },
+  {
+    id: 'corespaces',
+    company: 'Core Spaces',
+    title: 'Associate, Project Designer',
+    score: 5,
+    salary: '$85,000-$95,000',
+    location: 'Chicago, IL',
+    address: 'Chicago, IL',
+    remote: 'Hybrid',
+    posted: 'January 22, 2026',
+    postedISO: '2026-01-22',
+    source: 'Indeed',
+    deadline: 'None listed',
+    howToApply: 'Apply via Indeed or Core Spaces careers page',
+    applyLink: 'https://to.indeed.com/aac244tm7qh9',
+    postingLink: 'https://to.indeed.com/aac244tm7qh9',
+    firmWebsite: 'https://www.corespaces.com',
+    roleSketch: 'You would be part of a small in-house design team doing site planning, floor plans, and exterior design for student housing projects across the country. As both client and designer, you would influence every stage of design. Expect SketchUp, Rhino, Revit work with occasional travel. Top of salary range at $95K.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: '',
+  },
+  {
+    id: 'waremalcomb-jc',
+    company: 'Ware Malcomb',
+    title: 'Job Captain',
+    score: 3,
+    salary: '$60,000-$80,000',
+    location: 'Oak Brook, IL',
+    address: 'Oak Brook, IL',
+    remote: 'In-office',
+    posted: 'March 17, 2026',
+    postedISO: '2026-03-17',
+    source: 'AIA Chicago',
+    deadline: 'None listed',
+    howToApply: 'Email jgolub@waremalcomb.com or apply via Lever',
+    applyLink: 'mailto:jgolub@waremalcomb.com',
+    postingLink: 'https://aiachicago.org/job_posting/ware-malcomb-job-captain-3/',
+    firmWebsite: 'https://waremalcomb.com',
+    roleSketch: 'You would be leading project coordination across all design phases for commercial real estate projects - office, industrial, retail, and hospitality. Day-to-day involves Revit documentation, consultant coordination, code analysis, and construction administration. Large national firm with structured career paths.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: '',
+  },
+  {
+    id: 'waremalcomb-ad',
+    company: 'Ware Malcomb',
+    title: 'Architectural Designer II, Site Planning',
+    score: 3,
+    salary: '$60,000-$75,000',
+    location: 'Oak Brook, IL',
+    address: 'Oak Brook, IL',
+    remote: 'In-office',
+    posted: 'February 25, 2026',
+    postedISO: '2026-02-25',
+    source: 'Indeed',
+    deadline: 'None listed',
+    howToApply: 'Apply via Ware Malcomb Lever portal',
+    applyLink: 'https://jobs.lever.co/waremalcomb/',
+    postingLink: 'https://to.indeed.com/aapr844ksh86',
+    firmWebsite: 'https://waremalcomb.com',
+    roleSketch: 'You would be developing site planning concepts for commercial developments - conducting zoning research, coordinating architectural and civil drawings, and presenting design options to clients. Requires AutoCAD and Revit with 4+ years commercial experience.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: '',
+  },
+  {
+    id: 'wdpartners',
+    company: 'WD Partners',
+    title: 'Designer, Architecture',
+    score: 4,
+    salary: 'Not posted (market est. $65,000-$85,000)',
+    location: 'Remote (US)',
+    address: 'Remote',
+    remote: 'Remote',
+    posted: 'March 11, 2026',
+    postedISO: '2026-03-11',
+    source: 'Indeed',
+    deadline: 'None listed',
+    howToApply: 'Apply via Indeed or WD Partners careers page',
+    applyLink: 'https://to.indeed.com/aacrghs4pvrl',
+    postingLink: 'https://to.indeed.com/aacrghs4pvrl',
+    firmWebsite: 'https://www.wdpartners.com',
+    roleSketch: 'You would be producing architectural construction documents for national retail, restaurant, and healthcare clients. Fully remote role using AutoCAD and Revit. Expect to train and assist team members while managing multiple concurrent CD sets with site-specific adjustments.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: '',
+  },
+  {
+    id: 'scb-interiors',
+    company: 'SCB',
+    title: 'Technical Interior Designer',
+    score: 4,
+    salary: '$70,000-$120,000',
+    location: 'Chicago, IL',
+    address: 'Chicago, IL',
+    remote: 'Hybrid',
+    posted: 'March 3, 2026',
+    postedISO: '2026-03-03',
+    source: 'AIA Chicago',
+    deadline: 'None listed',
+    howToApply: 'Apply via SCB careers page or email reception@scb.com',
+    applyLink: 'mailto:reception@scb.com',
+    postingLink: 'https://aiachicago.org/job_posting/scb-project-architect-interiors-technical-interior-designer/',
+    firmWebsite: 'https://scb.com',
+    roleSketch: 'You would be preparing design details and technical drawings for residential and commercial office interiors. Leading projects and mentoring junior staff using Revit, Bluebeam, and Adobe Suite. Separate from the Architectural Designer role - this focuses specifically on interiors.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: '',
+  },
+  {
+    id: 'bridgewater-fab',
+    company: 'Bridgewater Studio',
+    title: 'Fabricator / Scenic Carpenter',
+    score: 3,
+    salary: 'Not posted (market est. $45,000-$65,000)',
+    location: 'Chicago, IL (Back of the Yards)',
+    address: '1719 W 35th St, Chicago, IL 60609',
+    remote: 'In-office',
+    posted: 'Active as of March 2026',
+    postedISO: '2026-03-01',
+    source: 'ZipRecruiter / Bridgewater Careers',
+    deadline: 'None listed',
+    howToApply: 'Email jobs@bridgewaterstudio.net or apply via isolvedhire portal',
+    applyLink: 'mailto:jobs@bridgewaterstudio.net',
+    postingLink: 'https://bridgewaterstudio.isolvedhire.com/jobs/',
+    firmWebsite: 'https://www.bridgewaterstudio.net',
+    roleSketch: 'You would be fabricating themed environments, museum exhibits, and experiential installations for brands like Smithsonian, Nike, and Universal Studios. Hands-on scenic carpentry and fabrication work. Entertainment Pivot track - leverages your 3D printing and physical fabrication skills.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: '',
   }
 ];
-
 const OUTREACH = [
-  { id: 'dspace', company: 'dSPACE Studio', location: 'Lincoln Ave / Lakeview (~1 mi)', type: 'Architecture', contact: 'careers@dspacestudio.com', website: 'https://www.dspacestudio.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: "Award-winning residential firm within 1 mile of home. Recent AIA Chicago posting signals active hiring. Local proximity makes this a natural cold outreach target.", angle: "Lead with design-forward work and adaptive reuse experience; emphasize Revit CD documentation depth and all-phase project delivery." },
-  { id: 'moss', company: 'moss design', location: 'Logan Square (~2 mi)', type: 'Architecture', contact: 'laura@moss-design.com', website: 'https://moss-design.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: "Adaptive reuse, hospitality (breweries), and commercial work — near-perfect sector alignment. Recent expired posting suggests cyclical hiring. Laura is the direct hiring contact.", angle: "Lead with hospitality TI and adaptive reuse work; showcase Revit CD documentation and construction observation experience. Reference their brewery and restaurant portfolio." },
-  { id: 'pmpc', company: 'PMPC Architects', location: 'Lakeview (local)', type: 'Architecture', contact: 'info@pmpcarch.com', website: 'https://pmpcarch.com', date: 'March 3, 2026', dateISO: '2026-03-03', source: 'Google / Local Research', why: "Small commercial and residential firm in the Lakeview neighborhood. Local boutique firms often hire through outreach rather than formal postings.", angle: "Lead with commercial TI experience and CD documentation depth; reference neighborhood familiarity and interest in a local practice." },
-  { id: '34ten', company: '34-TEN Architecture', location: 'Roscoe Village (~0.5 mi)', type: 'Architecture', contact: 'info@34-ten.com', website: 'https://34tenarchitecture.com', date: 'March 3, 2026', dateISO: '2026-03-03', source: 'Local Observation', why: "Literally in Roscoe Village — active new construction project in the neighborhood signals ongoing workload. Direct local proximity makes outreach natural.", angle: "Lead with neighborhood familiarity and strong Revit + CD documentation background; highlight adaptive reuse and renovation experience." },
-  { id: 'enmasse', company: 'En Masse Architecture', location: 'Chicago (Wicker Park area)', type: 'Architecture', contact: 'info@en-masse.com', website: 'https://en-masse.com', date: 'February 28, 2026', dateISO: '2026-02-28', source: 'LinkedIn', why: "Mixed-use and adaptive reuse project types with a local boutique approach. Strong design culture aligned with Alex's background.", angle: "Lead with mixed-use and commercial TI experience; emphasize Revit proficiency and all-phase project delivery." },
-  { id: 'bldg', company: 'BLDG Projects', location: 'Chicago (North Side)', type: 'Architecture', contact: 'info@bldgprojects.com', website: 'https://bldgprojects.com', date: 'February 28, 2026', dateISO: '2026-02-28', source: 'LinkedIn', why: "Design-build studio focused on commercial and residential adaptive reuse and TI. Design-build firms highly value CD-fluent candidates who bridge design and construction.", angle: "Lead with construction documentation depth and Bluebeam + BIM 360 skills; emphasize ability to coordinate directly with contractors." },
-  { id: 'vdt', company: 'Valerio Dewalt Train', location: 'Chicago, IL (River North)', type: 'Architecture', contact: 'contact@buildordie.com', website: 'https://www.buildordie.com', date: 'February 25, 2026', dateISO: '2026-02-25', source: 'Glassdoor', why: "Nationally recognized Chicago firm doing corporate, retail, entertainment, and hospitality work — strong sector overlap. Glassdoor flagged active hiring cycles.", angle: "Lead with TI and hospitality design experience; showcase Revit-based CD production and reference VDT's hospitality and retail portfolio." },
-  { id: 'farr', company: 'Farr Associates', location: 'Chicago, IL (River North)', type: 'Architecture', contact: 'jobs@farrassociates.net', website: 'https://www.farrassociates.net', date: 'March 8, 2026', dateISO: '2026-03-08', source: 'AIA Chicago Job Board', why: "Sustainable design firm with a March 2026 AIA Chicago posting (Project Manager), suggesting active hiring season. A Designer role may open. AIA 2030 signatory with strong culture.", angle: "Lead with CD documentation depth and sustainability-conscious design approach; reference BIM 360 and Revit proficiency for documentation-heavy projects." },
-  { id: 'summit', company: 'Summit Design + Build', location: 'Chicago, IL', type: 'GC', contact: 'careers@summitdesignandbuild.com', website: 'https://www.summitdesignandbuild.com', date: 'February 20, 2026', dateISO: '2026-02-20', source: 'LinkedIn / Web Research', why: "Chicago GC specializing in commercial TI and restaurant/hospitality renovations — direct overlap with Alex's experience. In-house design staff at GCs need Revit-proficient designers who understand CDs and field coordination.", angle: "Lead with commercial TI and hospitality renovation CDs; highlight permit-ready documentation and direct contractor coordination experience." },
-  { id: 'skender', company: 'Skender Construction', location: 'Chicago, IL', type: 'GC', contact: 'careers@skender.com', website: 'https://www.skender.com', date: 'February 20, 2026', dateISO: '2026-02-20', source: 'LinkedIn', why: "Top Chicago commercial GC with an in-house design team doing significant TI and hospitality work. Design-build model values architects with CD documentation fluency.", angle: "Lead with commercial TI CD documentation and Revit/BIM 360 skills; emphasize permit process knowledge and contractor coordination." },
-  { id: 'bulley', company: 'Bulley & Andrews', location: 'Chicago, IL', type: 'GC', contact: 'careers@bulley.com', website: 'https://www.bulley.com', date: 'February 18, 2026', dateISO: '2026-02-18', source: 'LinkedIn / Web Research', why: "Chicago GC with history of hiring in-house architectural designers, particularly on institutional and adaptive reuse projects.", angle: "Lead with adaptive reuse and CD documentation experience; highlight Revit and Bluebeam proficiency for permit and construction administration work." },
-  { id: 'hyatt', company: 'Hyatt Hotels (In-House Design)', location: 'Chicago, IL (HQ)', type: 'Corporate', contact: 'jobs.hyatt.com', website: 'https://jobs.hyatt.com', date: 'February 17, 2026', dateISO: '2026-02-17', source: 'Web Research', why: "Hyatt's global HQ is in Chicago. In-house design team handles brand standards, renovation programs, and new hotel projects. Alex's hospitality TI experience is a direct match.", angle: "Lead with hospitality renovation and TI experience; showcase Revit documentation for hospitality projects and ability to coordinate with brand standards teams." },
-  { id: 'cb', company: 'Crate & Barrel (In-House Design)', location: 'Northbrook, IL', type: 'Corporate', contact: 'careers.crateandbarrel.com', website: 'https://www.crateandbarrel.com/careers', date: 'February 17, 2026', dateISO: '2026-02-17', source: 'LinkedIn', why: "Corporate design team handles retail store rollouts, TI, and fixture design — direct alignment with Alex's retail and TI experience. In-house roles often don't require licensure.", angle: "Lead with retail TI experience and Revit documentation for commercial rollout projects; highlight ability to manage multiple concurrent scopes." },
-  { id: 'sterling', company: 'Sterling Bay', location: 'Chicago, IL', type: 'RealEstate', contact: 'careers@sterlingbay.com', website: 'https://www.sterlingbay.com/careers', date: 'February 10, 2026', dateISO: '2026-02-10', source: 'LinkedIn', why: "One of Chicago's most active commercial real estate developers managing a large portfolio of adaptive reuse and new development projects. In-house design staff roles focus on design management and CD coordination.", angle: "Lead with adaptive reuse and commercial TI experience; reference Revit BIM management and consultant coordination skills." },
-  { id: 'related', company: 'Related Midwest', location: 'Chicago, IL', type: 'RealEstate', contact: 'careers@relatedmidwest.com', website: 'https://www.relatedmidwest.com/careers', date: 'February 10, 2026', dateISO: '2026-02-10', source: 'LinkedIn', why: "Major Chicago residential and mixed-use developer with significant multi-family, hospitality, and retail portfolio. In-house design and project coordination roles open regularly.", angle: "Lead with mixed-use and hospitality TI documentation experience; highlight consultant coordination and BIM 360 project management skills." }
+  { id: 'dspace', company: 'dSPACE Studio', location: 'Lincoln Ave / Lakeview (~1 mi)', type: 'Architecture', contact: 'careers@dspacestudio.com', website: 'https://www.dspacestudio.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Award-winning residential firm within 1 mile of home. Recent AIA Chicago posting signals active hiring. Local proximity makes this a natural cold outreach target.', angle: 'Lead with design-forward work and adaptive reuse experience; emphasize Revit CD documentation depth.' },
+  { id: 'moss', company: 'moss design', location: 'Logan Square (~2 mi)', type: 'Architecture', contact: 'laura@moss-design.com', website: 'https://moss-design.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Adaptive reuse, hospitality (breweries), and commercial work. Past job posting for Project Architect/Designer (5-8 yrs) suggests cyclical hiring. Laura is direct contact.', angle: 'Lead with hospitality TI and adaptive reuse work; showcase Revit CD documentation.' },
+  { id: 'pmpc', company: 'PMPC Architects', location: 'Lakeview (local)', type: 'Architecture', contact: 'info@pmpcarch.com', website: 'https://pmpcarch.com', date: 'March 3, 2026', dateISO: '2026-03-03', source: 'Google / Local Research', why: 'Small commercial and residential firm in the Lakeview neighborhood. Local boutique firms often hire through outreach rather than formal postings.', angle: 'Lead with commercial TI experience and CD documentation depth; reference neighborhood familiarity.' },
+  { id: '34ten', company: '34-TEN Architecture', location: 'Roscoe Village (~0.5 mi)', type: 'Architecture', contact: 'info@34-ten.com', website: 'https://34tenarchitecture.com', date: 'March 3, 2026', dateISO: '2026-03-03', source: 'Local Observation', why: 'Literally in Roscoe Village with active new construction project in the neighborhood.', angle: 'Lead with neighborhood familiarity and strong Revit + CD documentation background.' },
+  { id: 'enmasse', company: 'En Masse Architecture', location: 'Chicago (Wicker Park area)', type: 'Architecture', contact: 'info@en-masse.com', website: 'https://en-masse.com', date: 'February 28, 2026', dateISO: '2026-02-28', source: 'LinkedIn', why: 'Mixed-use and adaptive reuse project types with a local boutique approach.', angle: 'Lead with mixed-use and commercial TI experience; emphasize Revit proficiency.' },
+  { id: 'bldg', company: 'BLDG Projects', location: 'Chicago (North Side)', type: 'Architecture', contact: 'info@bldgprojects.com', website: 'https://bldgprojects.com', date: 'February 28, 2026', dateISO: '2026-02-28', source: 'LinkedIn', why: 'Design-build studio focused on commercial and residential adaptive reuse and TI.', angle: 'Lead with CD depth and Bluebeam + BIM 360 skills; emphasize contractor coordination ability.' },
+  { id: 'vdt', company: 'Valerio Dewalt Train', location: 'Chicago, IL (River North)', type: 'Architecture', contact: 'contact@buildordie.com', website: 'https://www.buildordie.com', date: 'February 25, 2026', dateISO: '2026-02-25', source: 'Glassdoor', why: 'Nationally recognized Chicago firm doing corporate, retail, entertainment, and hospitality work.', angle: 'Lead with TI and hospitality design experience; showcase Revit-based CD production.' },
+  { id: 'farr', company: 'Farr Associates', location: 'Chicago, IL (River North)', type: 'Architecture', contact: 'jobs@farrassociates.net', website: 'https://www.farrassociates.net', date: 'March 8, 2026', dateISO: '2026-03-08', source: 'AIA Chicago Job Board', why: 'Sustainable design firm with recent AIA Chicago posting suggesting active hiring season.', angle: 'Lead with CD documentation depth and sustainability-conscious design approach.' },
+  { id: 'summit', company: 'Summit Design + Build', location: 'Chicago, IL', type: 'GC', contact: 'careers@summitdb.com', website: 'https://summitdb.com', date: 'March 18, 2026', dateISO: '2026-03-18', source: 'Web Research', why: 'Chicago GC specializing in commercial TI and restaurant/hospitality renovations - direct overlap.', angle: 'Lead with commercial TI and hospitality renovation CDs; highlight permit documentation.' },
+  { id: 'skender', company: 'Skender Construction', location: 'Chicago, IL', type: 'GC', contact: 'careers@skender.com', website: 'https://www.skender.com', date: 'February 20, 2026', dateISO: '2026-02-20', source: 'LinkedIn', why: 'Top Chicago commercial GC with in-house design team doing significant TI and hospitality work.', angle: 'Lead with commercial TI CD documentation and Revit/BIM 360 skills.' },
+  { id: 'bulley', company: 'Bulley & Andrews', location: 'Chicago, IL', type: 'GC', contact: 'careers@bulley.com', website: 'https://www.bulley.com', date: 'February 18, 2026', dateISO: '2026-02-18', source: 'LinkedIn / Web Research', why: 'Chicago GC with history of hiring in-house architectural designers on institutional and adaptive reuse.', angle: 'Lead with adaptive reuse and CD documentation experience.' },
+  { id: 'pepper', company: 'Pepper Construction', location: 'Chicago, IL', type: 'GC', contact: 'careers@pepperconstruction.com', website: 'https://www.pepperconstruction.com', date: 'March 18, 2026', dateISO: '2026-03-18', source: 'Web Research', why: 'Major Chicago GC since 1927. Healthcare, education, hospitality, entertainment sectors. In-house design staff need Revit-proficient candidates.', angle: 'Lead with commercial CD production, Revit/BIM 360, and contractor coordination experience.' },
+  { id: 'leopardo', company: 'Leopardo Companies', location: 'Chicago, IL', type: 'GC', contact: 'careers@leopardo.com', website: 'https://www.leopardo.com', date: 'March 18, 2026', dateISO: '2026-03-18', source: 'Web Research', why: 'Design-build GC with integrated project delivery. Values design-literate construction professionals.', angle: 'Lead with design-build mindset, CD documentation depth, and field coordination experience.' },
+  { id: 'hyatt', company: 'Hyatt Hotels (In-House Design)', location: 'Chicago, IL (HQ)', type: 'Corporate', contact: 'jobs.hyatt.com', website: 'https://jobs.hyatt.com', date: 'February 17, 2026', dateISO: '2026-02-17', source: 'Web Research', why: 'Hyatt\'s global HQ is in Chicago. In-house design team handles brand standards and hotel renovations.', angle: 'Lead with hospitality TI experience and Revit documentation for hospitality projects.' },
+  { id: 'cb', company: 'Crate & Barrel (In-House Design)', location: 'Northbrook, IL', type: 'Corporate', contact: 'careers.crateandbarrel.com', website: 'https://jobs.crateandbarrel.com', date: 'March 18, 2026', dateISO: '2026-03-18', source: 'LinkedIn / Careers Page', why: 'Corporate design team handles retail store rollouts and TI. Active Designer posting and Scenic Artist role. Revit BIM coordinator role recently posted.', angle: 'Lead with retail TI experience and Revit documentation for commercial rollout projects.' },
+  { id: 'mcdonalds', company: 'McDonald\'s Corporation', location: 'Chicago, IL (West Loop HQ)', type: 'Corporate', contact: 'careers.mcdonalds.com', website: 'https://careers.mcdonalds.com', date: 'March 18, 2026', dateISO: '2026-03-18', source: 'Web Research', why: 'Global HQ in Chicago\'s West Loop. In-house design and construction team manages restaurant design standards and rollouts worldwide.', angle: 'Lead with retail/restaurant TI documentation and Revit BIM skills; highlight experience with rollout programs.' },
+  { id: 'sterling', company: 'Sterling Bay', location: 'Chicago, IL', type: 'RealEstate', contact: 'careers@sterlingbay.com', website: 'https://www.sterlingbay.com/careers', date: 'February 10, 2026', dateISO: '2026-02-10', source: 'LinkedIn', why: 'One of Chicago\'s most active commercial real estate developers with adaptive reuse and new development.', angle: 'Lead with adaptive reuse and commercial TI experience; reference BIM management skills.' },
+  { id: 'related', company: 'Related Midwest', location: 'Chicago, IL', type: 'RealEstate', contact: 'careers@relatedmidwest.com', website: 'https://www.relatedmidwest.com/careers', date: 'February 10, 2026', dateISO: '2026-02-10', source: 'LinkedIn', why: 'Major Chicago residential and mixed-use developer with significant hospitality and retail portfolio.', angle: 'Lead with mixed-use and hospitality TI documentation experience.' },
+  { id: 'compass', company: 'Compass Architecture', location: 'Lincoln Park / Lakeview (~1 mi)', type: 'Architecture', contact: 'info@compass-architecture.com', website: 'https://www.compass-architecture.com', date: 'March 18, 2026', dateISO: '2026-03-18', source: 'Google Maps / Local Discovery', why: 'Local firm specializing in residential and commercial design in Lincoln Park, Lakeview, and Roscoe Village neighborhoods. Neighborhood proximity is a natural connection.', angle: 'Lead with local knowledge of Roscoe Village/Lakeview and commercial renovation experience.' },
+  { id: 'bridgewater', company: 'Bridgewater Studio', location: 'Chicago, IL (Back of the Yards)', type: 'Entertainment', contact: 'jobs@bridgewaterstudio.net', website: 'https://www.bridgewaterstudio.net', date: 'March 18, 2026', dateISO: '2026-03-18', source: 'Web Research / Indeed', why: 'Experiential design and fabrication studio creating immersive environments for brands like Smithsonian, Nike, and Universal Studios. Concept Designer role recently closed - new openings may come.', angle: 'Lead with 3D design, fabrication, and industrial design background; showcase physical prototyping skills.' },
+  { id: 'chicagoscenic', company: 'Chicago Scenic Studios', location: 'Chicago, IL', type: 'Entertainment', contact: 'info@chicagoscenic.com', website: 'https://www.chicagoscenic.com', date: 'March 18, 2026', dateISO: '2026-03-18', source: 'Web Research', why: 'Full-service scenic fabrication studio. Always looking for professionals to supplement workload and join their team.', angle: 'Lead with 3D modeling, fabrication background, and industrial design degree.' },
+  { id: 'ravenswood', company: 'Ravenswood Studio', location: 'Chicago, IL (Ravenswood)', type: 'Entertainment', contact: 'hireme@ravenswoodstudio.com', website: 'https://ravenswoodstudio.com', date: 'March 18, 2026', dateISO: '2026-03-18', source: 'Web Research', why: 'Custom fabrication for museum exhibits, corporate environments, and themed attractions. No current openings but accepts general applications.', angle: 'Lead with 3D printing, physical fabrication, and design documentation skills.' },
+  { id: 'engberg', company: 'Engberg Anderson', location: 'Milwaukee / Chicago', type: 'Architecture', contact: 'info@engberganderson.com', website: 'https://www.engberganderson.com', date: 'March 18, 2026', dateISO: '2026-03-18', source: 'Firm List', why: 'Regional firm with Milwaukee and Chicago presence. Mixed-use, adaptive reuse, and hospitality work.', angle: 'Lead with commercial TI and adaptive reuse experience; emphasize Revit CD documentation.' }
 ];
-
+// ─────────────────────────────────────────────────────────
+// EMAIL DRAFTS
+// ─────────────────────────────────────────────────────────
+const EMAIL_DRAFTS = {
+  'okw': {
+    to: 'kkarcher@actalentservices.com',
+    subject: 'Re: OKW Architects - Unlicensed Designer Role | Alex Karshis',
+    body: 'Hi Kacy,\n\nJust following up on the OKW Architects opportunity. I wanted to reiterate my strong interest - OKW\'s commercial TI focus is exactly where my experience runs deepest, and I\'m confident I can contribute from day one.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'parkfowler': {
+    to: 'careers@pf.plus',
+    subject: 'Intermediate Architect / Designer Application - Alex Karshis',
+    body: 'Howdy,\n\nI\'m reaching out about the Intermediate Architect / Designer position at ParkFowler Plus. Your firm\'s multi-family residential work and commitment to inclusive design are a strong draw.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'scb': {
+    to: 'reception@scb.com',
+    subject: 'Architectural Designer Application - Alex Karshis',
+    body: 'Howdy,\n\nI\'m reaching out about the Architectural Designer position at SCB. Your firm\'s work in adaptive reuse, mixed-use multifamily, and aviation represents exactly the kind of rigorous multi-discipline practice I want to grow within.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'arda': {
+    to: 'hr@ardadesign.com',
+    subject: 'Architectural Designer Application - Alex Karshis',
+    body: 'Howdy,\n\nI came across your Architectural Designer posting and wanted to reach out. Working with existing buildings is the core of what I do - field verification, as-built documentation, and producing clean, contractor-ready CD sets for renovation and adaptive reuse projects.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nP.S. If you\'ve read this far, go click on the photo of me on the About Me page for a fun surprise.\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'koo': {
+    to: 'employment@kooarchitecture.com',
+    subject: 'Architectural Design Team Member Application - Alex Karshis',
+    body: 'Howdy,\n\nI\'m reaching out about the Architectural Design Team Member position at KOO. Your hospitality and adaptive reuse portfolio closely mirrors the project types I\'ve built my career on.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nP.S. If you\'ve read this far, go click on the photo of me on the About Me page for a fun surprise.\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'hed': {
+    to: 'careers@hed.co',
+    subject: 'Architectural Designer Application - Alex Karshis',
+    body: 'Howdy,\n\nI\'m reaching out about the Architectural Designer position at HED. Your multi-discipline approach to healthcare and education projects is compelling, and I\'m looking for a firm where documentation quality matters.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'som': {
+    to: 'careers@som.com',
+    subject: 'Designer - Architecture Application - Alex Karshis',
+    body: 'Howdy,\n\nI\'m reaching out about the Designer - Architecture position at SOM\'s Chicago studio. The opportunity to work on transformative projects within your interdisciplinary studio model is exactly the kind of challenge I\'m pursuing.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'corespaces': {
+    to: 'careers@corespaces.com',
+    subject: 'Associate, Project Designer Application - Alex Karshis',
+    body: 'Howdy,\n\nI\'m reaching out about the Associate, Project Designer position at Core Spaces. The chance to work as both client and designer on student housing projects across the country - influencing site planning, exterior design, and floor plans from day one - is a rare opportunity.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nP.S. If you\'ve read this far, go click on the photo of me on the About Me page for a fun surprise.\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'waremalcomb-jc': {
+    to: 'jgolub@waremalcomb.com',
+    subject: 'Job Captain Application - Alex Karshis',
+    body: 'Howdy,\n\nI\'m reaching out about the Job Captain position at Ware Malcomb\'s Oak Brook office. Your firm\'s commercial real estate focus - office, industrial, retail, and hospitality - aligns directly with my background.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'waremalcomb-ad': {
+    to: 'careers@waremalcomb.com',
+    subject: 'Architectural Designer II Application - Alex Karshis',
+    body: 'Howdy,\n\nI\'m reaching out about the Architectural Designer II, Site Planning position at Ware Malcomb. Developing site planning concepts for commercial developments while navigating zoning and environmental regulations is work I find deeply engaging.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'wdpartners': {
+    to: 'careers@wdpartners.com',
+    subject: 'Designer, Architecture Application - Alex Karshis',
+    body: 'Howdy,\n\nI\'m reaching out about the Designer, Architecture position at WD Partners. Producing construction documents for national retail and restaurant clients - with the flexibility of fully remote work - is a compelling setup.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nP.S. If you\'ve read this far, go click on the photo of me on the About Me page for a fun surprise.\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'scb-interiors': {
+    to: 'reception@scb.com',
+    subject: 'Technical Interior Designer Application - Alex Karshis',
+    body: 'Howdy,\n\nI\'m reaching out about the Technical Interior Designer position at SCB. Your firm\'s residential and commercial office interiors work, combined with the technical drawing and detail focus of this role, is a strong match for my skills.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'bridgewater-fab': {
+    to: 'jobs@bridgewaterstudio.net',
+    subject: 'Fabricator / Scenic Carpenter Application - Alex Karshis',
+    body: 'Howdy,\n\nI\'m reaching out about the Fabricator / Scenic Carpenter position at Bridgewater Studio. Creating immersive environments for brands like Smithsonian and Nike is the kind of work that bridges my architecture background with my industrial design and 3D printing experience.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead, and I hold a Master of Industrial Design from the University of Houston with hands-on fabrication and prototyping experience.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nP.S. If you\'ve read this far, go click on the photo of me on the About Me page for a fun surprise.\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+};
+const OUTREACH_DRAFTS = {
+  'dspace': {
+    to: 'careers@dspacestudio.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI live a few blocks from your studio in Lakeview and have admired dSPACE\'s design-forward residential work. I wanted to reach out in case you have any upcoming project needs.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'moss': {
+    to: 'laura@moss-design.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because moss design\'s hospitality, adaptive reuse, and brewery work in Logan Square is exactly the type of practice I\'m looking to join.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nP.S. If you\'ve read this far, go click on the photo of me on the About Me page for a fun surprise.\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'pmpc': {
+    to: 'info@pmpcarch.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m a local architectural designer in Lakeview and wanted to introduce myself in case PMPC has any upcoming project needs.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  '34ten': {
+    to: 'info@34-ten.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI live in Roscoe Village and have been watching your new construction project here with admiration. It prompted me to reach out directly.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nP.S. If you\'ve read this far, go click on the photo of me on the About Me page for a fun surprise.\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'enmasse': {
+    to: 'info@en-masse.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because En Masse\'s mixed-use and adaptive reuse work aligns well with my background.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'bldg': {
+    to: 'info@bldgprojects.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because BLDG Projects\' design-build approach to commercial and adaptive reuse work is exactly the kind of practice where my CD documentation and contractor coordination skills add the most value.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'vdt': {
+    to: 'contact@buildordie.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Valerio Dewalt Train\'s hospitality, retail, and entertainment portfolio represents some of the most exciting work in Chicago right now.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nP.S. If you\'ve read this far, go click on the photo of me on the About Me page for a fun surprise.\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'farr': {
+    to: 'jobs@farrassociates.net',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Farr Associates\' commitment to sustainable design and your recent AIA Chicago posting caught my attention.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'summit': {
+    to: 'careers@summitdb.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Summit Design + Build\'s commercial TI and restaurant renovation work is a direct match for my background.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'skender': {
+    to: 'careers@skender.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Skender\'s in-house design-build model and commercial TI work closely match my experience.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'bulley': {
+    to: 'careers@bulley.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Bulley & Andrews\' history with institutional and adaptive reuse projects is a strong match for my documentation background.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'pepper': {
+    to: 'careers@pepperconstruction.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Pepper Construction\'s range of healthcare, education, and hospitality projects represents strong opportunities for a documentation-focused designer.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'leopardo': {
+    to: 'careers@leopardo.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Leopardo\'s design-build and integrated project delivery approach values design-literate professionals who understand construction.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'hyatt': {
+    to: 'careers@hyatt.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Hyatt\'s in-house design team - managing brand standards and hotel renovation programs from your Chicago HQ - is a natural fit for my hospitality TI background.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'cb': {
+    to: 'careers@crateandbarrel.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Crate & Barrel\'s in-house design team - handling retail store rollouts and TI from your Northbrook headquarters - aligns perfectly with my commercial documentation background.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'mcdonalds': {
+    to: 'careers@mcdonalds.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because McDonald\'s in-house design and construction team - managing restaurant design standards and rollouts worldwide from your West Loop HQ - is a compelling match for my retail TI documentation background.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'sterling': {
+    to: 'careers@sterlingbay.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Sterling Bay\'s development portfolio - adaptive reuse and new commercial projects across Chicago - is the kind of work where my documentation and BIM management skills add real value.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'related': {
+    to: 'careers@relatedmidwest.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Related Midwest\'s residential and mixed-use development portfolio represents some of Chicago\'s most impactful projects.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'compass': {
+    to: 'info@compass-architecture.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m a local designer in the Roscoe Village/Lakeview area and noticed your firm\'s work throughout the neighborhood. I wanted to introduce myself in case you have any upcoming project needs.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'bridgewater': {
+    to: 'jobs@bridgewaterstudio.net',
+    subject: 'Reaching Out - Alex Karshis, Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Bridgewater Studio\'s experiential design and fabrication work - creating immersive environments for brands like Smithsonian and Nike - sits at the intersection of my architecture and industrial design backgrounds.\n\nI hold a Master of Industrial Design from the University of Houston with hands-on 3D printing and fabrication experience, plus 4+ years of Revit documentation at DxU Architects.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nP.S. If you\'ve read this far, go click on the photo of me on the About Me page for a fun surprise.\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'chicagoscenic': {
+    to: 'info@chicagoscenic.com',
+    subject: 'Reaching Out - Alex Karshis, Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Chicago Scenic Studios\' scenic fabrication work is a natural fit for my combined architecture and industrial design background.\n\nI hold a Master of Industrial Design with hands-on 3D printing and fabrication experience, plus 4+ years of architectural documentation at DxU Architects.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'ravenswood': {
+    to: 'hireme@ravenswoodstudio.com',
+    subject: 'Reaching Out - Alex Karshis, Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Ravenswood Studio\'s custom fabrication for museum exhibits, themed attractions, and corporate environments is deeply compelling to me.\n\nI hold a Master of Industrial Design with hands-on 3D printing and fabrication experience, plus 4+ years of architectural documentation at DxU Architects.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nP.S. If you\'ve read this far, go click on the photo of me on the About Me page for a fun surprise.\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+  'engberg': {
+    to: 'info@engberganderson.com',
+    subject: 'Reaching Out - Alex Karshis, Architectural Designer',
+    body: 'Howdy,\n\nI\'m reaching out because Engberg Anderson\'s mixed-use and adaptive reuse work in the Chicago/Milwaukee corridor is a strong match for my background.\n\nPreviously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is available at karshisdesigns.com\n\nBest regards,\nAlex Karshis\nalexkarshis@gmail.com'
+  },
+};
 // ─────────────────────────────────────────────────────────
 // STATE
 // ─────────────────────────────────────────────────────────
-const STORAGE_KEY = 'alex_job_search_v1';
-
+const STORAGE_KEY = 'alex_job_search_v2';
 function loadState() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
   catch { return {}; }
 }
-function saveState(state) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
+function saveState(s) { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
 let state = loadState();
 let activeFilter = 'all';
 let searchTerm = '';
 let outreachFilter = 'all';
 let hideOldOutreach = true;
-
 function getJobState(id) {
   const job = JOBS.find(j => j.id === id);
   return state[id] || { status: job.defaultStatus, notes: '', dateApplied: job.gmailDate || '' };
@@ -796,9 +1516,8 @@ function setJobField(id, field, value) {
   saveState(state);
   updateStats();
 }
-
 function getOutreachState(id) {
-  return state['o_' + id] || { status: 'not-contacted', notes: '', dateContacted: '' };
+  return state['o_' + id] || { status: 'not-started', notes: '', dateContacted: '' };
 }
 function setOutreachField(id, field, value) {
   const key = 'o_' + id;
@@ -806,16 +1525,9 @@ function setOutreachField(id, field, value) {
   state[key][field] = value;
   saveState(state);
 }
-
 // ─────────────────────────────────────────────────────────
-// RENDER ACTIVE JOBS
+// RENDER — TIMELINE GROUPED BY DATE
 // ─────────────────────────────────────────────────────────
-function scoreLabel(s) {
-  if (s === 5) return ['score5', 'Excellent Fit', '⭐⭐⭐'];
-  if (s === 4) return ['score4', 'Strong Fit', '⭐⭐'];
-  return ['score3', 'Moderate Fit', '⭐'];
-}
-
 function statusClass(s) {
   const map = {
     'not-started': 'status-not-started',
@@ -827,103 +1539,90 @@ function statusClass(s) {
   };
   return map[s] || 'status-not-started';
 }
-
+function parseMonth(isoDate) {
+  const d = new Date(isoDate + 'T12:00:00');
+  return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+}
 function renderJobs() {
   const container = document.getElementById('activeCards');
-  const score5 = JOBS.filter(j => j.score === 5);
-  const score4 = JOBS.filter(j => j.score === 4);
-  const score3 = JOBS.filter(j => j.score === 3);
-
+  // Sort by posted date descending
+  const sorted = [...JOBS].sort((a, b) => b.postedISO.localeCompare(a.postedISO));
+  // Group by month
+  const groups = {};
+  for (const job of sorted) {
+    const month = parseMonth(job.postedISO);
+    if (!groups[month]) groups[month] = [];
+    groups[month].push(job);
+  }
   let html = '';
-
-  const renderSection = (jobs, score) => {
-    if (!jobs.length) return '';
-    const labels = { 5: ['score5-label','⭐ Score 5 — Excellent Fit'], 4: ['score4-label','⭐ Score 4 — Strong Fit'], 3: ['score3-label','⭐ Score 3 — Moderate Fit'] };
-    const [cls, text] = labels[score];
-    let inner = '';
+  for (const [month, jobs] of Object.entries(groups)) {
+    html += `<div class="timeline-date-group">`;
+    html += `<div class="timeline-date-label">${month}</div>`;
     for (const job of jobs) {
-      inner += renderJobCard(job);
+      html += renderJobCard(job);
     }
-    return `
-      <div class="section-divider section-${score}">
-        <span class="${cls}">${text}</span>
-        <div class="divider-line"></div>
-      </div>
-      <div class="cards-grid">${inner}</div>
-    `;
-  };
-
-  html += renderSection(score5, 5);
-  html += renderSection(score4, 4);
-  html += renderSection(score3, 3);
+    html += `</div>`;
+  }
   container.innerHTML = html;
   applyFilter();
   updateStats();
 }
-
 function renderJobCard(job) {
   const js = getJobState(job.id);
-  const [scoreClass] = scoreLabel(job.score);
+  const scoreClass = 'score' + job.score;
   const sc = statusClass(js.status);
-
   let gmailBadge = '';
   if (job.gmailBadge === 'gmail-verified') {
-    gmailBadge = `<span class="applied-badge gmail-verified">✅ Gmail Verified · ${job.gmailDate}</span>`;
+    gmailBadge = `<span class="gmail-badge gmail-verified">Verified ${job.gmailDate}</span>`;
   } else if (job.gmailBadge === 'gmail-sent') {
-    gmailBadge = `<span class="applied-badge gmail-sent">📤 Sent · ${job.gmailDate}</span>`;
+    gmailBadge = `<span class="gmail-badge gmail-sent">Sent ${job.gmailDate}</span>`;
   } else if (job.gmailBadge === 'in-progress') {
-    gmailBadge = `<span class="applied-badge" style="background:#EDE7F6;color:#6A1B9A;">🔄 Recruiter Active · ${job.gmailDate}</span>`;
+    gmailBadge = `<span class="gmail-badge gmail-in-progress">Recruiter Active ${job.gmailDate}</span>`;
   }
-
-  const remoteTag = job.remote !== 'Unknown' ? `<span class="meta-tag remote-tag"><span class="icon">🏠</span>${job.remote}</span>` : '';
-  const salaryTag = `<span class="meta-tag salary-tag"><span class="icon">💰</span>${job.salary}</span>`;
-  const postedTag = `<span class="meta-tag"><span class="icon">📅</span>${job.posted}</span>`;
-  const locationTag = `<span class="meta-tag"><span class="icon">📍</span>${job.location}</span>`;
-
+  const remoteTag = job.remote !== 'Unknown' ?
+    `<span class="meta-tag ${job.remote.toLowerCase().includes('hybrid') ? 'tag-hybrid' : 'tag-remote'}">${job.remote}</span>` : '';
   return `
-    <div class="job-card ${scoreClass}" id="card-${job.id}"
-         data-score="${job.score}"
-         data-company="${job.company.toLowerCase()}"
-         data-title="${job.title.toLowerCase()}"
-         data-status="${js.status}">
-      <div class="card-score-bar"></div>
-      <div class="card-body">
-        <div class="card-top">
-          <div>
-            <div class="card-company">${job.company}</div>
+    <div class="job-card ${scoreClass}" id="card-${job.id}" data-score="${job.score}" data-company="${job.company.toLowerCase()}" data-title="${job.title.toLowerCase()}" data-status="${js.status}">
+      <div class="card-color-bar"></div>
+      <div class="card-inner">
+        <div class="card-main">
+          <div class="card-row-1">
+            <span class="card-date">${job.posted}</span>
+            <span class="card-source">${job.source}</span>
+            <span class="score-pip">${job.score}</span>
+            ${gmailBadge}
           </div>
-          <div class="score-badge">${job.score}</div>
+          <div class="card-row-2">
+            <span class="card-company">${job.company}</span>
+            <span class="card-salary">${job.salary}</span>
+          </div>
+          <div class="card-row-3">
+            <span class="card-title">${job.title}</span>
+            <span class="card-address">${job.address}</span>
+          </div>
+          <div class="card-tags">
+            ${remoteTag}
+          </div>
         </div>
-        <div class="card-title">${job.title}</div>
-        <div class="card-meta">
-          ${salaryTag}${locationTag}${remoteTag}${postedTag}
-          ${gmailBadge}
-        </div>
-      </div>
-
-      <div class="status-section">
-        <div class="status-row">
-          <select class="status-select ${sc}" id="sel-${job.id}"
-            onchange="updateStatus('${job.id}', this)">
-            <option value="not-started" ${js.status==='not-started'?'selected':''}>⬜ Not Started</option>
-            <option value="in-progress" ${js.status==='in-progress'?'selected':''}>🔄 In Progress</option>
-            <option value="applied" ${js.status==='applied'?'selected':''}>📤 Applied</option>
-            <option value="interviewing" ${js.status==='interviewing'?'selected':''}>🗓️ Interviewing</option>
-            <option value="offer" ${js.status==='offer'?'selected':''}>🎉 Offer Received</option>
-            <option value="rejected" ${js.status==='rejected'?'selected':''}>❌ Rejected</option>
+        <div class="card-actions">
+          <select class="status-select ${sc}" id="sel-${job.id}" onchange="updateStatus('${job.id}', this)">
+            <option value="not-started" ${js.status==='not-started'?'selected':''}>Not Started</option>
+            <option value="in-progress" ${js.status==='in-progress'?'selected':''}>In Progress</option>
+            <option value="applied" ${js.status==='applied'?'selected':''}>Applied</option>
+            <option value="interviewing" ${js.status==='interviewing'?'selected':''}>Interviewing</option>
+            <option value="offer" ${js.status==='offer'?'selected':''}>Offer</option>
+            <option value="rejected" ${js.status==='rejected'?'selected':''}>Rejected</option>
           </select>
+          <div class="card-btns">
+            <button class="btn-apply" onclick="openEmailModal('${job.id}')">Apply</button>
+            <button class="btn-details" onclick="toggleDetails('${job.id}')">Details</button>
+          </div>
         </div>
       </div>
-
-      <div class="card-footer">
-        <button class="btn-apply" onclick="openEmailModal('${job.id}')">Apply →</button>
-        <button class="btn-details" onclick="toggleDetails('${job.id}')">Details ▾</button>
-      </div>
-
       <div class="card-details" id="details-${job.id}">
         <div class="detail-row">
-          <div class="detail-label">Why It's a Strong Fit</div>
-          <div class="why-fit-box">${job.why}</div>
+          <div class="detail-label">What You'd Be Doing</div>
+          <div class="role-sketch-box">${job.roleSketch}</div>
         </div>
         <div class="detail-row">
           <div class="detail-label">How to Apply</div>
@@ -932,151 +1631,142 @@ function renderJobCard(job) {
         <div class="detail-row">
           <div class="detail-label">Links</div>
           <div class="detail-value">
-            <a href="${job.postingLink}" target="_blank">📋 View Job Posting</a>
-            ${job.firmWebsite ? ` &nbsp;·&nbsp; <a href="${job.firmWebsite}" target="_blank">🌐 Firm Website</a>` : ''}
+            <a href="${job.postingLink}" target="_blank">Job Posting</a>
+            ${job.firmWebsite ? ` &middot; <a href="${job.firmWebsite}" target="_blank">Firm Website</a>` : ''}
           </div>
         </div>
         <div class="detail-row">
-          <div class="detail-label">Source · Deadline</div>
-          <div class="detail-value">${job.source} &nbsp;·&nbsp; ${job.deadline}</div>
-        </div>
-        <div class="detail-row">
           <div class="detail-label">Date Applied</div>
-          <input class="date-applied-input" type="text" placeholder="e.g. March 16, 2026"
-            value="${js.dateApplied || ''}"
-            onchange="setJobField('${job.id}', 'dateApplied', this.value)"
-            id="date-${job.id}">
+          <input class="date-applied-input" type="text" placeholder="e.g. March 17, 2026" value="${js.dateApplied || ''}" onchange="setJobField('${job.id}', 'dateApplied', this.value)">
         </div>
         <div class="detail-row">
           <div class="detail-label">Notes</div>
-          <textarea class="notes-input" placeholder="Add your notes here…"
-            onchange="setJobField('${job.id}', 'notes', this.value)">${js.notes || ''}</textarea>
+          <textarea class="notes-input" placeholder="Add notes..." onchange="setJobField('${job.id}', 'notes', this.value)">${js.notes || ''}</textarea>
         </div>
       </div>
     </div>`;
 }
-
 function toggleDetails(id) {
   const el = document.getElementById('details-' + id);
-  const btn = el.previousElementSibling.querySelector('.btn-details');
-  if (el.classList.contains('open')) {
-    el.classList.remove('open');
-    btn.textContent = 'Details ▾';
-  } else {
-    el.classList.add('open');
-    btn.textContent = 'Details ▴';
+  if (!el) {
+    // outreach card
+    const oel = document.getElementById('details-oc' + id);
+    if (oel) oel.classList.toggle('open');
+    return;
   }
+  el.classList.toggle('open');
 }
-
 function updateStatus(id, sel) {
   const val = sel.value;
   setJobField(id, 'status', val);
   sel.className = 'status-select ' + statusClass(val);
-  const card = document.getElementById('card-' + id);
-  card.dataset.status = val;
+  document.getElementById('card-' + id).dataset.status = val;
   applyFilter();
 }
-
 // ─────────────────────────────────────────────────────────
 // RENDER OUTREACH
 // ─────────────────────────────────────────────────────────
 const TYPE_CLASSES = {
-  Architecture: 'type-architecture',
-  GC: 'type-gc',
-  Corporate: 'type-corporate',
-  RealEstate: 'type-realestate'
+  'Architecture': 'type-architecture',
+  'GC': 'type-gc',
+  'Corporate': 'type-corporate',
+  'RealEstate': 'type-realestate',
+  'Design-Build': 'type-designbuild',
+  'Entertainment': 'type-entertainment'
 };
-
 function renderOutreach() {
   const container = document.getElementById('outreachCards');
   const sorted = [...OUTREACH].sort((a, b) => b.dateISO.localeCompare(a.dateISO));
-  container.innerHTML = sorted.map(o => {
-    const os = getOutreachState(o.id);
-    const typeClass = TYPE_CLASSES[o.type] || 'type-architecture';
-    const typeLabel = o.type === 'RealEstate' ? 'Real Estate Dev' : o.type;
-    return `
-      <div class="outreach-card" id="oc-${o.id}"
-           data-type="${o.type}"
-           data-contacted="${os.status}"
-           data-dateiso="${o.dateISO}">
-        <div class="card-score-bar"></div>
-        <div class="card-body">
-          <div class="card-top">
-            <div>
-              <div class="card-company">${o.company}</div>
+  // Group by month
+  const groups = {};
+  for (const o of sorted) {
+    const month = parseMonth(o.dateISO);
+    if (!groups[month]) groups[month] = [];
+    groups[month].push(o);
+  }
+  let html = '';
+  for (const [month, items] of Object.entries(groups)) {
+    html += `<div class="timeline-date-group">`;
+    html += `<div class="timeline-date-label">${month}</div>`;
+    for (const o of items) {
+      const os = getOutreachState(o.id);
+      const typeClass = TYPE_CLASSES[o.type] || 'type-architecture';
+      const typeLabel = o.type === 'RealEstate' ? 'Real Estate' : o.type;
+      html += `
+        <div class="outreach-card" id="oc-${o.id}" data-type="${o.type}" data-contacted="${os.status}" data-dateiso="${o.dateISO}">
+          <div class="card-color-bar"></div>
+          <div class="card-inner">
+            <div class="card-main">
+              <div class="card-row-1">
+                <span class="card-date">${o.date}</span>
+                <span class="card-source">${o.source}</span>
+                <span class="firm-type-tag ${typeClass}">${typeLabel}</span>
+              </div>
+              <div class="card-row-2">
+                <span class="card-company">${o.company}</span>
+              </div>
+              <div class="card-row-3">
+                <span class="card-address">${o.location}</span>
+              </div>
+              <div class="card-tags">
+                <span class="meta-tag"><a href="${o.website}" target="_blank" style="color:inherit;text-decoration:none;">${o.website.replace('https://','')}</a></span>
+                ${o.contact.includes('@') ? `<span class="meta-tag">${o.contact}</span>` : ''}
+              </div>
             </div>
-            <span class="firm-type-tag ${typeClass}">${typeLabel}</span>
+            <div class="card-actions">
+              <select class="status-select ${statusClass(os.status)}" onchange="updateOutreachStatus('${o.id}', this)">
+                <option value="not-started" ${os.status==='not-started'?'selected':''}>Not Contacted</option>
+                <option value="in-progress" ${os.status==='in-progress'?'selected':''}>Drafting</option>
+                <option value="applied" ${os.status==='applied'?'selected':''}>Email Sent</option>
+                <option value="interviewing" ${os.status==='interviewing'?'selected':''}>Response</option>
+                <option value="offer" ${os.status==='offer'?'selected':''}>Interview</option>
+                <option value="rejected" ${os.status==='rejected'?'selected':''}>No Interest</option>
+              </select>
+              <div class="card-btns">
+                <button class="btn-contact" onclick="openOutreachModal('${o.id}')">Contact</button>
+                <button class="btn-details" onclick="toggleDetails('oc${o.id}')">Details</button>
+              </div>
+            </div>
           </div>
-          <div class="card-title" style="font-size:0.9rem">${o.location}</div>
-          <div class="card-meta">
-            <span class="meta-tag"><span class="icon">🌐</span><a href="${o.website}" target="_blank" style="color:inherit;text-decoration:none;">${o.website.replace('https://','')}</a></span>
-            ${o.contact.includes('@') ? `<span class="meta-tag"><span class="icon">✉️</span>${o.contact}</span>` : ''}
-            <span class="meta-tag"><span class="icon">📅</span>${o.date}</span>
-            <span class="meta-tag source-tag"><span class="icon">🔍</span>${o.source}</span>
+          <div class="card-details" id="details-oc${o.id}">
+            <div class="detail-row">
+              <div class="detail-label">Why Reach Out</div>
+              <div class="role-sketch-box">${o.why}</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Portfolio Angle</div>
+              <div class="detail-value" style="font-style:italic;">${o.angle}</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Date Contacted</div>
+              <input class="date-applied-input" type="text" placeholder="e.g. March 17, 2026" value="${os.dateContacted || ''}" onchange="setOutreachField('${o.id}', 'dateContacted', this.value)">
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Notes</div>
+              <textarea class="notes-input" placeholder="Notes..." onchange="setOutreachField('${o.id}', 'notes', this.value)">${os.notes || ''}</textarea>
+            </div>
           </div>
-        </div>
-
-        <div class="status-section">
-          <div class="status-row">
-            <select class="status-select ${statusClass(os.status)}"
-              onchange="updateOutreachStatus('${o.id}', this)">
-              <option value="not-started" ${os.status==='not-started'?'selected':''}>⬜ Not Contacted</option>
-              <option value="in-progress" ${os.status==='in-progress'?'selected':''}>✍️ Drafting Outreach</option>
-              <option value="applied" ${os.status==='applied'?'selected':''}>📤 Email Sent</option>
-              <option value="interviewing" ${os.status==='interviewing'?'selected':''}>💬 Response Received</option>
-              <option value="offer" ${os.status==='offer'?'selected':''}>🎉 Interview Booked</option>
-              <option value="rejected" ${os.status==='rejected'?'selected':''}>❌ No Interest</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="card-footer">
-          <button class="btn-contact" onclick="openOutreachModal('${o.id}')">Contact →</button>
-          <button class="btn-details" onclick="toggleDetails('oc${o.id}')">Details ▾</button>
-        </div>
-
-        <div class="card-details" id="details-oc${o.id}">
-          <div class="detail-row">
-            <div class="detail-label">Why Reach Out</div>
-            <div class="why-fit-box">${o.why}</div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-label">Portfolio Angle</div>
-            <div class="detail-value" style="font-style:italic;color:var(--navy-mid)">💡 ${o.angle}</div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-label">Date Contacted</div>
-            <input class="date-applied-input" type="text" placeholder="e.g. March 16, 2026"
-              value="${os.dateContacted || ''}"
-              onchange="setOutreachField('${o.id}', 'dateContacted', this.value)">
-          </div>
-          <div class="detail-row">
-            <div class="detail-label">Notes / Response</div>
-            <textarea class="notes-input" placeholder="Add notes or response details…"
-              onchange="setOutreachField('${o.id}', 'notes', this.value)">${os.notes || ''}</textarea>
-          </div>
-        </div>
-      </div>`;
-  }).join('');
+        </div>`;
+    }
+    html += `</div>`;
+  }
+  container.innerHTML = html;
   applyOutreachFilter();
 }
-
-function toggleAgeFilter(btn) {
-  hideOldOutreach = !hideOldOutreach;
-  btn.classList.toggle('active', hideOldOutreach);
-  btn.textContent = hideOldOutreach ? '📅 Last 30 Days' : '📅 Show All';
-  applyOutreachFilter();
-}
-
 function updateOutreachStatus(id, sel) {
   const val = sel.value;
   setOutreachField(id, 'status', val);
   sel.className = 'status-select ' + statusClass(val);
   document.getElementById('oc-' + id).dataset.contacted = val;
 }
-
+function toggleAgeFilter(btn) {
+  hideOldOutreach = !hideOldOutreach;
+  btn.classList.toggle('active', hideOldOutreach);
+  btn.textContent = hideOldOutreach ? 'Last 30 Days' : 'Show All';
+  applyOutreachFilter();
+}
 // ─────────────────────────────────────────────────────────
-// FILTERS & SEARCH
+// FILTERS
 // ─────────────────────────────────────────────────────────
 function setFilter(f, btn) {
   activeFilter = f;
@@ -1091,19 +1781,16 @@ function searchCards(val) {
 function applyFilter() {
   document.querySelectorAll('.job-card').forEach(card => {
     const s = card.dataset.status;
-    const score = card.dataset.score;
     const company = card.dataset.company || '';
     const title = card.dataset.title || '';
     const matchSearch = !searchTerm || company.includes(searchTerm) || title.includes(searchTerm);
     let matchFilter = true;
-    if (activeFilter === 'score5') matchFilter = score === '5';
-    else if (activeFilter === 'not-started') matchFilter = s === 'not-started';
+    if (activeFilter === 'not-started') matchFilter = s === 'not-started';
     else if (activeFilter === 'applied') matchFilter = s === 'applied' || s === 'in-progress';
     else if (activeFilter === 'interviewing') matchFilter = s === 'interviewing';
     card.classList.toggle('hidden', !matchFilter || !matchSearch);
   });
 }
-
 function setOutreachFilter(f, btn) {
   outreachFilter = f;
   document.querySelectorAll('#tab-outreach .filter-btn').forEach(b => b.classList.remove('active'));
@@ -1111,20 +1798,19 @@ function setOutreachFilter(f, btn) {
   applyOutreachFilter();
 }
 function applyOutreachFilter() {
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - 30);
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 30);
   document.querySelectorAll('.outreach-card').forEach(card => {
     const t = card.dataset.type;
     const iso = card.dataset.dateiso || '';
-    const cardDate = iso ? new Date(iso) : new Date();
-    const typeMatch = outreachFilter === 'all' || t === outreachFilter ||
-      (outreachFilter === 'GC' && (t === 'GC')) ||
-      (outreachFilter === 'Corporate' && (t === 'Corporate' || t === 'RealEstate'));
-    const ageMatch = hideOldOutreach ? cardDate >= cutoffDate : true;
+    const d = iso ? new Date(iso) : new Date();
+    const typeMatch = outreachFilter === 'all' ||
+                      t === outreachFilter ||
+                      (outreachFilter === 'Corporate' && (t === 'Corporate' || t === 'RealEstate'));
+    const ageMatch = hideOldOutreach ? d >= cutoff : true;
     card.classList.toggle('hidden', !typeMatch || !ageMatch);
   });
 }
-
 // ─────────────────────────────────────────────────────────
 // STATS
 // ─────────────────────────────────────────────────────────
@@ -1140,16 +1826,13 @@ function updateStats() {
   document.getElementById('p-applied').textContent = applied;
   document.getElementById('p-interview').textContent = interviewing;
   document.getElementById('p-offer').textContent = offers;
-
-  const statsBar = document.getElementById('statsBar');
-  statsBar.innerHTML = `
-    <div class="stat-pill"><strong>${total}</strong> Roles Found</div>
-    <div class="stat-pill"><span class="stat-dot" style="background:#60A5FA"></span><strong>${applied}</strong> Applied/Active</div>
-    <div class="stat-pill"><span class="stat-dot" style="background:#FBBF24"></span><strong>${interviewing}</strong> Interviewing</div>
-    <div class="stat-pill"><span class="stat-dot" style="background:#34D399"></span><strong>${offers}</strong> Offers</div>
+  document.getElementById('statsBar').innerHTML = `
+    <div class="stat-pill"><strong>${total}</strong> Roles</div>
+    <div class="stat-pill"><span class="stat-dot" style="background:var(--haring-blue)"></span><strong>${applied}</strong> Applied</div>
+    <div class="stat-pill"><span class="stat-dot" style="background:var(--haring-orange)"></span><strong>${interviewing}</strong> Interviewing</div>
+    <div class="stat-pill"><span class="stat-dot" style="background:var(--haring-green)"></span><strong>${offers}</strong> Offers</div>
   `;
 }
-
 // ─────────────────────────────────────────────────────────
 // TABS
 // ─────────────────────────────────────────────────────────
@@ -1160,461 +1843,83 @@ function showTab(tab) {
     b.classList.toggle('active', (i === 0 && tab === 'active') || (i === 1 && tab === 'outreach'));
   });
 }
-
 // ─────────────────────────────────────────────────────────
-// LINK OPENER — works from localhost without popup blocker issues
-// ─────────────────────────────────────────────────────────
-function openLink(url) {
-  if (!url) return;
-  const a = document.createElement('a');
-  a.href = url;
-  a.target = '_blank';
-  a.rel = 'noopener noreferrer';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
-
-// ─────────────────────────────────────────────────────────
-// INIT
-// ─────────────────────────────────────────────────────────
-renderJobs();
-renderOutreach();
-updateStats();
-
-// ─────────────────────────────────────────────────────────
-// EMAIL DRAFTS
-// ─────────────────────────────────────────────────────────
-const EMAIL_DRAFTS = {
-  okw: {
-    to: 'kkarcher@actalentservices.com',
-    subject: 'Re: OKW Architects — Unlicensed Designer Role | Alex Karshis',
-    body: `Hi Kacy,
-
-Just following up on the OKW Architects opportunity. I wanted to reiterate my strong interest — OKW's commercial TI focus is exactly where my experience runs deepest, and I'm confident I can contribute from day one.
-
-At DxU Architects I spent four years as the primary Revit documentation lead across office, retail, and mixed-use TI projects. I have hands-on experience coordinating with structural, MEP, and specialty consultants through both CD and CA phases, and I'm comfortable taking ownership of a full documentation scope.
-
-I'm available for an interview at any time. Please let me know what the next steps look like.
-
-Thanks,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  parkfowler: {
-    to: 'careers@pf.plus',
-    subject: 'Application for Intermediate Architect / Designer: Alex Karshis',
-    body: `Hi ParkFowler Plus Team,
-
-I'm writing to apply for the Intermediate Architect / Designer position. I'm a multidisciplinary architectural designer based in Chicago with 4+ years of experience at DxU Architects spanning commercial TI, mixed-use, and renovation projects.
-
-This role is a direct match: all-phase Revit CD production, full-phase project delivery from SD through CA, and consultant coordination are exactly how I've worked throughout my career. I'm comfortable taking ownership of a documentation scope, keeping consultants on track, and delivering permit-ready and construction-ready sets.
-
-I'm a RISD M.Arch graduate currently pursuing ARE examinations, and I've been in Chicago long enough to know the local code and permit landscape well.
-
-My resume is attached — portfolio available on request. Happy to come in for a conversation.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  scb: {
-    to: 'reception@scb.com',
-    subject: 'Architectural Designer Application — Alex Karshis',
-    body: `Hi SCB Team,
-
-I'm reaching out to apply for the Architectural Designer position at SCB. Your firm's reputation for design quality in adaptive reuse, mixed-use multifamily, and aviation is well established in Chicago, and it's exactly the kind of rigorous multi-discipline practice I'm looking to grow within.
-
-I bring 4+ years of Revit-based CD documentation at DxU Architects, working across all phases on commercial TI and mixed-use projects. SCB's adaptive reuse work is a particularly strong match — I have direct experience working through existing conditions documents, navigating structural and MEP consultant coordination, and maintaining documentation quality under tight delivery timelines.
-
-I'm a RISD M.Arch graduate based in Chicago's Lakeview neighborhood. Resume attached; portfolio available on request.
-
-Best regards,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  arda: {
-    to: 'hr@ardadesign.com',
-    subject: 'Architectural Designer Application — Alex Karshis',
-    body: `Hi Arda Team,
-
-I'm writing to apply for the Architectural Designer position. Arda's focus on historic preservation, adaptive reuse, and hospitality is a near-perfect match for my background — and it's the kind of work I find most meaningful.
-
-At DxU Architects I spent four years on commercial TI, mixed-use, and renovation projects with primary responsibility for Revit and Bluebeam documentation across all phases. I'm comfortable leading CDs from SD through CA, coordinating structural and MEP consultants, and attending construction observation — every phase your posting describes. Adaptive reuse in particular is where I've done some of my most careful documentation work, navigating existing condition constraints while keeping the CD set clean and contractor-ready.
-
-I appreciate that Arda supports ARE licensure progression — I'm actively working toward that. I'm based in Chicago's Lakeview neighborhood and available for in-person work as needed.
-
-Resume attached. Happy to share portfolio samples on request.
-
-Sincerely,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  koo: {
-    to: 'employment@kooarchitecture.com',
-    subject: 'Architectural Design Team Member Application — Alex Karshis',
-    body: `Hi KOO Team,
-
-I'm writing to apply for the Architectural Design Team Member position. KOO's portfolio — hospitality, multi-family, and adaptive reuse — closely mirrors the project types I've built my career on, and the all-phase project responsibility you describe is exactly how I prefer to work.
-
-I bring 4+ years at DxU Architects where I served as the primary Revit documentation lead on multiple concurrent TI and mixed-use projects. My experience spans programming through construction administration, including direct consultant coordination, permit submissions, and field observation. High-quality CDs are where I do my most thorough and confident work.
-
-I'm a RISD M.Arch graduate currently pursuing ARE examinations. I've included my resume and a portfolio link below. I'd welcome the chance to talk about the team and the current project pipeline.
-
-Portfolio: [link available on request]
-
-Thank you for your consideration.
-
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  latent: {
-    to: 'hello@latentdesign.net',
-    subject: 'Latent | PM Position | Alex Karshis',
-    body: `Hello Latent Team,
-
-I'm writing to apply for the Project Manager position. I want to be transparent: your posting lists 8 years minimum experience, and I have just over 6. But I've moved through project responsibility quickly — leading CD production, consultant coordination, and construction observation earlier than most in my cohort — and I believe the depth of my CA and documentation experience is genuinely competitive.
-
-What draws me to Latent specifically is your community-centered design practice. The work you pursue reflects a value system I share, and the scale of your studio means individual contribution is visible and consequential. I'm not looking for a role at a firm where I'll disappear into a team — I want to be accountable to the outcomes.
-
-I'm a RISD M.Arch graduate based in Chicago. Resume attached; happy to discuss further.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  pappageorge: {
-    to: 'HR@pappageorgehaymes.com',
-    subject: 'Architect / Senior Designer | Alex Karshis',
-    body: `Howdy,
-
-I'd like to be considered for an open position at Pappageorge Haymes Partners. Your firm's work in adaptive reuse, mixed-use, and hospitality closely mirrors my background, and I've long admired PHP's projects throughout Chicago's West Loop and Fulton Market corridors.
-
-I bring 4+ years at DxU Architects leading Revit documentation across commercial TI, mixed-use, and renovation projects from SD through CA. I'm a RISD M.Arch graduate based in Chicago's Lakeview neighborhood, currently pursuing ARE examinations.
-
-Resume and portfolio attached. I'd welcome a conversation if you have capacity on your team.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  }
-};
-
-// Outreach email drafts
-const OUTREACH_DRAFTS = {
-  dspace: {
-    to: 'careers@dspacestudio.com',
-    subject: 'Architectural Designer — Cold Outreach | Alex Karshis',
-    body: `Hi dSPACE Studio Team,
-
-I'm reaching out to introduce myself and express my interest in joining your team, whether or not a formal opening is currently posted.
-
-I'm an architectural designer based a few blocks away in Lakeview with 4+ years at DxU Architects. My background spans commercial TI, adaptive reuse, and mixed-use projects — work that aligns well with dSPACE's residential and boutique commercial portfolio. I'm a strong Revit production designer and comfortable across all project phases from SD through CA.
-
-I'm a RISD M.Arch graduate currently pursuing ARE licensure. I'd love to share my portfolio and have a brief conversation about your work and any opportunities that might fit.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  moss: {
-    to: 'laura@moss-design.com',
-    subject: 'Architectural Designer — Outreach | Alex Karshis',
-    body: `Hi Laura,
-
-I'm reaching out because moss design's portfolio — hospitality, adaptive reuse, and commercial work in Logan Square — is exactly the type of practice I'm looking to join.
-
-I'm a Chicago-based architectural designer with 4+ years at DxU Architects, where I worked on commercial TI, brewery and restaurant renovations, and mixed-use projects. I'm a strong Revit production designer with all-phase experience through CA. I'm a RISD M.Arch graduate based two miles from your studio in Lakeview.
-
-I know your recent AIA posting has lapsed, but I wanted to reach out directly in case you're building toward another hire. Happy to share my portfolio.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  pmpc: {
-    to: 'info@pmpcarch.com',
-    subject: 'Architectural Designer — Outreach | Alex Karshis',
-    body: `Hi PMPC Team,
-
-I'm reaching out to introduce myself as a local architectural designer who'd be interested in joining your team.
-
-I have 4+ years of experience at DxU Architects in Chicago, focusing on commercial TI, mixed-use, and renovation projects. I'm a strong Revit production designer with all-phase experience (SD through CA) and a RISD M.Arch graduate. I'm based in Lakeview and interested in smaller, neighborhood-scale practices where individual contribution is direct.
-
-I'd love to share my portfolio if you have any capacity or upcoming project needs.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  '34ten': {
-    to: 'info@34-ten.com',
-    subject: 'Architectural Designer — Local Outreach | Alex Karshis',
-    body: `Hi 34-TEN Team,
-
-I live in Roscoe Village and have been watching your new construction project here with admiration. It prompted me to reach out directly.
-
-I'm an architectural designer with 4+ years at DxU Architects, working on commercial TI, adaptive reuse, and mixed-use projects throughout Chicago. I'm a strong Revit production designer with full-phase experience and a RISD M.Arch graduate. I'm genuinely interested in the work of local practices where the project impact is visible in the neighborhood.
-
-I'd be glad to share my portfolio and have a conversation about your pipeline.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  enmasse: {
-    to: 'info@en-masse.com',
-    subject: 'Architectural Designer — Outreach | Alex Karshis',
-    body: `Hi En Masse Team,
-
-I'm reaching out to introduce myself and express my interest in your practice. En Masse's mixed-use and adaptive reuse portfolio resonates strongly with my background.
-
-I'm a Chicago-based architectural designer with 4+ years at DxU Architects, focused on commercial TI, mixed-use, and renovation projects. Strong Revit production designer with all-phase experience through CA. RISD M.Arch graduate pursuing ARE licensure.
-
-I'd be happy to share my portfolio if there's a conversation worth having.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  bldg: {
-    to: 'info@bldgprojects.com',
-    subject: 'Architectural Designer — Outreach | Alex Karshis',
-    body: `Hi BLDG Projects,
-
-I'm reaching out because your design-build approach to commercial and residential adaptive reuse closely matches my background and the kind of integrated practice I'm looking for.
-
-I bring 4+ years of Revit CD documentation and construction observation at DxU Architects, with strong experience in Bluebeam and BIM 360. I'm comfortable coordinating directly with contractors and translating design intent into field-ready documentation. RISD M.Arch graduate based in Chicago's Lakeview neighborhood.
-
-Happy to share portfolio and discuss your current workload.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  vdt: {
-    to: 'contact@buildordie.com',
-    subject: 'Architectural Designer — Outreach | Alex Karshis',
-    body: `Hi Valerio Dewalt Train Team,
-
-I'm reaching out to introduce myself and express my interest in joining VDT, particularly given your active work in hospitality, corporate interiors, and entertainment design.
-
-I'm a Chicago-based architectural designer with 4+ years at DxU Architects focused on commercial TI, hospitality, and mixed-use projects — strong alignment with VDT's core sectors. I'm a Revit production designer with full-phase CD and CA experience. RISD M.Arch graduate, currently pursuing ARE.
-
-I'd welcome the chance to share my portfolio and discuss any fit.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  farr: {
-    to: 'jobs@farrassociates.net',
-    subject: 'Architectural Designer — Outreach | Alex Karshis',
-    body: `Hi Farr Associates,
-
-I'm reaching out in response to your active hiring season signaled by the recent AIA Chicago posting. Even if the PM role is filled, I wanted to introduce myself for any designer openings.
-
-I'm a Chicago-based architectural designer with 4+ years of CD documentation and BIM-heavy project delivery at DxU Architects. I bring strong Revit and BIM 360 proficiency and a genuine interest in sustainable design practice — Farr's AIA 2030 commitment is directly aligned with the direction I want to grow professionally.
-
-RISD M.Arch graduate, pursuing ARE licensure. Happy to share my portfolio.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  summit: {
-    to: 'careers@summitdesignandbuild.com',
-    subject: 'In-House Designer — Outreach | Alex Karshis',
-    body: `Hi Summit Design + Build,
-
-I'm reaching out to express my interest in an in-house designer role with your team. Summit's commercial TI and hospitality renovation work is a direct match for my experience.
-
-I bring 4+ years of Revit CD documentation and construction administration at DxU Architects, with strong background in restaurant, retail, and commercial TI projects — exactly the scopes Summit handles. I'm comfortable creating permit-ready documentation and coordinating directly with contractors throughout construction.
-
-RISD M.Arch graduate based in Chicago. Happy to discuss further.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  skender: {
-    to: 'careers@skender.com',
-    subject: 'In-House Designer / BIM Coordinator — Outreach | Alex Karshis',
-    body: `Hi Skender,
-
-I'm reaching out to explore in-house design or BIM coordination opportunities. Skender's integrated design-build model and commercial TI focus align directly with my professional background.
-
-I bring 4+ years of Revit and BIM 360 production at DxU Architects across commercial TI, office, and mixed-use projects. I understand both the design side of documentation and the contractor's perspective on what makes a set buildable. RISD M.Arch graduate based in Chicago.
-
-Happy to share my portfolio and discuss your current team needs.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  bulley: {
-    to: 'careers@bulley.com',
-    subject: 'In-House Designer — Outreach | Alex Karshis',
-    body: `Hi Bulley & Andrews,
-
-I'm reaching out to explore in-house design opportunities with your firm. Bulley's institutional and adaptive reuse project portfolio aligns well with my architectural background.
-
-I have 4+ years of CD documentation experience at DxU Architects with strong Revit and Bluebeam proficiency. I'm experienced in adaptive reuse documentation — navigating existing conditions, coordinating permit submissions, and supporting construction administration. RISD M.Arch graduate based in Chicago.
-
-Happy to discuss further if there's a fit.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  hyatt: {
-    to: '',
-    subject: 'In-House Designer — Hyatt Corporate | Alex Karshis',
-    body: `[Note: Apply via jobs.hyatt.com — no direct email contact available]
-
-Hi Hyatt Design Team,
-
-I'm interested in in-house designer roles within Hyatt's corporate design group. My hospitality TI experience at DxU Architects — working on hotel renovation and branded environments — maps directly to the type of work Hyatt's internal team manages.
-
-I bring 4+ years of Revit documentation across hospitality and commercial TI scopes, with experience coordinating brand standard compliance on renovation projects. RISD M.Arch graduate based in Chicago.
-
-Please apply through the Hyatt careers portal at jobs.hyatt.com.
-
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  cb: {
-    to: '',
-    subject: 'In-House Designer — Crate & Barrel | Alex Karshis',
-    body: `[Note: Apply via crateandbarrel.com/careers — no direct email contact available]
-
-Hi Crate & Barrel Design Team,
-
-I'm interested in any in-house designer roles related to retail store rollouts or TI projects. My background in commercial TI documentation — multiple concurrent scopes, Revit production, permit coordination — maps directly to how in-house retail design teams operate.
-
-I bring 4+ years at DxU Architects with strong Revit proficiency and multi-project coordination experience. RISD M.Arch graduate based in the Chicago metro.
-
-Please apply through the Crate & Barrel careers portal.
-
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  sterling: {
-    to: 'careers@sterlingbay.com',
-    subject: 'Design Manager / Coordinator — Outreach | Alex Karshis',
-    body: `Hi Sterling Bay,
-
-I'm reaching out to explore design coordination or in-house designer roles within your development portfolio. Sterling Bay's adaptive reuse and commercial development pipeline in Chicago is a strong match for my background.
-
-I bring 4+ years of CD documentation, consultant coordination, and BIM management at DxU Architects, with direct experience on adaptive reuse and commercial TI projects. I understand how design documentation needs to serve both permit submissions and construction teams. RISD M.Arch graduate based in Chicago.
-
-Happy to share my portfolio and resume.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  },
-  related: {
-    to: 'careers@relatedmidwest.com',
-    subject: 'Design Coordinator — Outreach | Alex Karshis',
-    body: `Hi Related Midwest,
-
-I'm reaching out to explore design coordinator or in-house designer roles within your development team. Related's multi-family, hospitality, and retail portfolio in Chicago aligns closely with my documentation and project coordination background.
-
-I bring 4+ years at DxU Architects focused on mixed-use, hospitality, and commercial TI projects, with strong Revit, BIM 360, and consultant coordination experience. RISD M.Arch graduate based in Chicago.
-
-Happy to discuss further and share my portfolio.
-
-Best,
-Alex Karshis
-alexkarshis@gmail.com`
-  }
-};
-
-// ─────────────────────────────────────────────────────────
-// EMAIL MODAL FUNCTIONS
+// EMAIL MODAL
 // ─────────────────────────────────────────────────────────
 function openEmailModal(jobId) {
   const job = JOBS.find(j => j.id === jobId);
   if (!job) return;
-
-  // Fall through for non-email apply links with no draft
   if (!job.applyLink.startsWith('mailto:') && !EMAIL_DRAFTS[jobId]) {
-    openLink(job.applyLink);
+    window.open(job.applyLink, '_blank');
     return;
   }
-
   const draft = EMAIL_DRAFTS[jobId];
   const js = getJobState(jobId);
   const alreadyApplied = js.status === 'applied' || js.status === 'interviewing' || js.status === 'offer';
-
   document.getElementById('modalTitle').textContent = 'Apply to ' + job.company;
-
   const alertBox = document.getElementById('modalAlreadyApplied');
   if (alreadyApplied) {
     alertBox.style.display = '';
-    alertBox.textContent = '✅ You\'ve already applied' + (js.dateApplied ? ' on ' + js.dateApplied : '') + '. This is your reference email.';
+    alertBox.textContent = 'You\'ve already applied' + (js.dateApplied ? ' on ' + js.dateApplied : '') + '. This is your reference email.';
   } else {
     alertBox.style.display = 'none';
   }
-
   if (draft) {
     document.getElementById('modalTo').value = draft.to;
     document.getElementById('modalSubject').value = draft.subject;
     document.getElementById('modalBody').value = draft.body;
   } else {
-    // Extract email from mailto link
     const email = job.applyLink.replace('mailto:', '');
     document.getElementById('modalTo').value = email;
-    document.getElementById('modalSubject').value = 'Application — ' + job.title + ' | Alex Karshis';
-    document.getElementById('modalBody').value = '';
+    document.getElementById('modalSubject').value = job.title + ' Application - Alex Karshis';
+    document.getElementById('modalBody').value = `Howdy,
+I'm reaching out about the ${job.title} position at ${job.company}.
+Previously at DxU Architects, I spent 4+ years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.
+My resume is attached. My portfolio is available at karshisdesigns.com - and click the photo on the About Me page for a surprise.
+Best regards,
+Alex Karshis
+alexkarshis@gmail.com`;
   }
-
   document.getElementById('emailModal').classList.add('open');
 }
-
 function openOutreachModal(outreachId) {
   const o = OUTREACH.find(x => x.id === outreachId);
   if (!o) return;
-
-  // If no email contact, fall through to website
   if (!o.contact.includes('@')) {
-    openLink(o.website);
+    window.open(o.website, '_blank');
     return;
   }
-
   const draft = OUTREACH_DRAFTS[outreachId];
   document.getElementById('modalTitle').textContent = 'Contact ' + o.company;
   document.getElementById('modalAlreadyApplied').style.display = 'none';
-
   if (draft) {
     document.getElementById('modalTo').value = draft.to || o.contact;
     document.getElementById('modalSubject').value = draft.subject;
     document.getElementById('modalBody').value = draft.body;
   } else {
     document.getElementById('modalTo').value = o.contact;
-    document.getElementById('modalSubject').value = 'Architectural Designer — Outreach | Alex Karshis';
-    document.getElementById('modalBody').value = '';
+    document.getElementById('modalSubject').value = 'Reaching Out - Alex Karshis, Architectural Designer';
+    document.getElementById('modalBody').value = `Howdy,
+I wanted to introduce myself. I'm an architectural designer with 4+ years at DxU Architects doing commercial TI and mixed-use projects in Chicago.
+My resume is attached. My portfolio is available at karshisdesigns.com
+Best regards,
+Alex Karshis
+alexkarshis@gmail.com`;
   }
-
   document.getElementById('emailModal').classList.add('open');
 }
-
 function closeEmailModal() {
   document.getElementById('emailModal').classList.remove('open');
 }
-
 function handleModalOverlayClick(e) {
   if (e.target === document.getElementById('emailModal')) closeEmailModal();
 }
-
 function copyModalEmail() {
   const to = document.getElementById('modalTo').value;
   const subject = document.getElementById('modalSubject').value;
   const body = document.getElementById('modalBody').value;
   const full = 'To: ' + to + '\nSubject: ' + subject + '\n\n' + body;
   navigator.clipboard.writeText(full).catch(() => {
-    // Fallback for browsers without clipboard API
     const ta = document.createElement('textarea');
     ta.value = full;
     document.body.appendChild(ta);
@@ -1624,47 +1929,21 @@ function copyModalEmail() {
   });
   const btn = document.querySelector('.btn-modal-copy');
   const orig = btn.textContent;
-  btn.textContent = '✅ Copied!';
+  btn.textContent = 'Copied!';
   setTimeout(() => btn.textContent = orig, 2000);
 }
-
 function openModalInGmail() {
   const to = encodeURIComponent(document.getElementById('modalTo').value);
   const subject = encodeURIComponent(document.getElementById('modalSubject').value);
   const body = encodeURIComponent(document.getElementById('modalBody').value);
   window.open('https://mail.google.com/mail/?view=cm&to=' + to + '&su=' + subject + '&body=' + body, '_blank');
 }
-
+// ─────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────
+renderJobs();
+renderOutreach();
+updateStats();
 </script>
-
-<!-- ─── EMAIL DRAFT MODAL ─────────────────────────────── -->
-<div id="emailModal" class="modal-overlay" onclick="handleModalOverlayClick(event)">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3 id="modalTitle">Draft Email</h3>
-      <button class="modal-close" onclick="closeEmailModal()">✕</button>
-    </div>
-    <div id="modalAlreadyApplied" class="modal-already-applied" style="display:none"></div>
-    <div class="modal-field">
-      <label>To</label>
-      <input type="text" id="modalTo" readonly>
-    </div>
-    <div class="modal-field">
-      <label>Subject</label>
-      <input type="text" id="modalSubject">
-    </div>
-    <div class="modal-field">
-      <label>Email Body</label>
-      <textarea id="modalBody" rows="14"></textarea>
-    </div>
-    <p class="modal-resume-note">📎 Attach your resume before sending. Portfolio link can be added to the body.</p>
-    <div class="modal-footer">
-      <button class="btn-modal-copy" onclick="copyModalEmail()">📋 Copy Email</button>
-      <button class="btn-modal-gmail" onclick="openModalInGmail()">📧 Open in Gmail</button>
-      <button class="btn-modal-cancel" onclick="closeEmailModal()">Close</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>
-
