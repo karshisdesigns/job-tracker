@@ -420,7 +420,9 @@ body::before {
 .status-select.status-interviewing { background-color: #FEF3C7; color: #D97706; }
 .status-select.status-offer { background-color: #D1FAE5; color: var(--haring-green); }
 .status-select.status-rejected { background-color: #FEE2E2; color: var(--haring-red); }
+.status-select.status-not-interested { background-color: #F1F1F1; color: #999; }
 .status-select.status-not-started { color: var(--ink-light); }
+.job-card.not-interested-card { opacity: 0.45; }
 .card-btns {
   display: flex;
   flex: 1;
@@ -978,6 +980,10 @@ body::before {
     <span class="legend-swatch" style="background:#D1FAE5;border-color:#6EE7B7;"></span>
     <span class="score-legend-label">Offer</span>
   </div>
+  <div class="legend-color-row">
+    <span class="legend-swatch" style="background:#F1F1F1;border-color:#CCC;opacity:0.5;"></span>
+    <span class="score-legend-label">Not Interested</span>
+  </div>
   <div class="legend-section-title">Gmail Check</div>
   <div class="legend-color-row">
     <span style="font-size:0.75rem;">&#128270;</span>
@@ -1018,6 +1024,7 @@ body::before {
             <button class="filter-btn" onclick="setFilter('not-started', this)">Not Started</button>
             <button class="filter-btn" onclick="setFilter('applied', this)">Applied</button>
             <button class="filter-btn" onclick="setFilter('interviewing', this)">Interviewing</button>
+            <button class="filter-btn" onclick="setFilter('not-interested', this)">Not Interested</button>
             <input type="text" class="search-box" placeholder="Search company or role..." onkeyup="searchCards(this.value)">
         </div>
         <div id="activeCards" class="timeline"></div>
@@ -1775,7 +1782,8 @@ function statusClass(s) {
     'interviewing': 'status-interviewing',
     'offer': 'status-offer',
     'rejected': 'status-rejected',
-    'in-progress': 'status-in-progress'
+    'in-progress': 'status-in-progress',
+    'not-interested': 'status-not-interested'
   };
   return map[s] || 'status-not-started';
 }
@@ -1885,6 +1893,7 @@ function renderJobCard(job) {
             <option value="interviewing" ${js.status==='interviewing'?'selected':''}>Interviewing</option>
             <option value="offer" ${js.status==='offer'?'selected':''}>Offer</option>
             <option value="rejected" ${js.status==='rejected'?'selected':''}>Rejected</option>
+            <option value="not-interested" ${js.status==='not-interested'?'selected':''}>Not Interested</option>
           </select>
           <div class="card-btns">
             <button class="btn-apply" onclick="openEmailModal('${job.id}')">Apply</button>
@@ -2004,6 +2013,7 @@ function renderOutreach() {
                 <option value="interviewing" ${os.status==='interviewing'?'selected':''}>Response</option>
                 <option value="offer" ${os.status==='offer'?'selected':''}>Interview</option>
                 <option value="rejected" ${os.status==='rejected'?'selected':''}>No Interest</option>
+                <option value="not-interested" ${os.status==='not-interested'?'selected':''}>Not Interested</option>
               </select>
               <div class="card-btns">
                 <button class="btn-contact" onclick="openOutreachModal('${o.id}')">Contact</button>
@@ -2103,10 +2113,13 @@ function applyFilter() {
     const title = card.dataset.title || '';
     const matchSearch = !searchTerm || company.includes(searchTerm) || title.includes(searchTerm);
     let matchFilter = true;
-    if (activeFilter === 'not-started') matchFilter = s === 'not-started';
+    if (activeFilter === 'all') matchFilter = s !== 'not-interested';
+    else if (activeFilter === 'not-started') matchFilter = s === 'not-started';
     else if (activeFilter === 'applied') matchFilter = s === 'applied' || s === 'in-progress';
     else if (activeFilter === 'interviewing') matchFilter = s === 'interviewing';
+    else if (activeFilter === 'not-interested') matchFilter = s === 'not-interested';
     card.classList.toggle('hidden', !matchFilter || !matchSearch);
+    card.classList.toggle('not-interested-card', s === 'not-interested');
   });
 }
 function setOutreachFilter(f, btn) {
@@ -2133,9 +2146,11 @@ function applyOutreachFilter() {
 // STATS
 // ─────────────────────────────────────────────────────────
 function updateStats() {
-  let total = JOBS.length, applied = 0, interviewing = 0, offers = 0;
+  let total = 0, applied = 0, interviewing = 0, offers = 0, hidden = 0;
   for (const job of JOBS) {
     const s = getJobState(job.id).status;
+    if (s === 'not-interested') { hidden++; continue; }
+    total++;
     if (s === 'applied' || s === 'in-progress') applied++;
     if (s === 'interviewing') interviewing++;
     if (s === 'offer') offers++;
@@ -2149,6 +2164,7 @@ function updateStats() {
     <div class="stat-pill"><span class="stat-dot" style="background:var(--haring-blue)"></span><strong>${applied}</strong> Applied</div>
     <div class="stat-pill"><span class="stat-dot" style="background:var(--haring-orange)"></span><strong>${interviewing}</strong> Interviewing</div>
     <div class="stat-pill"><span class="stat-dot" style="background:var(--haring-green)"></span><strong>${offers}</strong> Offers</div>
+    ${hidden > 0 ? `<div class="stat-pill" style="opacity:0.5;"><strong>${hidden}</strong> Hidden</div>` : ''}
   `;
 }
 // ─────────────────────────────────────────────────────────
