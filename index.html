@@ -376,6 +376,16 @@ body::before {
 .gmail-verified { background: #D1FAE5; border: 1.5px solid #6EE7B7; color: #065F46; }
 .gmail-sent { background: #FEF3C7; border: 1.5px solid #FCD34D; color: #92400E; }
 .gmail-in-progress { background: #EDE9FE; border: 1.5px solid #C4B5FD; color: #5B21B6; }
+.gmail-clear { background: #F0F4F8; border: 1.5px solid #CBD5E1; color: #64748B; }
+.outreach-gmail-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.outreach-clear { background: #F0F4F8; border: 1.5px solid #CBD5E1; color: #64748B; }
+.outreach-sent { background: #D1FAE5; border: 1.5px solid #6EE7B7; color: #065F46; }
 /* Right: actions */
 .card-actions {
   display: flex;
@@ -967,6 +977,19 @@ body::before {
   <div class="legend-color-row">
     <span class="legend-swatch" style="background:#D1FAE5;border-color:#6EE7B7;"></span>
     <span class="score-legend-label">Offer</span>
+  </div>
+  <div class="legend-section-title">Gmail Check</div>
+  <div class="legend-color-row">
+    <span style="font-size:0.75rem;">&#128270;</span>
+    <span class="score-legend-label">No Prior Contact</span>
+  </div>
+  <div class="legend-color-row">
+    <span style="font-size:0.75rem;">&#9989;</span>
+    <span class="score-legend-label">Verified / Sent</span>
+  </div>
+  <div class="legend-color-row">
+    <span style="font-size:0.75rem;">&#128172;</span>
+    <span class="score-legend-label">Recruiter Active</span>
   </div>
 </div>
 
@@ -1819,11 +1842,13 @@ function renderJobCard(job) {
   const sc = statusClass(js.status);
   let gmailBadge = '';
   if (job.gmailBadge === 'gmail-verified') {
-    gmailBadge = `<span class="gmail-badge gmail-verified">Verified ${job.gmailDate}</span>`;
+    gmailBadge = `<span class="gmail-badge gmail-verified" title="Gmail checked: application confirmed sent and received">&#9989; Verified ${job.gmailDate}</span>`;
   } else if (job.gmailBadge === 'gmail-sent') {
-    gmailBadge = `<span class="gmail-badge gmail-sent">Sent ${job.gmailDate}</span>`;
+    gmailBadge = `<span class="gmail-badge gmail-sent" title="Gmail checked: email was sent but no confirmation reply">&#128228; Sent ${job.gmailDate}</span>`;
   } else if (job.gmailBadge === 'in-progress') {
-    gmailBadge = `<span class="gmail-badge gmail-in-progress">Recruiter Active ${job.gmailDate}</span>`;
+    gmailBadge = `<span class="gmail-badge gmail-in-progress" title="Recruiter conversation in progress">&#128172; Recruiter Active ${job.gmailDate}</span>`;
+  } else {
+    gmailBadge = `<span class="gmail-badge gmail-clear" title="Gmail checked: no prior applications or emails found for this company">&#128270; No Prior Contact</span>`;
   }
   const remoteTag = job.remote !== 'Unknown' ?
     `<span class="meta-tag ${job.remote.toLowerCase().includes('hybrid') ? 'tag-hybrid' : 'tag-remote'}">${job.remote}</span>` : '';
@@ -1921,6 +1946,14 @@ const TYPE_CLASSES = {
   'Design-Build': 'type-designbuild',
   'Entertainment': 'type-entertainment'
 };
+function getOutreachGmailBadge(o, os) {
+  // If already contacted (status beyond not-started), show a "sent" badge
+  if (os.status === 'applied' || os.status === 'interviewing' || os.status === 'offer') {
+    return '<span class="outreach-gmail-badge outreach-sent" title="Email sent to this firm">&#9989; Contacted</span>';
+  }
+  // Otherwise, show that Gmail was checked and no prior contact found
+  return '<span class="outreach-gmail-badge outreach-clear" title="Gmail checked: no prior emails found for this company">&#128270; No Prior Contact</span>';
+}
 function renderOutreach() {
   const container = document.getElementById('outreachCards');
   const sorted = [...OUTREACH].sort((a, b) => b.dateISO.localeCompare(a.dateISO));
@@ -1948,6 +1981,7 @@ function renderOutreach() {
                 <span class="card-date">${o.date}</span>
                 <span class="card-source">${o.source}</span>
                 <span class="firm-type-tag ${typeClass}">${typeLabel}</span>
+                ${getOutreachGmailBadge(o, os)}
               </div>
               <div class="card-row-2">
                 <span class="card-company"><a href="${o.website}" target="_blank" style="color:inherit;text-decoration:none;border-bottom:2px solid var(--haring-blue);">${o.company}</a></span>
