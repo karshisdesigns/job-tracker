@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alex Karshis — Job Search</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
 :root {
@@ -134,7 +136,7 @@ body::before {
 }
 /* ── MAIN ── */
 .main {
-  max-width: 960px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 28px 24px 80px;
 }
@@ -739,6 +741,161 @@ body::before {
 .score5 .score-pip { background: var(--haring-green); color: white; }
 .score4 .score-pip { background: var(--haring-blue); color: white; }
 .score3 .score-pip { background: var(--haring-orange); color: white; }
+
+/* ── STICKY SCORE LEGEND ── */
+.score-legend {
+  position: fixed;
+  top: 120px;
+  right: 18px;
+  z-index: 90;
+  background: white;
+  border: var(--border-thick);
+  box-shadow: var(--shadow-brutal);
+  padding: 14px 16px;
+  width: 170px;
+}
+.score-legend-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--ink-light);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--eames-tan);
+}
+.score-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.score-legend-row:last-child { margin-bottom: 0; }
+.legend-pip {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  border: 2px solid var(--ink);
+  color: white;
+  flex-shrink: 0;
+}
+.legend-pip-5 { background: var(--haring-green); }
+.legend-pip-4 { background: var(--haring-blue); }
+.legend-pip-3 { background: var(--haring-orange); }
+.score-legend-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.legend-color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+.legend-swatch {
+  width: 22px;
+  height: 6px;
+  border: 1.5px solid var(--ink);
+  flex-shrink: 0;
+}
+.legend-section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--ink-light);
+  margin: 10px 0 6px;
+  padding-top: 8px;
+  border-top: 1.5px solid var(--eames-tan);
+}
+/* ── REPEAT COMPANY BADGE ── */
+.repeat-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 1px 7px;
+  background: #FEF3C7;
+  border: 1.5px solid #FCD34D;
+  color: #92400E;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+/* ── MAP CONTAINER ── */
+.map-section {
+  background: white;
+  border: var(--border-thick);
+  box-shadow: var(--shadow-brutal);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.map-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: var(--ink);
+  color: white;
+  border-bottom: 3px solid var(--haring-pink);
+  cursor: pointer;
+}
+.map-section-header h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+.map-toggle-icon {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  transition: transform 0.2s;
+}
+.map-toggle-icon.collapsed { transform: rotate(-90deg); }
+#outreachMap {
+  height: 380px;
+  width: 100%;
+}
+/* Leaflet popup override to match Haring style */
+.leaflet-popup-content-wrapper {
+  border-radius: 0 !important;
+  border: 2px solid var(--ink) !important;
+  box-shadow: 3px 3px 0 var(--ink) !important;
+  font-family: 'DM Sans', sans-serif !important;
+}
+.leaflet-popup-tip {
+  border-radius: 0 !important;
+}
+.map-popup-company {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.map-popup-type {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink-light);
+}
+.map-popup-location {
+  font-size: 0.75rem;
+  color: var(--ink-light);
+  margin-top: 2px;
+}
+/* Hide legend on mobile */
+@media (max-width: 1200px) {
+  .score-legend { display: none; }
+}
     </style>
 </head>
 <body>
@@ -765,6 +922,54 @@ body::before {
     </div>
 </header>
 <div class="main">
+
+<!-- Score Legend Sidebar -->
+<div class="score-legend" id="scoreLegend">
+  <div class="score-legend-title">Fit Score</div>
+  <div class="score-legend-row">
+    <span class="legend-pip legend-pip-5">5</span>
+    <span class="score-legend-label">Excellent Fit</span>
+  </div>
+  <div class="score-legend-row">
+    <span class="legend-pip legend-pip-4">4</span>
+    <span class="score-legend-label">Strong Fit</span>
+  </div>
+  <div class="score-legend-row">
+    <span class="legend-pip legend-pip-3">3</span>
+    <span class="score-legend-label">Moderate Fit</span>
+  </div>
+  <div class="legend-section-title">Card Colors</div>
+  <div class="legend-color-row">
+    <span class="legend-swatch" style="background:var(--haring-green);"></span>
+    <span class="score-legend-label">Score 5</span>
+  </div>
+  <div class="legend-color-row">
+    <span class="legend-swatch" style="background:var(--haring-blue);"></span>
+    <span class="score-legend-label">Score 4</span>
+  </div>
+  <div class="legend-color-row">
+    <span class="legend-swatch" style="background:var(--haring-orange);"></span>
+    <span class="score-legend-label">Score 3</span>
+  </div>
+  <div class="legend-color-row">
+    <span class="legend-swatch" style="background:var(--haring-pink);"></span>
+    <span class="score-legend-label">Outreach</span>
+  </div>
+  <div class="legend-section-title">Status</div>
+  <div class="legend-color-row">
+    <span class="legend-swatch" style="background:#DBEAFE;border-color:#93C5FD;"></span>
+    <span class="score-legend-label">Applied</span>
+  </div>
+  <div class="legend-color-row">
+    <span class="legend-swatch" style="background:#FEF3C7;border-color:#FCD34D;"></span>
+    <span class="score-legend-label">Interviewing</span>
+  </div>
+  <div class="legend-color-row">
+    <span class="legend-swatch" style="background:#D1FAE5;border-color:#6EE7B7;"></span>
+    <span class="score-legend-label">Offer</span>
+  </div>
+</div>
+
     <!-- Active Tab -->
     <div id="tab-active">
         <div class="progress-section">
@@ -796,6 +1001,17 @@ body::before {
     </div>
     <!-- Outreach Tab -->
     <div id="tab-outreach" style="display:none;">
+
+        <!-- Outreach Map -->
+        <div class="map-section" id="mapSection">
+          <div class="map-section-header" onclick="toggleMap()">
+            <h3>Chicago Firm Map</h3>
+            <span class="map-toggle-icon" id="mapToggleIcon">&#9660;</span>
+          </div>
+          <div id="mapWrapper">
+            <div id="outreachMap"></div>
+          </div>
+        </div>
         <div class="filter-bar">
             <span class="filter-label">Type:</span>
             <button class="filter-btn active" onclick="setOutreachFilter('all', this)">All</button>
@@ -1543,6 +1759,36 @@ function parseMonth(isoDate) {
   const d = new Date(isoDate + 'T12:00:00');
   return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 }
+
+// ─────────────────────────────────────────────────────────
+// REPEAT COMPANY DETECTION
+// ─────────────────────────────────────────────────────────
+function buildCompanyCount() {
+  const counts = {};
+  for (const job of JOBS) {
+    const key = job.company.toLowerCase().trim();
+    if (!counts[key]) counts[key] = [];
+    counts[key].push(job);
+  }
+  // Also check outreach for same company
+  for (const o of OUTREACH) {
+    const key = o.company.toLowerCase().trim();
+    if (!counts[key]) counts[key] = [];
+    counts[key].push({...o, _isOutreach: true});
+  }
+  return counts;
+}
+const COMPANY_COUNTS = buildCompanyCount();
+function getRepeatBadge(company, currentId) {
+  const key = company.toLowerCase().trim();
+  const entries = COMPANY_COUNTS[key];
+  if (!entries || entries.length <= 1) return '';
+  const others = entries.filter(e => e.id !== currentId);
+  const count = others.length;
+  const types = others.map(e => e._isOutreach ? 'outreach' : e.title).join(', ');
+  return '<span class="repeat-badge" title="Also: ' + types.replace(/"/g, '&quot;') + '">&#8617; ' + count + 'x at co.</span>';
+}
+
 function renderJobs() {
   const container = document.getElementById('activeCards');
   // Sort by posted date descending
@@ -1594,6 +1840,7 @@ function renderJobCard(job) {
           </div>
           <div class="card-row-2">
             <span class="card-company">${job.company}</span>
+            ${getRepeatBadge(job.company, job.id)}
             <span class="card-salary">${job.salary}</span>
           </div>
           <div class="card-row-3">
@@ -1704,6 +1951,7 @@ function renderOutreach() {
               </div>
               <div class="card-row-2">
                 <span class="card-company">${o.company}</span>
+                ${getRepeatBadge(o.company, o.id)}
               </div>
               <div class="card-row-3">
                 <span class="card-address">${o.location}</span>
@@ -1737,9 +1985,10 @@ function renderOutreach() {
               <div class="detail-label">Portfolio Angle</div>
               <div class="detail-value" style="font-style:italic;">${o.angle}</div>
             </div>
+            ${getOutreachDraftPreview(o.id, o)}
             <div class="detail-row">
               <div class="detail-label">Date Contacted</div>
-              <input class="date-applied-input" type="text" placeholder="e.g. March 17, 2026" value="${os.dateContacted || ''}" onchange="setOutreachField('${o.id}', 'dateContacted', this.value)">
+              <input class="date-applied-input" type="text" id="date-oc-${o.id}" placeholder="Auto-filled when contacted" value="${os.dateContacted || ''}" ${os.dateContacted ? 'readonly style="background:#f0f0f0;color:var(--ink-light);"' : ''} onchange="setOutreachField('${o.id}', 'dateContacted', this.value)">
             </div>
             <div class="detail-row">
               <div class="detail-label">Notes</div>
@@ -1753,11 +2002,37 @@ function renderOutreach() {
   container.innerHTML = html;
   applyOutreachFilter();
 }
+function getOutreachDraftPreview(outreachId, o) {
+  const draft = OUTREACH_DRAFTS[outreachId];
+  if (!draft) return '';
+  const escapedBody = draft.body.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+  return `
+    <div class="detail-row">
+      <div class="detail-label">Draft Email</div>
+      <div class="role-sketch-box" style="border-left-color:var(--haring-pink);">
+        <div style="font-size:0.72rem;color:var(--ink-light);margin-bottom:6px;font-weight:700;">
+          To: ${draft.to || o.contact}<br>
+          Subject: ${draft.subject}
+        </div>
+        <div style="font-size:0.84rem;line-height:1.6;">${escapedBody}</div>
+      </div>
+    </div>`;
+}
 function updateOutreachStatus(id, sel) {
   const val = sel.value;
   setOutreachField(id, 'status', val);
   sel.className = 'status-select ' + statusClass(val);
   document.getElementById('oc-' + id).dataset.contacted = val;
+  // Auto-stamp date when switching to contacted statuses
+  const dateInput = document.getElementById('date-oc-' + id);
+  if (dateInput && !dateInput.value && (val === 'applied' || val === 'interviewing' || val === 'offer')) {
+    const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    dateInput.value = today;
+    dateInput.readOnly = true;
+    dateInput.style.background = '#f0f0f0';
+    dateInput.style.color = 'var(--ink-light)';
+    setOutreachField(id, 'dateContacted', today);
+  }
 }
 function toggleAgeFilter(btn) {
   hideOldOutreach = !hideOldOutreach;
@@ -1938,6 +2213,114 @@ function openModalInGmail() {
   const body = encodeURIComponent(document.getElementById('modalBody').value);
   window.open('https://mail.google.com/mail/?view=cm&to=' + to + '&su=' + subject + '&body=' + body, '_blank');
 }
+
+// ─────────────────────────────────────────────────────────
+// OUTREACH MAP (Leaflet + OpenStreetMap)
+// ─────────────────────────────────────────────────────────
+let outreachMap = null;
+let mapVisible = true;
+
+// Approximate geocode lookup for Chicago neighborhoods
+const CHICAGO_COORDS = {
+  'roscoe village': [41.9430, -87.6800],
+  'lakeview': [41.9418, -87.6558],
+  'lincoln park': [41.9214, -87.6513],
+  'loop': [41.8819, -87.6278],
+  'west loop': [41.8827, -87.6485],
+  'river north': [41.8926, -87.6340],
+  'fulton market': [41.8862, -87.6516],
+  'logan square': [41.9236, -87.7067],
+  'wicker park': [41.9088, -87.6796],
+  'bucktown': [41.9211, -87.6798],
+  'ravenswood': [41.9745, -87.6742],
+  'andersonville': [41.9797, -87.6684],
+  'gold coast': [41.9039, -87.6271],
+  'streeterville': [41.8924, -87.6206],
+  'south loop': [41.8657, -87.6268],
+  'pilsen': [41.8523, -87.6616],
+  'hyde park': [41.7943, -87.5907],
+  'evanston': [42.0451, -87.6877],
+  'oak brook': [41.8328, -87.9289],
+  'chicago': [41.8781, -87.6298],
+  'chicago, il': [41.8781, -87.6298],
+};
+
+function geocodeOutreach(location) {
+  const loc = (location || '').toLowerCase();
+  for (const [key, coords] of Object.entries(CHICAGO_COORDS)) {
+    if (loc.includes(key)) return coords;
+  }
+  // Default: scatter around central Chicago with some randomness
+  return [41.8781 + (Math.random() - 0.5) * 0.04, -87.6298 + (Math.random() - 0.5) * 0.04];
+}
+
+const TYPE_COLORS = {
+  'Architecture': '#0072CE',
+  'GC': '#FF6B2B',
+  'Corporate': '#7C3AED',
+  'RealEstate': '#D97706',
+  'Design-Build': '#00A651',
+  'Entertainment': '#E4312B'
+};
+
+function initMap() {
+  if (outreachMap) return;
+  outreachMap = L.map('outreachMap').setView([41.92, -87.67], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap',
+    maxZoom: 18
+  }).addTo(outreachMap);
+
+  // Add home marker (Roscoe Village)
+  const homeIcon = L.divIcon({
+    html: '<div style="background:var(--haring-yellow);border:2px solid #1A1A1A;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:14px;">&#127968;</div>',
+    iconSize: [28, 28],
+    className: ''
+  });
+  L.marker([41.9430, -87.6800], {icon: homeIcon}).addTo(outreachMap)
+    .bindPopup('<div class="map-popup-company">Home Base</div><div class="map-popup-location">Roscoe Village</div>');
+
+  // Add outreach firm markers
+  for (const o of OUTREACH) {
+    const coords = geocodeOutreach(o.location);
+    const color = TYPE_COLORS[o.type] || '#0072CE';
+    const typeLabel = o.type === 'RealEstate' ? 'Real Estate' : o.type;
+    const icon = L.divIcon({
+      html: '<div style="background:' + color + ';border:2px solid #1A1A1A;width:14px;height:14px;"></div>',
+      iconSize: [14, 14],
+      className: ''
+    });
+    L.marker(coords, {icon: icon}).addTo(outreachMap)
+      .bindPopup(
+        '<div class="map-popup-company">' + o.company + '</div>' +
+        '<div class="map-popup-type">' + typeLabel + '</div>' +
+        '<div class="map-popup-location">' + o.location + '</div>'
+      );
+  }
+}
+
+function toggleMap() {
+  const wrapper = document.getElementById('mapWrapper');
+  const icon = document.getElementById('mapToggleIcon');
+  mapVisible = !mapVisible;
+  wrapper.style.display = mapVisible ? '' : 'none';
+  icon.classList.toggle('collapsed', !mapVisible);
+  if (mapVisible && outreachMap) {
+    setTimeout(() => outreachMap.invalidateSize(), 100);
+  }
+}
+
+// Show/hide legend based on active tab
+const origShowTab = showTab;
+showTab = function(tab) {
+  origShowTab(tab);
+  const legend = document.getElementById('scoreLegend');
+  if (legend) legend.style.display = tab === 'active' ? '' : 'none';
+  if (tab === 'outreach' && !outreachMap) {
+    setTimeout(initMap, 100);
+  }
+};
+
 // ─────────────────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────────────────
