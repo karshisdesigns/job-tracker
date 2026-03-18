@@ -1950,15 +1950,15 @@ function renderOutreach() {
                 <span class="firm-type-tag ${typeClass}">${typeLabel}</span>
               </div>
               <div class="card-row-2">
-                <span class="card-company">${o.company}</span>
+                <span class="card-company"><a href="${o.website}" target="_blank" style="color:inherit;text-decoration:none;border-bottom:2px solid var(--haring-blue);">${o.company}</a></span>
                 ${getRepeatBadge(o.company, o.id)}
               </div>
               <div class="card-row-3">
-                <span class="card-address">${o.location}</span>
+                <span class="card-address"><a href="https://www.google.com/maps/search/${encodeURIComponent(o.company + ' ' + o.location)}" target="_blank" style="color:inherit;text-decoration:none;" title="Open in Google Maps">&#128205; ${o.location}</a></span>
               </div>
               <div class="card-tags">
-                <span class="meta-tag"><a href="${o.website}" target="_blank" style="color:inherit;text-decoration:none;">${o.website.replace('https://','')}</a></span>
-                ${o.contact.includes('@') ? `<span class="meta-tag">${o.contact}</span>` : ''}
+                <span class="meta-tag"><a href="${o.website}" target="_blank" style="color:var(--haring-blue);text-decoration:none;font-weight:700;">&#127760; Website</a></span>
+                ${o.contact.includes('@') ? `<span class="meta-tag"><a href="mailto:${o.contact}" style="color:inherit;text-decoration:none;">&#9993; ${o.contact}</a></span>` : `<span class="meta-tag"><a href="${o.contact}" target="_blank" style="color:inherit;text-decoration:none;">&#128279; Contact</a></span>`}
               </div>
             </div>
             <div class="card-actions">
@@ -1977,6 +1977,14 @@ function renderOutreach() {
             </div>
           </div>
           <div class="card-details" id="details-oc${o.id}">
+            <div class="detail-row">
+              <div class="detail-label">Links</div>
+              <div class="detail-value">
+                <a href="${o.website}" target="_blank">${o.company} Website</a>
+                &middot; <a href="https://www.google.com/maps/search/${encodeURIComponent(o.company + ' ' + o.location)}" target="_blank">Google Maps</a>
+                ${o.contact.includes('@') ? ' &middot; <a href="mailto:' + o.contact + '">' + o.contact + '</a>' : ''}
+              </div>
+            </div>
             <div class="detail-row">
               <div class="detail-label">Why Reach Out</div>
               <div class="role-sketch-box">${o.why}</div>
