@@ -755,6 +755,47 @@ body::before {
 .score3 .score-pip { background: var(--haring-orange); color: white; }
 
 /* ── STICKY SCORE LEGEND ── */
+.interview-box {
+  position: fixed;
+  top: 120px;
+  right: 18px;
+  z-index: 91;
+  background: #FEF3C7;
+  border: var(--border-thick);
+  box-shadow: var(--shadow-brutal);
+  padding: 12px 16px;
+  width: 170px;
+}
+.interview-box-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #D97706;
+  margin-bottom: 8px;
+}
+.interview-box-item {
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #FCD34D;
+}
+.interview-box-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.interview-box-company {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.interview-box-date {
+  font-size: 0.72rem;
+  color: #92400E;
+  margin-top: 2px;
+}
 .score-legend {
   position: fixed;
   top: 120px;
@@ -907,6 +948,7 @@ body::before {
 /* Hide legend on mobile */
 @media (max-width: 1200px) {
   .score-legend { display: none; }
+  .interview-box { display: none; }
 }
     </style>
 </head>
@@ -936,6 +978,7 @@ body::before {
 <div class="main">
 
 <!-- Score Legend Sidebar -->
+<div class="interview-box" id="interviewBox"></div>
 <div class="score-legend" id="scoreLegend">
   <div class="score-legend-title">Fit Score</div>
   <div class="score-legend-row">
@@ -1972,6 +2015,7 @@ function updateStatus(id, sel) {
   sel.className = 'status-select ' + statusClass(val);
   document.getElementById('card-' + id).dataset.status = val;
   applyFilter();
+  updateInterviewBox();
 }
 // ─────────────────────────────────────────────────────────
 // RENDER OUTREACH
@@ -2196,6 +2240,49 @@ function updateStats() {
   `;
 }
 // ─────────────────────────────────────────────────────────
+// UPCOMING INTERVIEWS
+// ─────────────────────────────────────────────────────────
+function updateInterviewBox() {
+  const box = document.getElementById('interviewBox');
+  if (!box) return;
+  const interviews = [];
+  for (const job of JOBS) {
+    const s = getJobState(job.id).status;
+    if (s === 'interviewing' && job.deadline) {
+      const dateMatch = job.deadline.match(/(\w+ \d+, \d{4})/);
+      const timeMatch = job.deadline.match(/(\d+:\d+\s*[ap]m)/i);
+      if (dateMatch) {
+        const d = new Date(dateMatch[1]);
+        interviews.push({
+          company: job.company,
+          date: d,
+          dateStr: dateMatch[1],
+          timeStr: timeMatch ? timeMatch[1] : '',
+          detail: job.deadline
+        });
+      }
+    }
+  }
+  interviews.sort((a, b) => a.date - b.date);
+  if (interviews.length === 0) {
+    box.style.display = 'none';
+    document.getElementById('scoreLegend').style.top = '120px';
+    return;
+  }
+  let html = '<div class="interview-box-title">Upcoming Interviews</div>';
+  for (const iv of interviews) {
+    const dayName = iv.date.toLocaleDateString('en-US', { weekday: 'short' });
+    html += `<div class="interview-box-item">
+      <div class="interview-box-company">${iv.company}</div>
+      <div class="interview-box-date">${dayName}, ${iv.dateStr}${iv.timeStr ? ' at ' + iv.timeStr : ''}</div>
+    </div>`;
+  }
+  box.innerHTML = html;
+  box.style.display = '';
+  const boxHeight = box.offsetHeight;
+  document.getElementById('scoreLegend').style.top = (120 + boxHeight + 14) + 'px';
+}
+// ─────────────────────────────────────────────────────────
 // TABS
 // ─────────────────────────────────────────────────────────
 function showTab(tab) {
@@ -2417,6 +2504,7 @@ showTab = function(tab) {
 renderJobs();
 renderOutreach();
 updateStats();
+updateInterviewBox();
 </script>
 </body>
 </html>
