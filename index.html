@@ -2052,7 +2052,7 @@ function renderJobCard(job) {
             ${gmailBadge}
           </div>
           <div class="card-row-2">
-            <span class="card-company">${job.company}</span>\${job.cannabis ? '<span class="cannabis-leaf" title="Cannabis Industry">&#127807;</span>' : ''}
+            <span class="card-company">${job.company}</span>${job.cannabis ? '<span class="cannabis-leaf" title="Cannabis Industry">&#127807;</span>' : ''}
             ${getRepeatBadge(job.company, job.id)}
             <span class="card-salary">${job.salary}</span>
           </div>
