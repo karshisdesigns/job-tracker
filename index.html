@@ -423,6 +423,52 @@ body::before {
 .status-select.status-not-interested { background-color: #F1F1F1; color: #999; }
 .status-select.status-not-started { color: var(--ink-light); }
 .job-card.not-interested-card { opacity: 0.45; }
+
+/* ── SOCIAL MEDIA LEADS ── */
+.social-card {
+  background: white;
+  border: var(--border-thick);
+  box-shadow: var(--shadow-brutal);
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.social-card .card-color-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: #7C3AED;
+}
+.social-card.source-linkedin .card-color-bar { background: #0A66C2; }
+.social-card.source-facebook .card-color-bar { background: #1877F2; }
+.social-card.source-craigslist .card-color-bar { background: #5B1A8E; }
+.social-source-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border: 2px solid var(--ink);
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge-linkedin { background: #0A66C2; color: white; }
+.badge-facebook { background: #1877F2; color: white; }
+.badge-craigslist { background: #5B1A8E; color: white; }
+.social-poster {
+  font-size: 0.82rem;
+  color: var(--ink-light);
+  font-style: italic;
+}
+.social-time {
+  font-size: 0.72rem;
+  color: #999;
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
+}
+
 /* ── CANNABIS INDUSTRY BADGE ── */
 .cannabis-leaf {
   display: inline-block;
@@ -994,6 +1040,7 @@ body::before {
     <div class="tabs">
         <button class="tab-btn active" onclick="showTab('active')">Active Postings</button>
         <button class="tab-btn" onclick="showTab('outreach')">Cold Outreach</button>
+        <button class="tab-btn" onclick="showTab('social')">Social Media Leads</button>
     </div>
 </header>
 <div class="main">
@@ -1115,6 +1162,21 @@ body::before {
             <button class="filter-btn" onclick="toggleAgeFilter(this)">Last 30 Days</button>
         </div>
         <div id="outreachCards" class="timeline"></div>
+    </div>
+    <!-- Social Media Leads Tab -->
+    <div id="tab-social" style="display:none;">
+        <div class="progress-section" style="padding: 14px 18px;">
+            <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Social Media Job Leads</div>
+            <div style="font-size: 0.82rem; color: var(--ink-light);">Posts from LinkedIn, Facebook, and Craigslist in the last 48 hours where someone is hiring or a firm you should know about is looking for help. Updated daily at 9am.</div>
+        </div>
+        <div class="filter-bar">
+            <span class="filter-label">Source:</span>
+            <button class="filter-btn active" onclick="setSocialFilter('all', this)">All</button>
+            <button class="filter-btn" onclick="setSocialFilter('linkedin', this)">LinkedIn</button>
+            <button class="filter-btn" onclick="setSocialFilter('facebook', this)">Facebook</button>
+            <button class="filter-btn" onclick="setSocialFilter('craigslist', this)">Craigslist</button>
+        </div>
+        <div id="socialCards" class="timeline"></div>
     </div>
 </div>
 <!-- Apply / Email Modal -->
@@ -1919,6 +1981,13 @@ const OUTREACH_DRAFTS = {
   },
 };
 // ─────────────────────────────────────────────────────────
+// SOCIAL MEDIA LEADS
+// ─────────────────────────────────────────────────────────
+const SOCIAL_LEADS = [
+  // Populated by the daily scheduled task
+  // Each entry: { id, source ('linkedin'|'facebook'|'craigslist'), poster, posterTitle, company, role, snippet, link, postedTime, postedISO, score, cannabis }
+];
+// ─────────────────────────────────────────────────────────
 // STATE
 // ─────────────────────────────────────────────────────────
 const STORAGE_KEY = 'alex_job_search_v2';
@@ -1950,6 +2019,51 @@ function setOutreachField(id, field, value) {
   if (!state[key]) state[key] = getOutreachState(id);
   state[key][field] = value;
   saveState(state);
+}
+
+// ─────────────────────────────────────────────────────────
+// SOCIAL MEDIA LEADS
+// ─────────────────────────────────────────────────────────
+let socialFilter = 'all';
+function setSocialFilter(f, btn) {
+  socialFilter = f;
+  document.querySelectorAll('#tab-social .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSocialLeads();
+}
+function renderSocialLeads() {
+  const container = document.getElementById('socialCards');
+  if (SOCIAL_LEADS.length === 0) {
+    container.innerHTML = '<div style="text-align:center; padding: 40px 20px; color: var(--ink-light); font-size: 0.9rem;">No social media leads yet. The daily 9am search will populate this tab with LinkedIn, Facebook, and Craigslist posts from people hiring in your field.</div>';
+    return;
+  }
+  const filtered = SOCIAL_LEADS.filter(s => socialFilter === 'all' || s.source === socialFilter);
+  let html = '';
+  for (const lead of filtered) {
+    const sourceClass = 'source-' + lead.source;
+    const badgeClass = 'badge-' + lead.source;
+    const sourceName = lead.source.charAt(0).toUpperCase() + lead.source.slice(1);
+    const cannabisTag = lead.cannabis ? '<span class="cannabis-tag">&#127807; Cannabis</span>' : '';
+    html += '<div class="social-card ' + sourceClass + '">';
+    html += '<div class="card-color-bar"></div>';
+    html += '<div style="padding-left: 12px;">';
+    html += '<div style="display:flex; gap:8px; align-items:center; margin-bottom:6px; flex-wrap:wrap;">';
+    html += '<span class="social-source-badge ' + badgeClass + '">' + sourceName + '</span>';
+    html += '<span class="social-time">' + lead.postedTime + '</span>';
+    if (lead.score) html += '<span class="score-pip">' + lead.score + '</span>';
+    html += cannabisTag;
+    html += '</div>';
+    html += '<div style="margin-bottom:4px;"><strong style="font-family:Space Grotesk,sans-serif; text-transform:uppercase; letter-spacing:0.3px;">' + (lead.company || '') + '</strong>';
+    if (lead.role) html += ' <span style="color:var(--haring-blue); font-weight:600;">' + lead.role + '</span>';
+    html += '</div>';
+    html += '<div class="social-poster">Posted by: ' + lead.poster + (lead.posterTitle ? ' - ' + lead.posterTitle : '') + '</div>';
+    html += '<div style="font-size:0.85rem; margin-top:6px; color:var(--ink);">' + lead.snippet + '</div>';
+    html += '<div style="margin-top:8px; display:flex; gap:8px;">';
+    if (lead.link) html += '<a href="' + lead.link + '" target="_blank" class="btn-apply" style="text-decoration:none; font-size:0.78rem; padding:4px 12px;">View Post</a>';
+    html += '</div>';
+    html += '</div></div>';
+  }
+  container.innerHTML = html;
 }
 // ─────────────────────────────────────────────────────────
 // RENDER — TIMELINE GROUPED BY DATE
@@ -2125,6 +2239,51 @@ function updateStatus(id, sel) {
   document.getElementById('card-' + id).dataset.status = val;
   applyFilter();
   updateInterviewBox();
+}
+
+// ─────────────────────────────────────────────────────────
+// SOCIAL MEDIA LEADS
+// ─────────────────────────────────────────────────────────
+let socialFilter = 'all';
+function setSocialFilter(f, btn) {
+  socialFilter = f;
+  document.querySelectorAll('#tab-social .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSocialLeads();
+}
+function renderSocialLeads() {
+  const container = document.getElementById('socialCards');
+  if (SOCIAL_LEADS.length === 0) {
+    container.innerHTML = '<div style="text-align:center; padding: 40px 20px; color: var(--ink-light); font-size: 0.9rem;">No social media leads yet. The daily 9am search will populate this tab with LinkedIn, Facebook, and Craigslist posts from people hiring in your field.</div>';
+    return;
+  }
+  const filtered = SOCIAL_LEADS.filter(s => socialFilter === 'all' || s.source === socialFilter);
+  let html = '';
+  for (const lead of filtered) {
+    const sourceClass = 'source-' + lead.source;
+    const badgeClass = 'badge-' + lead.source;
+    const sourceName = lead.source.charAt(0).toUpperCase() + lead.source.slice(1);
+    const cannabisTag = lead.cannabis ? '<span class="cannabis-tag">&#127807; Cannabis</span>' : '';
+    html += '<div class="social-card ' + sourceClass + '">';
+    html += '<div class="card-color-bar"></div>';
+    html += '<div style="padding-left: 12px;">';
+    html += '<div style="display:flex; gap:8px; align-items:center; margin-bottom:6px; flex-wrap:wrap;">';
+    html += '<span class="social-source-badge ' + badgeClass + '">' + sourceName + '</span>';
+    html += '<span class="social-time">' + lead.postedTime + '</span>';
+    if (lead.score) html += '<span class="score-pip">' + lead.score + '</span>';
+    html += cannabisTag;
+    html += '</div>';
+    html += '<div style="margin-bottom:4px;"><strong style="font-family:Space Grotesk,sans-serif; text-transform:uppercase; letter-spacing:0.3px;">' + (lead.company || '') + '</strong>';
+    if (lead.role) html += ' <span style="color:var(--haring-blue); font-weight:600;">' + lead.role + '</span>';
+    html += '</div>';
+    html += '<div class="social-poster">Posted by: ' + lead.poster + (lead.posterTitle ? ' - ' + lead.posterTitle : '') + '</div>';
+    html += '<div style="font-size:0.85rem; margin-top:6px; color:var(--ink);">' + lead.snippet + '</div>';
+    html += '<div style="margin-top:8px; display:flex; gap:8px;">';
+    if (lead.link) html += '<a href="' + lead.link + '" target="_blank" class="btn-apply" style="text-decoration:none; font-size:0.78rem; padding:4px 12px;">View Post</a>';
+    html += '</div>';
+    html += '</div></div>';
+  }
+  container.innerHTML = html;
 }
 // ─────────────────────────────────────────────────────────
 // RENDER OUTREACH
@@ -2397,9 +2556,11 @@ function updateInterviewBox() {
 function showTab(tab) {
   document.getElementById('tab-active').style.display = tab === 'active' ? '' : 'none';
   document.getElementById('tab-outreach').style.display = tab === 'outreach' ? '' : 'none';
+  document.getElementById('tab-social').style.display = tab === 'social' ? '' : 'none';
   document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    b.classList.toggle('active', (i === 0 && tab === 'active') || (i === 1 && tab === 'outreach'));
+    b.classList.toggle('active', (i === 0 && tab === 'active') || (i === 1 && tab === 'outreach') || (i === 2 && tab === 'social'));
   });
+  if (tab === 'social') renderSocialLeads();
 }
 // ─────────────────────────────────────────────────────────
 // EMAIL MODAL
