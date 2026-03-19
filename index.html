@@ -1084,8 +1084,8 @@ body::before {
         </div>
         <div class="filter-bar">
             <span class="filter-label">Status:</span>
-            <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-            <button class="filter-btn" onclick="setFilter('not-started', this)">Not Started</button>
+            <button class="filter-btn" onclick="setFilter('all', this)">All</button>
+            <button class="filter-btn active" onclick="setFilter('not-started', this)">Not Started</button>
             <button class="filter-btn" onclick="setFilter('applied', this)">Applied</button>
             <button class="filter-btn" onclick="setFilter('interviewing', this)">Interviewing</button>
             <button class="filter-btn" onclick="setFilter('not-interested', this)">Not Interested</button>
@@ -1928,7 +1928,7 @@ function loadState() {
 }
 function saveState(s) { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
 let state = loadState();
-let activeFilter = 'all';
+let activeFilter = 'not-started';
 let searchTerm = '';
 let outreachFilter = 'all';
 let hideOldOutreach = true;
