@@ -423,52 +423,6 @@ body::before {
 .status-select.status-not-interested { background-color: #F1F1F1; color: #999; }
 .status-select.status-not-started { color: var(--ink-light); }
 .job-card.not-interested-card { opacity: 0.45; }
-
-/* ── SOCIAL MEDIA LEADS ── */
-.social-card {
-  background: white;
-  border: var(--border-thick);
-  box-shadow: var(--shadow-brutal);
-  padding: 14px 18px;
-  margin-bottom: 14px;
-  position: relative;
-  overflow: hidden;
-}
-.social-card .card-color-bar {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 6px;
-  background: #7C3AED;
-}
-.social-card.source-linkedin .card-color-bar { background: #0A66C2; }
-.social-card.source-facebook .card-color-bar { background: #1877F2; }
-.social-card.source-craigslist .card-color-bar { background: #5B1A8E; }
-.social-source-badge {
-  font-size: 0.68rem;
-  font-weight: 700;
-  padding: 2px 8px;
-  border: 2px solid var(--ink);
-  font-family: 'Space Grotesk', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.badge-linkedin { background: #0A66C2; color: white; }
-.badge-facebook { background: #1877F2; color: white; }
-.badge-craigslist { background: #5B1A8E; color: white; }
-.social-poster {
-  font-size: 0.82rem;
-  color: var(--ink-light);
-  font-style: italic;
-}
-.social-time {
-  font-size: 0.72rem;
-  color: #999;
-  font-family: 'Space Grotesk', sans-serif;
-  text-transform: uppercase;
-}
-
 /* ── CANNABIS INDUSTRY BADGE ── */
 .cannabis-leaf {
   display: inline-block;
@@ -1040,7 +994,6 @@ body::before {
     <div class="tabs">
         <button class="tab-btn active" onclick="showTab('active')">Active Postings</button>
         <button class="tab-btn" onclick="showTab('outreach')">Cold Outreach</button>
-        <button class="tab-btn" onclick="showTab('social')">Social Media Leads</button>
     </div>
 </header>
 <div class="main">
@@ -1163,21 +1116,6 @@ body::before {
         </div>
         <div id="outreachCards" class="timeline"></div>
     </div>
-    <!-- Social Media Leads Tab -->
-    <div id="tab-social" style="display:none;">
-        <div class="progress-section" style="padding: 14px 18px;">
-            <div style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Social Media Job Leads</div>
-            <div style="font-size: 0.82rem; color: var(--ink-light);">Posts from LinkedIn, Facebook, and Craigslist in the last 48 hours where someone is hiring or a firm you should know about is looking for help. Updated daily at 9am.</div>
-        </div>
-        <div class="filter-bar">
-            <span class="filter-label">Source:</span>
-            <button class="filter-btn active" onclick="setSocialFilter('all', this)">All</button>
-            <button class="filter-btn" onclick="setSocialFilter('linkedin', this)">LinkedIn</button>
-            <button class="filter-btn" onclick="setSocialFilter('facebook', this)">Facebook</button>
-            <button class="filter-btn" onclick="setSocialFilter('craigslist', this)">Craigslist</button>
-        </div>
-        <div id="socialCards" class="timeline"></div>
-    </div>
 </div>
 <!-- Apply / Email Modal -->
 <div class="modal-overlay" id="emailModal" onclick="handleModalOverlayClick(event)">
@@ -1232,30 +1170,7 @@ const JOBS = [
       applyLink: 'https://aiachicago.org/job-board/',
       postingLink: 'https://aiachicago.org/job-board/',
       firmWebsite: '',
-      roleSketch: 'Project Architect at Studio ARQ in Chicago. Posted March 18 on AIA Chicago board. Great match for Alex\'s Revit documentation and PM experience.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-    {
-      id: 'waremalcomb',
-      company: 'Ware Malcomb',
-      title: 'Job Captain',
-      score: 5,
-      salary: '$60,000 - $75,000',
-      location: 'Oak Brook, IL',
-      address: 'Oak Brook, IL',
-      remote: 'On-site',
-      posted: 'March 17, 2026',
-      postedISO: '2026-03-17',
-      source: 'AIA Chicago / Indeed',
-      deadline: '',
-      howToApply: 'Apply via AIA Chicago or Indeed',
-      applyLink: 'https://to.indeed.com/aa7x8bmjdz8j',
-      postingLink: 'https://aiachicago.org/job-board/',
-      firmWebsite: 'https://waremalcomb.com',
-      roleSketch: 'Job Captain at Ware Malcomb, a major national firm with strong commercial TI work. Oak Brook location. Good Revit documentation match.',
+      roleSketch: 'Project Architect at Studio ARQ in Chicago. Posted March 18 on AIA Chicago board. Great match for Revit documentation and PM experience.',
       defaultStatus: 'not-started',
       gmailStatus: '',
       gmailDate: '',
@@ -1278,7 +1193,7 @@ const JOBS = [
       applyLink: 'https://aiachicago.org/job-board/',
       postingLink: 'https://aiachicago.org/job-board/',
       firmWebsite: '',
-      roleSketch: 'Project Architect at Thomas Architects in Des Plaines. Listed as \'Extraordinary Project Architect\' - suggests a firm that values personality and initiative.',
+      roleSketch: 'Project Architect at Thomas Architects in Des Plaines. Listed as Extraordinary Project Architect - suggests a firm that values personality.',
       defaultStatus: 'not-started',
       gmailStatus: '',
       gmailDate: '',
@@ -1301,7 +1216,7 @@ const JOBS = [
       applyLink: 'https://to.indeed.com/aa4rlpjbnnwn',
       postingLink: 'https://to.indeed.com/aa4rlpjbnnwn',
       firmWebsite: 'https://farnsworthgroup.com',
-      roleSketch: 'Architectural PM at Farnsworth Group Healthcare Studio. Strong salary range $88K-$115K. Healthcare is a growth sector. Posted March 18.',
+      roleSketch: 'Architectural PM at Farnsworth Group Healthcare Studio. Strong salary $88K-$115K. Healthcare is a growth sector. Posted March 18.',
       defaultStatus: 'not-started',
       gmailStatus: '',
       gmailDate: '',
@@ -1310,7 +1225,7 @@ const JOBS = [
     {
       id: 'silhouette',
       company: 'Silhouette Design Architecture',
-      title: 'Architectural PM - Retail & Restaurant',
+      title: 'Architectural PM - Retail and Restaurant',
       score: 5,
       salary: '$65,100 - $120,000',
       location: 'Chicago, IL',
@@ -1370,53 +1285,7 @@ const JOBS = [
       applyLink: 'https://to.indeed.com/aavfbnlhzcgk',
       postingLink: 'https://to.indeed.com/aavfbnlhzcgk',
       firmWebsite: '',
-      roleSketch: 'Construction PM at Accel Construction. Solid salary $85K-$105K. Posted March 17 - very fresh. Good fit for PM skills and construction knowledge.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-    {
-      id: 'skender',
-      company: 'Skender',
-      title: 'Project Manager',
-      score: 4,
-      salary: 'Not listed',
-      location: 'Chicago, IL',
-      address: '1330 W Fulton Market, Chicago, IL',
-      remote: 'On-site',
-      posted: 'Active',
-      postedISO: '2026-03-19',
-      source: 'Company website',
-      deadline: '',
-      howToApply: 'Apply via Skender careers page',
-      applyLink: 'https://www.skender.com/current-openings/',
-      postingLink: 'https://www.skender.com/current-openings/',
-      firmWebsite: 'https://www.skender.com',
-      roleSketch: 'PM at Skender, one of Chicago\'s top GCs known for modular/innovative construction. Also has APM and Senior PM openings. Great culture fit opportunity.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-    {
-      id: 'farr',
-      company: 'Farr Associates',
-      title: 'Project Architect',
-      score: 4,
-      salary: 'Not listed',
-      location: 'Chicago, IL',
-      address: 'Chicago, IL',
-      remote: 'On-site',
-      posted: 'March 6, 2026',
-      postedISO: '2026-03-06',
-      source: 'AIA Chicago',
-      deadline: '',
-      howToApply: 'Apply via AIA Chicago',
-      applyLink: 'https://aiachicago.org/job-board/',
-      postingLink: 'https://aiachicago.org/job-board/',
-      firmWebsite: 'https://www.farrside.com',
-      roleSketch: 'Farr Associates is well-regarded for sustainability and urban design. Project Architect role would be a strong career move.',
+      roleSketch: 'Construction PM at Accel Construction. Solid salary $85K-$105K. Posted March 17. Good fit for PM skills and construction knowledge.',
       defaultStatus: 'not-started',
       gmailStatus: '',
       gmailDate: '',
@@ -1439,37 +1308,12 @@ const JOBS = [
       applyLink: 'https://aiachicago.org/job-board/',
       postingLink: 'https://aiachicago.org/job-board/',
       firmWebsite: '',
-      roleSketch: 'Architectural PM at Carlile Architects in Manteno, IL. A bit outside the city but worth considering if the commute works.',
+      roleSketch: 'Architectural PM at Carlile Architects in Manteno, IL. A bit outside the city but worth considering.',
       defaultStatus: 'not-started',
       gmailStatus: '',
       gmailDate: '',
       gmailBadge: ''
     },
-    {
-      id: 'cresco-fac',
-      company: 'Cresco Labs',
-      title: 'Facility Maintenance Technician',
-      score: 3,
-      salary: 'Not listed',
-      location: 'Joliet, IL / Kankakee, IL',
-      address: 'Multiple IL locations',
-      remote: 'On-site',
-      posted: 'Active',
-      postedISO: '2026-03-19',
-      source: 'Greenhouse',
-      deadline: '',
-      howToApply: 'Apply via Cresco Labs Greenhouse board',
-      applyLink: 'https://boards.greenhouse.io/crescolabs',
-      postingLink: 'https://boards.greenhouse.io/crescolabs',
-      firmWebsite: 'https://crescolabs.com',
-      roleSketch: 'Facility Maintenance Technician roles at multiple IL Cresco Labs locations. Below target level but cannabis industry entry point.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: '',
-      cannabis: true
-    },
-
   {
     id: 'okw',
     company: 'OKW Architects',
@@ -2001,76 +1845,7 @@ const JOBS = [
     gmailDate: '',
     gmailBadge: '',
     cannabis: true,
-  ,
-  {
-    id: 'studio-arq',
-    company: 'Studio ARQ, LLC',
-    title: 'Project Architect',
-    score: 3,
-    salary: '$60,000-$90,000',
-    location: 'Chicago, IL',
-    address: 'Chicago, IL',
-    remote: 'In-office',
-    posted: 'March 18, 2026',
-    postedISO: '2026-03-18',
-    source: 'AIA Chicago',
-    deadline: 'None listed',
-    howToApply: 'Email resume to csantoy@studioarq.com',
-    applyLink: 'mailto:csantoy@studioarq.com',
-    postingLink: 'https://aiachicago.org/job_posting/studio-arq-llc-project-architect/',
-    firmWebsite: 'https://www.studioarq.com',
-    roleSketch: 'Lead technical production and construction document development for an MBE-certified Chicago firm. You would be managing code compliance, collaborating with design teams, and handling construction administration. Healthcare experience is ideal but not required - Revit and CD production are the core asks.',
-    defaultStatus: 'not-started',
-    gmailStatus: '',
-    gmailDate: '',
-    gmailBadge: '',
-  },
-  {
-    id: 'waremalcomb-pm',
-    company: 'Ware Malcomb',
-    title: 'Project Manager',
-    score: 3,
-    salary: '$85,000-$110,000',
-    location: 'Oak Brook, IL',
-    address: 'Oak Brook, IL',
-    remote: 'In-office',
-    posted: 'March 17, 2026',
-    postedISO: '2026-03-17',
-    source: 'AIA Chicago',
-    deadline: 'None listed',
-    howToApply: 'Email application to jgolub@waremalcomb.com',
-    applyLink: 'mailto:jgolub@waremalcomb.com',
-    postingLink: 'https://aiachicago.org/job_posting/ware-malcomb-project-manager-2/',
-    firmWebsite: 'https://www.waremalcomb.com',
-    roleSketch: 'Manage architectural projects end-to-end across industrial, office, and retail sectors. You would lead internal and external teams, maintain budget accountability, and serve as primary client contact. Requires Revit + AutoCAD proficiency - this is Ware Malcomb\'s third active posting and the highest-paying one.',
-    defaultStatus: 'not-started',
-    gmailStatus: '',
-    gmailDate: '',
-    gmailBadge: '',
-  },
-  {
-    id: 'rada',
-    company: 'RADA Architects',
-    title: 'Project Architect (Mid-Level)',
-    score: 3,
-    salary: '$75,000-$120,000',
-    location: 'Chicago, IL',
-    address: 'Chicago, IL',
-    remote: 'Hybrid',
-    posted: 'March 12, 2026',
-    postedISO: '2026-03-12',
-    source: 'AIA Chicago',
-    deadline: 'None listed',
-    howToApply: 'Email contact@rada-arch.com',
-    applyLink: 'mailto:contact@rada-arch.com',
-    postingLink: 'https://aiachicago.org/job_posting/rada-architects-project-architect-mid-level-to-senior/',
-    firmWebsite: 'https://www.rada-arch.com',
-    roleSketch: 'WBE/DBE-certified Chicago firm seeking mid-to-senior level Project Architect for diverse project types. BIM implementation, technical documentation, and project management across building types. Revit required, AutoCAD desirable. Hybrid schedule.',
-    defaultStatus: 'not-started',
-    gmailStatus: '',
-    gmailDate: '',
-    gmailBadge: '',
-  }}
+  }
 ];
 const OUTREACH = [
   { id: 'dspace', company: 'dSPACE Studio', location: 'Lincoln Ave / Lakeview (~1 mi)', type: 'Architecture', contact: 'careers@dspacestudio.com', website: 'https://www.dspacestudio.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Award-winning residential firm within 1 mile of home. Recent AIA Chicago posting signals active hiring. Local proximity makes this a natural cold outreach target.', angle: 'Lead with design-forward work and adaptive reuse experience; emphasize Revit CD documentation depth.' },
@@ -2104,59 +1879,38 @@ const EMAIL_DRAFTS = {
   'studioarq': {
     to: '',
     subject: 'Application - Project Architect at Studio ARQ, LLC',
-    body: 'Howdy,\n\nI am reaching out regarding the Project Architect position at Studio ARQ, LLC. With 2 years as the primary Revit documentation lead at DxU Architects - producing full CD sets for commercial tenant improvement and mixed-use projects - I bring strong technical documentation skills paired with a design-forward sensibility rooted in my dual Master of Architecture and Master of Industrial Design degrees from the University of Houston.\n\nI am passionate about thoughtful design that serves real people, and I would love the opportunity to contribute to Studio ARQ, LLC\'s work.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-  'waremalcomb': {
-    to: '',
-    subject: 'Application - Job Captain at Ware Malcomb',
-    body: 'Howdy,\n\nI am reaching out regarding the Job Captain position at Ware Malcomb. With 2 years as the primary Revit documentation lead at DxU Architects - producing full CD sets for commercial tenant improvement and mixed-use projects - I bring strong technical documentation skills paired with a design-forward sensibility rooted in my dual Master of Architecture and Master of Industrial Design degrees from the University of Houston.\n\nI am passionate about thoughtful design that serves real people, and I would love the opportunity to contribute to Ware Malcomb\'s work.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+    body: 'Howdy,\n\nI am reaching out regarding the Project Architect position at Studio ARQ. With 2 years as the primary Revit documentation lead at DxU Architects - producing full CD sets for commercial tenant improvement and mixed-use projects - I bring strong technical documentation skills paired with a design-forward sensibility rooted in my dual Master of Architecture and Master of Industrial Design degrees from the University of Houston.\n\nI am passionate about thoughtful design that serves real people, and I would love the opportunity to contribute to Studio ARQ\'s work.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
   'thomasarch': {
     to: '',
     subject: 'Application - Project Architect at Thomas Architects',
-    body: 'Howdy,\n\nI am reaching out regarding the Project Architect position at Thomas Architects. With 2 years as the primary Revit documentation lead at DxU Architects - producing full CD sets for commercial tenant improvement and mixed-use projects - I bring strong technical documentation skills paired with a design-forward sensibility rooted in my dual Master of Architecture and Master of Industrial Design degrees from the University of Houston.\n\nI am passionate about thoughtful design that serves real people, and I would love the opportunity to contribute to Thomas Architects\'s work.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+    body: 'Howdy,\n\nI am reaching out regarding the Project Architect position at Thomas Architects. With 2 years as the primary Revit documentation lead at DxU Architects - producing full CD sets for commercial tenant improvement and mixed-use projects - I bring strong technical documentation skills paired with a design-forward sensibility rooted in my dual Master of Architecture and Master of Industrial Design degrees from the University of Houston.\n\nI am passionate about thoughtful design that serves real people, and I would love the opportunity to contribute to Thomas Architects\' work.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
   'farnsworth': {
     to: '',
-    subject: 'Application - Architectural PM - Healthcare Studio at Farnsworth Group',
+    subject: 'Application - Architectural PM at Farnsworth Group',
     body: 'Howdy,\n\nI am writing to express my interest in the Architectural PM - Healthcare Studio position at Farnsworth Group. With 2 years as the primary Revit documentation lead at DxU Architects - where I managed commercial tenant improvement and mixed-use projects from schematic design through construction administration - I have developed strong project management instincts alongside deep technical fluency in Revit, BIM 360, Bluebeam, and AutoCAD.\n\nI thrive in fast-paced environments that require juggling multiple project timelines and coordinating across consultants, contractors, and clients. I would welcome the chance to discuss how my architectural background strengthens my approach to construction project management.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
   'silhouette': {
     to: '',
-    subject: 'Application - Architectural PM - Retail & Restaurant at Silhouette Design Architecture',
-    body: 'Howdy,\n\nI am writing to express my interest in the Architectural PM - Retail & Restaurant position at Silhouette Design Architecture. With 2 years as the primary Revit documentation lead at DxU Architects - where I managed commercial tenant improvement and mixed-use projects from schematic design through construction administration - I have developed strong project management instincts alongside deep technical fluency in Revit, BIM 360, Bluebeam, and AutoCAD.\n\nI thrive in fast-paced environments that require juggling multiple project timelines and coordinating across consultants, contractors, and clients. I would welcome the chance to discuss how my architectural background strengthens my approach to construction project management.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+    subject: 'Application - Architectural PM at Silhouette Design Architecture',
+    body: 'Howdy,\n\nI am writing to express my interest in the Architectural PM - Retail and Restaurant position at Silhouette Design Architecture. With 2 years as the primary Revit documentation lead at DxU Architects - where I managed commercial tenant improvement and mixed-use projects from schematic design through construction administration - I have developed strong project management instincts alongside deep technical fluency in Revit, BIM 360, Bluebeam, and AutoCAD.\n\nI thrive in fast-paced environments that require juggling multiple project timelines and coordinating across consultants, contractors, and clients. I would welcome the chance to discuss how my architectural background strengthens my approach to construction project management.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
   'environs': {
     to: '',
-    subject: 'Application - Project Architect - Custom Residential at Environs Development Inc.',
-    body: 'Howdy,\n\nI am reaching out regarding the Project Architect - Custom Residential position at Environs Development Inc.. With 2 years as the primary Revit documentation lead at DxU Architects - producing full CD sets for commercial tenant improvement and mixed-use projects - I bring strong technical documentation skills paired with a design-forward sensibility rooted in my dual Master of Architecture and Master of Industrial Design degrees from the University of Houston.\n\nI am passionate about thoughtful design that serves real people, and I would love the opportunity to contribute to Environs Development Inc.\'s work.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+    subject: 'Application - Project Architect at Environs Development',
+    body: 'Howdy,\n\nI am reaching out regarding the Project Architect - Custom Residential position at Environs Development. With 2 years as the primary Revit documentation lead at DxU Architects - producing full CD sets for commercial tenant improvement and mixed-use projects - I bring strong technical documentation skills paired with a design-forward sensibility.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
   'accel': {
     to: '',
-    subject: 'Application - Project Manager - Construction at Accel Construction Services',
-    body: 'Howdy,\n\nI am writing to express my interest in the Project Manager - Construction position at Accel Construction Services. With 2 years as the primary Revit documentation lead at DxU Architects - where I managed commercial tenant improvement and mixed-use projects from schematic design through construction administration - I have developed strong project management instincts alongside deep technical fluency in Revit, BIM 360, Bluebeam, and AutoCAD.\n\nI thrive in fast-paced environments that require juggling multiple project timelines and coordinating across consultants, contractors, and clients. I would welcome the chance to discuss how my architectural background strengthens my approach to construction project management.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-  'skender': {
-    to: '',
-    subject: 'Application - Project Manager at Skender',
-    body: 'Howdy,\n\nI am writing to express my interest in the Project Manager position at Skender. With 2 years as the primary Revit documentation lead at DxU Architects - where I managed commercial tenant improvement and mixed-use projects from schematic design through construction administration - I have developed strong project management instincts alongside deep technical fluency in Revit, BIM 360, Bluebeam, and AutoCAD.\n\nI thrive in fast-paced environments that require juggling multiple project timelines and coordinating across consultants, contractors, and clients. I would welcome the chance to discuss how my architectural background strengthens my approach to construction project management.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-  'farr': {
-    to: '',
-    subject: 'Application - Project Architect at Farr Associates',
-    body: 'Howdy,\n\nI am reaching out regarding the Project Architect position at Farr Associates. With 2 years as the primary Revit documentation lead at DxU Architects - producing full CD sets for commercial tenant improvement and mixed-use projects - I bring strong technical documentation skills paired with a design-forward sensibility rooted in my dual Master of Architecture and Master of Industrial Design degrees from the University of Houston.\n\nI am passionate about thoughtful design that serves real people, and I would love the opportunity to contribute to Farr Associates\'s work.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+    subject: 'Application - Project Manager at Accel Construction',
+    body: 'Howdy,\n\nI am writing to express my interest in the Project Manager - Construction position at Accel Construction Services. With 2 years as the primary Revit documentation lead at DxU Architects - where I managed commercial tenant improvement and mixed-use projects from schematic design through construction administration - I have developed strong project management instincts alongside deep technical fluency in Revit, BIM 360, Bluebeam, and AutoCAD.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
   'carlile': {
     to: '',
-    subject: 'Application - Architectural Project Manager at Carlile Architects',
-    body: 'Howdy,\n\nI am writing to express my interest in the Architectural Project Manager position at Carlile Architects. With 2 years as the primary Revit documentation lead at DxU Architects - where I managed commercial tenant improvement and mixed-use projects from schematic design through construction administration - I have developed strong project management instincts alongside deep technical fluency in Revit, BIM 360, Bluebeam, and AutoCAD.\n\nI thrive in fast-paced environments that require juggling multiple project timelines and coordinating across consultants, contractors, and clients. I would welcome the chance to discuss how my architectural background strengthens my approach to construction project management.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+    subject: 'Application - Architectural PM at Carlile Architects',
+    body: 'Howdy,\n\nI am reaching out regarding the Architectural Project Manager position at Carlile Architects. With 2 years as the primary Revit documentation lead at DxU Architects - producing full CD sets for commercial tenant improvement and mixed-use projects - I bring strong technical documentation skills and project management experience.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
-  'cresco-fac': {
-    to: '',
-    subject: 'Application - Facility Maintenance Technician at Cresco Labs',
-    body: 'Howdy,\n\nI came across the Facility Maintenance Technician opening at Cresco Labs and wanted to reach out. As someone with a background in architectural design and project management - including 2 years as the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects - I bring a unique combination of technical skills and design thinking that translates well to facilities work in the cannabis industry.\n\nI am deeply interested in the cannabis space and would love to bring my construction and design expertise to Cresco Labs. I am detail-oriented, experienced with BIM coordination, and comfortable managing complex builds from documentation through construction administration.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-
   'okw': {
     to: 'kkarcher@actalentservices.com',
     subject: 'Re: OKW Architects - Unlicensed Designer Role | Alex Karshis',
@@ -2241,22 +1995,7 @@ const EMAIL_DRAFTS = {
     to: 'careers@gtigrows.com',
     subject: 'Capital Projects / Construction Manager Interest - Alex Karshis',
     body: 'Howdy,\n\nI\'m reaching out about potential Construction or Capital Projects opportunities at Green Thumb Industries. Managing dispensary buildouts and facility expansions across your RISE retail locations is work my background supports directly.\n\nI\'ve spent 2 years leading Revit documentation and contractor coordination on commercial TI projects - restaurants, retail, and hospitality renovations. I also run my own design consultancy and bring hands-on fabrication experience to every project.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },,
-  'studio-arq': {
-    to: 'csantoy@studioarq.com',
-    subject: 'Project Architect Application - Alex Karshis',
-    body: 'Howdy,\n\nI\'m reaching out about the Project Architect position at Studio ARQ. Your MBE-certified practice and focus on technical documentation are a strong match for my background.\n\nAt DxU Architects, I spent 2 years as the primary Revit documentation lead on commercial TI and mixed-use projects - managing CD sets, coordinating consultants, and carrying projects through construction administration.\n\nI\'m comfortable in fast-paced production environments and thrive on the technical side of architecture. My resume is attached.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io',
   },
-  'waremalcomb-pm': {
-    to: 'jgolub@waremalcomb.com',
-    subject: 'Project Manager Application - Alex Karshis',
-    body: 'Howdy,\n\nI\'m reaching out about the Project Manager opening at Ware Malcomb\'s Oak Brook office. I\'m already familiar with your firm - I\'ve been tracking your work in commercial and industrial architecture closely, and the PM role is a natural fit for where I am in my career.\n\nAt DxU Architects, I spent 2 years as the primary Revit documentation lead managing commercial TI and mixed-use projects end-to-end - from design through CDs, consultant coordination, and construction administration.\n\nI\'m fluent in both Revit and AutoCAD, and I\'m comfortable managing multiple active projects simultaneously. My resume is attached.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io',
-  },
-  'rada': {
-    to: 'contact@rada-arch.com',
-    subject: 'Project Architect Application - Alex Karshis',
-    body: 'Howdy,\n\nI\'m reaching out about the mid-level Project Architect position at RADA Architects. Your firm\'s focus on rational planning and human-centered design resonates with how I approach every project.\n\nAt DxU Architects, I spent 2 years as the primary Revit documentation lead on commercial TI and mixed-use projects, managing BIM coordination, technical documentation, and consultant relationships across all project phases.\n\nI\'m based in Chicago (Lakeview) and would welcome the hybrid schedule. My resume is attached.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io',
-  }
 };
 const OUTREACH_DRAFTS = {
   'dspace': {
@@ -2375,9 +2114,10 @@ const OUTREACH_DRAFTS = {
     body: 'Howdy,\n\nI\'m reaching out because Engberg Anderson\'s mixed-use and adaptive reuse work in the Chicago/Milwaukee corridor is a strong match for my background.\n\nPreviously at DxU Architects, I spent 2 years as the primary Revit documentation lead on commercial TI and mixed-use projects across all phases.\n\nMy resume is attached. My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
 };
-// ─────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────
 // SOCIAL MEDIA LEADS
-// ─────────────────────────────────────────────────────────
+// ─────────────────────────────────────────
 const SOCIAL_LEADS = [
     {
       id: 'sl-craigslist-cad',
@@ -2386,7 +2126,7 @@ const SOCIAL_LEADS = [
       posterTitle: '',
       company: 'Furniture Design Studio (Humboldt Park)',
       role: 'Junior Product Development / 3D CAD Designer',
-      snippet: 'Humboldt Park furniture design studio seeking Jr Product Development with SketchUp 3D CAD skills. Could align with fabrication and 3D modeling background.',
+      snippet: 'Humboldt Park furniture design studio seeking Jr Product Development with SketchUp 3D CAD skills.',
       link: 'https://chicago.craigslist.org/search/egr',
       postedTime: 'Active',
       postedISO: '2026-03-19',
@@ -2400,44 +2140,13 @@ const SOCIAL_LEADS = [
       posterTitle: 'LinkedIn Jobs Data',
       company: 'Various Chicago Firms',
       role: 'Multiple Architecture Roles',
-      snippet: 'LinkedIn showing 1,000+ Architectural Designer jobs and 798 Architectural PM jobs in Chicago with 27 new Senior Architect posts this week. Market is active.',
+      snippet: 'LinkedIn showing 1,000+ Architectural Designer jobs and 798 Architectural PM jobs in Chicago.',
       link: 'https://www.linkedin.com/jobs/architectural-designer-jobs-chicago-il',
       postedTime: 'March 19, 2026',
       postedISO: '2026-03-19',
       score: 4,
       cannabis: false
-    },
-
-  // Populated by the daily scheduled task
-  // Each entry: { id, source ('linkedin'|'facebook'|'craigslist'), poster, posterTitle, company, role, snippet, link, postedTime, postedISO, score, cannabis }
-  {
-    id: 'sl-001',
-    source: 'facebook',
-    poster: 'Design Seed, Inc.',
-    posterTitle: 'Chicago Architecture & Design-Build Firm',
-    company: 'Design Seed, Inc.',
-    role: 'Project Architect / Construction Project Manager',
-    snippet: 'Design Seed is actively looking for Project Architects and a Construction Project Manager/Superintendent. Full-service design-build firm based in Chicago.',
-    link: 'https://www.facebook.com/DesignSeedInc/',
-    postedTime: 'Recent (March 2026)',
-    postedISO: '2026-03-15',
-    score: 3,
-    cannabis: false,
-  },
-  {
-    id: 'sl-002',
-    source: 'linkedin',
-    poster: 'Caveney Architectural Collaborative',
-    posterTitle: 'Chicago Architecture Firm - Cannabis Specialist',
-    company: 'Caveney Architectural Collaborative',
-    role: 'Architect / Project Manager - Cannabis Facilities',
-    snippet: 'Caveney Architectural Collaborative is a Chicago-based firm known for cannabis cultivation + dispensary architecture. Staff profile visible on LinkedIn - firm specializes in cannabis PM work that aligns directly with Alex\'s target sector.',
-    link: 'https://www.linkedin.com/company/caveney-architectural-collaborative',
-    postedTime: 'Ongoing (March 2026)',
-    postedISO: '2026-03-19',
-    score: 4,
-    cannabis: true,
-  }
+    }
 ];
 // ─────────────────────────────────────────────────────────
 // STATE
@@ -2471,51 +2180,6 @@ function setOutreachField(id, field, value) {
   if (!state[key]) state[key] = getOutreachState(id);
   state[key][field] = value;
   saveState(state);
-}
-
-// ─────────────────────────────────────────────────────────
-// SOCIAL MEDIA LEADS
-// ─────────────────────────────────────────────────────────
-let socialFilter = 'all';
-function setSocialFilter(f, btn) {
-  socialFilter = f;
-  document.querySelectorAll('#tab-social .filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderSocialLeads();
-}
-function renderSocialLeads() {
-  const container = document.getElementById('socialCards');
-  if (SOCIAL_LEADS.length === 0) {
-    container.innerHTML = '<div style="text-align:center; padding: 40px 20px; color: var(--ink-light); font-size: 0.9rem;">No social media leads yet. The daily 9am search will populate this tab with LinkedIn, Facebook, and Craigslist posts from people hiring in your field.</div>';
-    return;
-  }
-  const filtered = SOCIAL_LEADS.filter(s => socialFilter === 'all' || s.source === socialFilter);
-  let html = '';
-  for (const lead of filtered) {
-    const sourceClass = 'source-' + lead.source;
-    const badgeClass = 'badge-' + lead.source;
-    const sourceName = lead.source.charAt(0).toUpperCase() + lead.source.slice(1);
-    const cannabisTag = lead.cannabis ? '<span class="cannabis-tag">&#127807; Cannabis</span>' : '';
-    html += '<div class="social-card ' + sourceClass + '">';
-    html += '<div class="card-color-bar"></div>';
-    html += '<div style="padding-left: 12px;">';
-    html += '<div style="display:flex; gap:8px; align-items:center; margin-bottom:6px; flex-wrap:wrap;">';
-    html += '<span class="social-source-badge ' + badgeClass + '">' + sourceName + '</span>';
-    html += '<span class="social-time">' + lead.postedTime + '</span>';
-    if (lead.score) html += '<span class="score-pip">' + lead.score + '</span>';
-    html += cannabisTag;
-    html += '</div>';
-    html += '<div style="margin-bottom:4px;"><strong style="font-family:Space Grotesk,sans-serif; text-transform:uppercase; letter-spacing:0.3px;">' + (lead.company || '') + '</strong>';
-    if (lead.role) html += ' <span style="color:var(--haring-blue); font-weight:600;">' + lead.role + '</span>';
-    html += '</div>';
-    html += '<div class="social-poster">Posted by: ' + lead.poster + (lead.posterTitle ? ' - ' + lead.posterTitle : '') + '</div>';
-    html += '<div style="font-size:0.85rem; margin-top:6px; color:var(--ink);">' + lead.snippet + '</div>';
-    html += '<div style="margin-top:8px; display:flex; gap:8px;">';
-    if (lead.link) html += '<a href="' + lead.link + '" target="_blank" class="btn-apply" style="text-decoration:none; font-size:0.78rem; padding:4px 12px;">View Post</a>';
-    html += '</div>';
-    html += '</div></div>';
-  }
-  container.innerHTML = html;
 }
 // ─────────────────────────────────────────────────────────
 // RENDER — TIMELINE GROUPED BY DATE
@@ -2691,51 +2355,6 @@ function updateStatus(id, sel) {
   document.getElementById('card-' + id).dataset.status = val;
   applyFilter();
   updateInterviewBox();
-}
-
-// ─────────────────────────────────────────────────────────
-// SOCIAL MEDIA LEADS
-// ─────────────────────────────────────────────────────────
-let socialFilter = 'all';
-function setSocialFilter(f, btn) {
-  socialFilter = f;
-  document.querySelectorAll('#tab-social .filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderSocialLeads();
-}
-function renderSocialLeads() {
-  const container = document.getElementById('socialCards');
-  if (SOCIAL_LEADS.length === 0) {
-    container.innerHTML = '<div style="text-align:center; padding: 40px 20px; color: var(--ink-light); font-size: 0.9rem;">No social media leads yet. The daily 9am search will populate this tab with LinkedIn, Facebook, and Craigslist posts from people hiring in your field.</div>';
-    return;
-  }
-  const filtered = SOCIAL_LEADS.filter(s => socialFilter === 'all' || s.source === socialFilter);
-  let html = '';
-  for (const lead of filtered) {
-    const sourceClass = 'source-' + lead.source;
-    const badgeClass = 'badge-' + lead.source;
-    const sourceName = lead.source.charAt(0).toUpperCase() + lead.source.slice(1);
-    const cannabisTag = lead.cannabis ? '<span class="cannabis-tag">&#127807; Cannabis</span>' : '';
-    html += '<div class="social-card ' + sourceClass + '">';
-    html += '<div class="card-color-bar"></div>';
-    html += '<div style="padding-left: 12px;">';
-    html += '<div style="display:flex; gap:8px; align-items:center; margin-bottom:6px; flex-wrap:wrap;">';
-    html += '<span class="social-source-badge ' + badgeClass + '">' + sourceName + '</span>';
-    html += '<span class="social-time">' + lead.postedTime + '</span>';
-    if (lead.score) html += '<span class="score-pip">' + lead.score + '</span>';
-    html += cannabisTag;
-    html += '</div>';
-    html += '<div style="margin-bottom:4px;"><strong style="font-family:Space Grotesk,sans-serif; text-transform:uppercase; letter-spacing:0.3px;">' + (lead.company || '') + '</strong>';
-    if (lead.role) html += ' <span style="color:var(--haring-blue); font-weight:600;">' + lead.role + '</span>';
-    html += '</div>';
-    html += '<div class="social-poster">Posted by: ' + lead.poster + (lead.posterTitle ? ' - ' + lead.posterTitle : '') + '</div>';
-    html += '<div style="font-size:0.85rem; margin-top:6px; color:var(--ink);">' + lead.snippet + '</div>';
-    html += '<div style="margin-top:8px; display:flex; gap:8px;">';
-    if (lead.link) html += '<a href="' + lead.link + '" target="_blank" class="btn-apply" style="text-decoration:none; font-size:0.78rem; padding:4px 12px;">View Post</a>';
-    html += '</div>';
-    html += '</div></div>';
-  }
-  container.innerHTML = html;
 }
 // ─────────────────────────────────────────────────────────
 // RENDER OUTREACH
@@ -3008,11 +2627,9 @@ function updateInterviewBox() {
 function showTab(tab) {
   document.getElementById('tab-active').style.display = tab === 'active' ? '' : 'none';
   document.getElementById('tab-outreach').style.display = tab === 'outreach' ? '' : 'none';
-  document.getElementById('tab-social').style.display = tab === 'social' ? '' : 'none';
   document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    b.classList.toggle('active', (i === 0 && tab === 'active') || (i === 1 && tab === 'outreach') || (i === 2 && tab === 'social'));
+    b.classList.toggle('active', (i === 0 && tab === 'active') || (i === 1 && tab === 'outreach'));
   });
-  if (tab === 'social') renderSocialLeads();
 }
 // ─────────────────────────────────────────────────────────
 // EMAIL MODAL
