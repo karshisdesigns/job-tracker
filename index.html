@@ -423,6 +423,27 @@ body::before {
 .status-select.status-not-interested { background-color: #F1F1F1; color: #999; }
 .status-select.status-not-started { color: var(--ink-light); }
 .job-card.not-interested-card { opacity: 0.45; }
+/* ── CANNABIS INDUSTRY BADGE ── */
+.cannabis-leaf {
+  display: inline-block;
+  font-size: 0.85rem;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+.cannabis-tag {
+  background: #2D5A27;
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border: 2px solid #1a3a16;
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
 .card-btns {
   display: flex;
   flex: 1;
@@ -1591,6 +1612,78 @@ const JOBS = [
     gmailStatus: '',
     gmailDate: '',
     gmailBadge: '',
+  },
+  {
+    id: 'verano-cpm',
+    company: 'Verano Holdings',
+    title: 'Construction Project Manager',
+    score: 5,
+    salary: '$85,000-$100,000',
+    location: 'Chicago, IL (HQ)',
+    address: 'Chicago, IL',
+    remote: 'Hybrid',
+    posted: 'March 2026',
+    postedISO: '2026-03-15',
+    source: 'Verano Careers / Friend Referral',
+    deadline: 'Open',
+    howToApply: 'Apply via Verano Holdings careers page',
+    applyLink: 'https://verano.com/careers/',
+    postingLink: 'https://verano.com/careers/',
+    firmWebsite: 'https://verano.com',
+    roleSketch: 'Manage construction and renovation projects for cannabis dispensary buildouts and cultivation facilities across Verano\'s national portfolio. Oversee contractor coordination, permitting, budgets, and timelines for retail TI and industrial grow facility projects. Your commercial TI and construction documentation experience is a direct fit.',
+    defaultStatus: 'in-progress',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: '',
+    cannabis: true,
+  },
+  {
+    id: 'cresco-facilities',
+    company: 'Cresco Labs',
+    title: 'Facilities / Construction Coordinator',
+    score: 4,
+    salary: 'Market est. $70,000-$90,000',
+    location: 'Chicago, IL (HQ)',
+    address: 'Chicago, IL',
+    remote: 'Hybrid',
+    posted: 'March 2026',
+    postedISO: '2026-03-18',
+    source: 'Cresco Labs Careers',
+    deadline: 'Rolling',
+    howToApply: 'Apply via Cresco Labs careers page or Greenhouse',
+    applyLink: 'https://crescolabs.com/careers/',
+    postingLink: 'https://crescolabs.com/careers/',
+    firmWebsite: 'https://crescolabs.com',
+    roleSketch: 'Coordinate facility buildouts, dispensary renovations, and maintenance projects across Cresco\'s Illinois and national Sunnyside locations. Manage vendor relationships, permitting, and construction documentation. Chicago-HQ\'d MSO with one of the largest dispensary networks in the country.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: '',
+    cannabis: true,
+  },
+  {
+    id: 'gti-construction',
+    company: 'Green Thumb Industries (GTI)',
+    title: 'Capital Projects / Construction Manager',
+    score: 4,
+    salary: 'Market est. $80,000-$100,000',
+    location: 'Chicago, IL (HQ)',
+    address: 'Chicago, IL',
+    remote: 'Hybrid',
+    posted: 'March 2026',
+    postedISO: '2026-03-18',
+    source: 'GTI Careers / Greenhouse',
+    deadline: 'Rolling',
+    howToApply: 'Apply via GTI careers page or Greenhouse',
+    applyLink: 'https://www.gtigrows.com/careers',
+    postingLink: 'https://www.gtigrows.com/careers',
+    firmWebsite: 'https://www.gtigrows.com',
+    roleSketch: 'Oversee capital improvement projects, dispensary buildouts (RISE brand), and cultivation facility expansions for GTI\'s national portfolio. Manage budgets, timelines, contractor coordination, and construction documentation. Chicago-HQ\'d MSO with 90+ retail locations nationwide.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: '',
+    cannabis: true,
   }
 ];
 const OUTREACH = [
@@ -1691,6 +1784,21 @@ const EMAIL_DRAFTS = {
     to: 'jobs@bridgewaterstudio.net',
     subject: 'Fabricator / Scenic Carpenter Application - Alex Karshis',
     body: 'Howdy,\n\nI\'m reaching out about the Fabricator / Scenic Carpenter position at Bridgewater Studio. Creating immersive environments for brands like Smithsonian and Nike is the kind of work that bridges my architecture background with my industrial design and 3D printing experience.\n\nPreviously at DxU Architects, I spent 2 years as the primary Revit documentation lead, and I hold a Master of Industrial Design from the University of Houston with hands-on fabrication and prototyping experience.\n\nMy resume is attached. My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+  },
+  'verano-cpm': {
+    to: 'careers@verano.com',
+    subject: 'Construction Project Manager Application - Alex Karshis',
+    body: 'Howdy,\n\nI\'m reaching out about the Construction Project Manager role at Verano Holdings. Managing dispensary buildouts and facility renovations across a national portfolio is exactly the kind of work my background supports.\n\nI\'ve spent 2 years leading Revit documentation and contractor coordination on commercial TI projects - restaurants, retail, and hospitality renovations - handling everything from permitting through construction administration. That experience translates directly to your dispensary and cultivation facility buildout pipeline.\n\nI also run my own design consultancy (Karshis Designs) and have hands-on fabrication experience, so I understand both the design intent and the field reality of construction projects.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+  },
+  'cresco-facilities': {
+    to: 'careers@crescolabs.com',
+    subject: 'Facilities / Construction Coordinator Interest - Alex Karshis',
+    body: 'Howdy,\n\nI\'m reaching out about potential Facilities or Construction Coordinator opportunities at Cresco Labs. Your dispensary buildout and facility expansion work is a strong match for my background.\n\nI\'ve spent 2 years leading Revit documentation and contractor coordination on commercial TI projects - restaurants, retail, and hospitality renovations. I also run my own design consultancy and understand both the design and construction sides of facility projects.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+  },
+  'gti-construction': {
+    to: 'careers@gtigrows.com',
+    subject: 'Capital Projects / Construction Manager Interest - Alex Karshis',
+    body: 'Howdy,\n\nI\'m reaching out about potential Construction or Capital Projects opportunities at Green Thumb Industries. Managing dispensary buildouts and facility expansions across your RISE retail locations is work my background supports directly.\n\nI\'ve spent 2 years leading Revit documentation and contractor coordination on commercial TI projects - restaurants, retail, and hospitality renovations. I also run my own design consultancy and bring hands-on fabrication experience to every project.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
 };
 const OUTREACH_DRAFTS = {
@@ -1944,7 +2052,7 @@ function renderJobCard(job) {
             ${gmailBadge}
           </div>
           <div class="card-row-2">
-            <span class="card-company">${job.company}</span>
+            <span class="card-company">${job.company}</span>\${job.cannabis ? '<span class="cannabis-leaf" title="Cannabis Industry">&#127807;</span>' : ''}
             ${getRepeatBadge(job.company, job.id)}
             <span class="card-salary">${job.salary}</span>
           </div>
@@ -1954,6 +2062,7 @@ function renderJobCard(job) {
           </div>
           <div class="card-tags">
             ${remoteTag}
+            ${job.cannabis ? '<span class="cannabis-tag">&#127807; Cannabis</span>' : ''}
           </div>
         </div>
         <div class="card-actions">
