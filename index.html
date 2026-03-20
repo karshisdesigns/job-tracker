@@ -971,7 +971,37 @@ body::before {
   .score-legend { display: none; }
   .interview-box { display: none; }
 }
-    </style>
+    .update-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 24px;
+  background: #1A1A1A;
+  border-bottom: 2px solid #333;
+}
+.update-btn {
+  background: #F5A623;
+  color: #1A1A1A;
+  border: none;
+  padding: 8px 20px;
+  font-weight: 800;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.update-btn:hover { background: #FFB84D; }
+.update-btn:disabled { background: #666; cursor: not-allowed; color: #999; }
+.update-btn.running { animation: pulse-btn 1.5s ease-in-out infinite; }
+@keyframes pulse-btn { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+.update-status {
+  color: #999;
+  font-size: 12px;
+  font-family: monospace;
+}
+</style>
 </head>
 <body>
 <!-- Haring-inspired SVG doodle watermark -->
@@ -990,6 +1020,10 @@ body::before {
         <div class="stats-bar" id="statsBar">
             <div class="stat-pill"><strong>0</strong> Roles</div>
         </div>
+    </div>
+    <div class="update-bar">
+        <button class="update-btn" id="runUpdateBtn" onclick="runJobUpdate()">&#9889; Run Job Update</button>
+        <span class="update-status" id="updateStatus"></span>
     </div>
     <div class="tabs">
         <button class="tab-btn active" onclick="showTab('active')">Active Postings</button>
@@ -3019,6 +3053,59 @@ showTab = function(tab) {
 // ─────────────────────────────────────────────────────────
 // INIT
 // ─────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────
+// RUN JOB UPDATE
+// ─────────────────────────────────────────────────────────
+function runJobUpdate() {
+  const btn = document.getElementById('runUpdateBtn');
+  const status = document.getElementById('updateStatus');
+  btn.disabled = true;
+  btn.classList.add('running');
+  btn.innerHTML = '&#9889; Running...';
+  status.textContent = 'Job search update in progress. This page will refresh when done.';
+  
+  // Poll for changes every 30 seconds by checking if the page content has changed
+  const startTime = Date.now();
+  const currentJobCount = document.querySelectorAll('.job-card').length;
+  
+  const pollInterval = setInterval(() => {
+    // After 10 minutes, stop polling
+    if (Date.now() - startTime > 600000) {
+      clearInterval(pollInterval);
+      btn.disabled = false;
+      btn.classList.remove('running');
+      btn.innerHTML = '&#9889; Run Job Update';
+      status.textContent = 'Update timed out. Try refreshing the page.';
+      return;
+    }
+    
+    // Fetch the latest version of this page
+    fetch(window.location.href + '?t=' + Date.now())
+      .then(r => r.text())
+      .then(html => {
+        // Count job entries in the fetched HTML
+        const matches = html.match(/id:\s*'/g);
+        if (matches && matches.length > currentJobCount) {
+          clearInterval(pollInterval);
+          status.textContent = 'New jobs found! Refreshing...';
+          setTimeout(() => window.location.reload(), 1500);
+        }
+      })
+      .catch(() => {});
+  }, 30000);
+  
+  // Also show a direct link to open Cowork
+  status.innerHTML = 'Update started. Open <a href="https://claude.ai" target="_blank" style="color:#F5A623;text-decoration:underline;">Claude</a> and say <strong style="color:#F5A623;">"run my job search"</strong> to trigger the update, or wait for the 9am auto-run.';
+  
+  // Reset button after 2 minutes if user stays on page
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.classList.remove('running');
+    btn.innerHTML = '&#9889; Run Job Update';
+  }, 120000);
+}
+
 renderJobs();
 renderOutreach();
 updateStats();
