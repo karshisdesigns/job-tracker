@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alex Karshis — Job Search</title>
@@ -2615,7 +2619,23 @@ const SOCIAL_LEADS = [
     }
   ];
 // ─────────────────────────────────────────────────────────
-// STATE
+
+    // ── Self-check: verify data loaded correctly ──
+    try {
+      if (typeof JOBS === 'undefined' || !Array.isArray(JOBS) || JOBS.length === 0) {
+        document.addEventListener('DOMContentLoaded', function() {
+          const main = document.querySelector('main') || document.body;
+          const banner = document.createElement('div');
+          banner.style.cssText = 'background:#ff4444;color:white;padding:16px;text-align:center;font-size:16px;position:fixed;top:0;left:0;right:0;z-index:9999;';
+          banner.innerHTML = 'Data failed to load. <a href="?" style="color:white;text-decoration:underline;">Click here to force refresh</a>, or try Ctrl+Shift+R.';
+          document.body.prepend(banner);
+        });
+      }
+    } catch(e) {
+      console.error('Job tracker self-check failed:', e);
+    }
+
+    // STATE
 // ─────────────────────────────────────────────────────────
 const STORAGE_KEY = 'alex_job_search_v2';
 function loadState() {
