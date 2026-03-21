@@ -535,15 +535,61 @@ body::before {
   color: var(--ink);
 }
 .notes-input:focus { box-shadow: var(--shadow-brutal-sm); }
-.date-applied-input {
+.date-applied-pill {
+  display: inline-block;
+  background: var(--haring-blue);
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  letter-spacing: 0.5px;
+}
+.email-draft-box {
   background: white;
   border: var(--border-thin);
-  padding: 7px 10px;
+  padding: 14px 16px;
   font-size: 0.82rem;
-  outline: none;
   color: var(--ink);
+  line-height: 1.6;
+  border-left: 4px solid var(--haring-orange);
+  white-space: pre-wrap;
+  font-family: inherit;
+  max-height: 300px;
+  overflow-y: auto;
 }
-.date-applied-input:focus { box-shadow: var(--shadow-brutal-sm); }
+.email-draft-box .draft-missing {
+  color: var(--ink-light);
+  font-style: italic;
+}
+.email-draft-box .draft-to {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.email-draft-box .draft-subject {
+  font-weight: 600;
+  color: var(--haring-blue);
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e5e5;
+}
+.email-draft-box .draft-body {
+  white-space: pre-wrap;
+}
+.copy-draft-btn {
+  margin-top: 8px;
+  background: var(--ink);
+  color: white;
+  border: none;
+  padding: 5px 14px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+.copy-draft-btn:hover { background: var(--haring-blue); }
 /* ── OUTREACH CARD ── */
 .outreach-card {
   background: white;
@@ -2722,6 +2768,32 @@ function getRepeatBadge(company, currentId) {
   return '<span class="repeat-badge" title="Also: ' + types.replace(/"/g, '&quot;') + '">&#8617; ' + count + 'x at co.</span>';
 }
 
+
+function renderEmailDraft(jobId) {
+  const draft = EMAIL_DRAFTS[jobId];
+  if (!draft) {
+    return '<div class="draft-missing">No email draft available for this role yet.</div>';
+  }
+  const toLine = draft.to ? '<div class="draft-to">To: ' + draft.to + '</div>' : '';
+  const subjectLine = draft.subject ? '<div class="draft-subject">Subject: ' + draft.subject + '</div>' : '';
+  const bodyText = draft.body ? draft.body.replace(/\\n/g, '\n').replace(/\n/g, '<br>') : '';
+  return toLine + subjectLine + '<div class="draft-body">' + bodyText + '</div>' +
+    '<button class="copy-draft-btn" onclick="copyEmailDraft(\'' + jobId + '\')">Copy to Clipboard</button>';
+}
+
+function copyEmailDraft(jobId) {
+  const draft = EMAIL_DRAFTS[jobId];
+  if (!draft) return;
+  const text = (draft.subject ? 'Subject: ' + draft.subject + '\n\n' : '') +
+               draft.body.replace(/\\n/g, '\n');
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  });
+}
+
 function renderJobs() {
   const container = document.getElementById('activeCards');
   // Sort by posted date descending
@@ -2819,9 +2891,13 @@ function renderJobCard(job) {
             ${job.firmWebsite ? ` &middot; <a href="${job.firmWebsite}" target="_blank">Firm Website</a>` : ''}
           </div>
         </div>
-        <div class="detail-row">
+        <div class="detail-row" id="date-applied-row-${job.id}" style="${js.dateApplied ? '' : 'display:none'}">
           <div class="detail-label">Date Applied</div>
-          <input class="date-applied-input" type="text" placeholder="e.g. March 17, 2026" value="${js.dateApplied || ''}" onchange="setJobField('${job.id}', 'dateApplied', this.value)">
+          <div class="date-applied-pill">${js.dateApplied || ''}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Email Draft</div>
+          <div class="email-draft-box">${renderEmailDraft(job.id)}</div>
         </div>
         <div class="detail-row">
           <div class="detail-label">Notes</div>
@@ -2845,6 +2921,17 @@ function updateStatus(id, sel) {
   setJobField(id, 'status', val);
   sel.className = 'status-select ' + statusClass(val);
   document.getElementById('card-' + id).dataset.status = val;
+  // Auto-stamp date when marking as applied
+  if ((val === 'applied' || val === 'in-progress') && !getJobState(id).dateApplied) {
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    setJobField(id, 'dateApplied', dateStr);
+    const dateRow = document.getElementById('date-applied-row-' + id);
+    if (dateRow) {
+      dateRow.style.display = '';
+      dateRow.querySelector('.date-applied-pill').textContent = dateStr;
+    }
+  }
   applyFilter();
   updateInterviewBox();
 }
