@@ -1994,7 +1994,7 @@ const JOBS = [
       postingLink: 'https://www.skender.com/current-openings/',
       firmWebsite: 'https://www.skender.com',
       roleSketch: 'APM at Skender, a top Chicago GC known for innovation and Lean construction. Great entry for someone with architecture background transitioning to construction management side. NOTE: Skender already has a cold outreach card - this is a specific new APM opening.',
-      defaultStatus: 'not-started',
+      defaultStatus: 'applied',
       gmailStatus: '',
       gmailDate: '',
       gmailBadge: ''
@@ -2650,7 +2650,13 @@ let outreachFilter = 'all';
 let hideOldOutreach = true;
 function getJobState(id) {
   const job = JOBS.find(j => j.id === id);
-  return state[id] || { status: job.defaultStatus, notes: '', dateApplied: job.gmailDate || '' };
+  if (state[id]) return state[id];
+  // Infer status from gmailBadge if defaultStatus was never updated
+  let inferredStatus = job.defaultStatus;
+  if (inferredStatus === 'not-started' && job.gmailBadge && job.gmailBadge !== '') {
+    inferredStatus = 'applied';
+  }
+  return { status: inferredStatus, notes: '', dateApplied: job.gmailDate || '' };
 }
 function setJobField(id, field, value) {
   if (!state[id]) state[id] = getJobState(id);
