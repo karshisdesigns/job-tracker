@@ -185,45 +185,6 @@ body::before {
 .p-interview .p-num { color: var(--haring-orange); }
 .p-offer .p-num { color: var(--haring-green); }
 /* ── FILTERS ── */
-.freshness-bar {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-.freshness-pill {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 5px 14px;
-  cursor: pointer;
-  transition: transform 0.1s;
-}
-.freshness-pill:hover {
-  transform: translate(-1px, -1px);
-}
-.freshness-pill.today {
-  background: var(--haring-green);
-  color: white;
-  border: 2px solid var(--ink);
-}
-.freshness-pill.this-week {
-  background: var(--haring-blue);
-  color: white;
-  border: 2px solid var(--ink);
-}
-.freshness-pill.this-month {
-  background: var(--haring-orange);
-  color: white;
-  border: 2px solid var(--ink);
-}
-.freshness-pill.older {
-  background: white;
-  color: var(--ink);
-  border: 2px solid var(--ink);
-}
 .filter-bar {
   display: flex;
   gap: 8px;
@@ -1205,7 +1166,6 @@ body::before {
                 </div>
             </div>
         </div>
-        <div class="freshness-bar" id="freshness-bar"></div>
         <div class="filter-bar">
             <span class="filter-label">Status:</span>
             <button class="filter-btn" onclick="setFilter('all', this)">All</button>
@@ -2835,58 +2795,31 @@ function copyEmailDraft(jobId) {
 }
 
 
-function updateFreshnessBar() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const weekAgo = new Date(today);
-  weekAgo.setDate(weekAgo.getDate() - 7);
-  const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-
-  let todayCount = 0, weekCount = 0, monthCount = 0, olderCount = 0;
-
-  for (const job of JOBS) {
-    const s = getJobState(job.id).status;
-    if (s === 'not-interested') continue;
-    const d = new Date(job.postedISO);
-    if (d >= today) todayCount++;
-    else if (d >= weekAgo) weekCount++;
-    else if (d >= monthStart) monthCount++;
-    else olderCount++;
-  }
-
-  const bar = document.getElementById('freshness-bar');
-  if (!bar) return;
-  bar.innerHTML = '';
-  if (todayCount > 0) {
-    bar.innerHTML += '<span class="freshness-pill today">' + todayCount + ' New Today</span>';
-  }
-  if (weekCount > 0) {
-    bar.innerHTML += '<span class="freshness-pill this-week">' + weekCount + ' This Week</span>';
-  }
-  if (monthCount > 0) {
-    bar.innerHTML += '<span class="freshness-pill this-month">' + monthCount + ' This Month</span>';
-  }
-  if (olderCount > 0) {
-    bar.innerHTML += '<span class="freshness-pill older">' + olderCount + ' Older</span>';
-  }
-}
 
 function renderJobs() {
   const container = document.getElementById('activeCards');
   // Sort by posted date descending
   const sorted = [...JOBS].sort((a, b) => b.postedISO.localeCompare(a.postedISO));
-  // Group by month
+  // Group by TODAY first, then by month
+  const todayISO = new Date().toISOString().slice(0, 10);
   const groups = {};
   for (const job of sorted) {
-    const month = parseMonth(job.postedISO);
-    if (!groups[month]) groups[month] = [];
-    groups[month].push(job);
+    const key = (job.postedISO === todayISO) ? '__TODAY__' : parseMonth(job.postedISO);
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(job);
+  }
+  // Ensure TODAY group comes first if it exists
+  const orderedKeys = Object.keys(groups);
+  if (groups['__TODAY__']) {
+    orderedKeys.splice(orderedKeys.indexOf('__TODAY__'), 1);
+    orderedKeys.unshift('__TODAY__');
   }
   let html = '';
-  for (const [month, jobs] of Object.entries(groups)) {
+  for (const key of orderedKeys) {
+    const label = (key === '__TODAY__') ? 'TODAY' : key;
     html += `<div class="timeline-date-group">`;
-    html += `<div class="timeline-date-label">${month}</div>`;
-    for (const job of jobs) {
+    html += `<div class="timeline-date-label">${label}</div>`;
+    for (const job of groups[key]) {
       html += renderJobCard(job);
     }
     html += `</div>`;
@@ -3233,7 +3166,6 @@ function updateStats() {
     <div class="stat-pill"><span class="stat-dot" style="background:var(--haring-green)"></span><strong>${offers}</strong> Offers</div>
     ${hidden > 0 ? `<div class="stat-pill" style="opacity:0.5;"><strong>${hidden}</strong> Hidden</div>` : ''}
   `;
-  updateFreshnessBar();
 }
 // ─────────────────────────────────────────────────────────
 // UPCOMING INTERVIEWS
@@ -3553,7 +3485,6 @@ function runJobUpdate() {
 renderJobs();
 renderOutreach();
 updateStats();
-updateFreshnessBar();
 updateInterviewBox();
 </script>
 </body>
