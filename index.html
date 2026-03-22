@@ -1283,6 +1283,9 @@ body::before {
             <div id="outreachMap"></div>
           </div>
         </div>
+        <div class="stats-bar" id="outreachStatsBar">
+            <div class="stat-pill"><strong>0</strong> Targets</div>
+        </div>
         <div class="filter-bar">
             <span class="filter-label">Type:</span>
             <button class="filter-btn active" onclick="setOutreachFilter('all', this)">All</button>
@@ -3562,6 +3565,7 @@ function renderOutreach() {
   }
   container.innerHTML = html;
   applyOutreachFilter();
+  updateOutreachStats();
 }
 
 function getOutreachDraftPreview(outreachId, o) {
@@ -3595,6 +3599,7 @@ function updateOutreachStatus(id, sel) {
     dateInput.style.color = 'var(--ink-light)';
     setOutreachField(id, 'dateContacted', today);
   }
+  updateOutreachStats();
 }
 
 // ─────────────────────────────────────────────────────────
@@ -3679,6 +3684,26 @@ function updateStats() {
     ${hidden > 0 ? `<div class="stat-pill" style="opacity:0.5;"><strong>${hidden}</strong> Hidden</div>` : ''}
   `;
 }
+function updateOutreachStats() {
+  let total = 0, emailed = 0, responded = 0, notContacted = 0;
+  for (const o of OUTREACH) {
+    const s = getOutreachState(o.id).status;
+    total++;
+    if (s === 'applied') emailed++;
+    if (s === 'interviewing' || s === 'offer') responded++;
+    if (s === 'not-started' || s === 'in-progress') notContacted++;
+  }
+  const bar = document.getElementById('outreachStatsBar');
+  if (bar) {
+    bar.innerHTML = `
+      <div class="stat-pill"><strong>${total}</strong> Targets</div>
+      <div class="stat-pill"><span class="stat-dot" style="background:var(--haring-blue)"></span><strong>${emailed}</strong> Emailed</div>
+      <div class="stat-pill"><span class="stat-dot" style="background:var(--haring-orange)"></span><strong>${responded}</strong> Responded</div>
+      <div class="stat-pill"><span class="stat-dot" style="background:#6B7280"></span><strong>${notContacted}</strong> Not Contacted</div>
+    `;
+  }
+}
+
 // ─────────────────────────────────────────────────────────
 // UPCOMING INTERVIEWS
 // ─────────────────────────────────────────────────────────
@@ -3997,6 +4022,7 @@ function runJobUpdate() {
 renderJobs();
 renderOutreach();
 updateStats();
+updateOutreachStats();
 updateInterviewBox();
 </script>
 </body>
