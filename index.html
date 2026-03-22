@@ -281,6 +281,9 @@ body::before {
 .new-today-wrapper .job-card {
   border-left: 4px solid #E8383B;
 }
+.new-today-wrapper .outreach-card {
+  border-left: 4px solid #E8383B;
+}
 .new-today-wrapper .timeline-date-group {
   margin-bottom: 0;
 }
@@ -3445,94 +3448,118 @@ function getOutreachGmailBadge(o, os) {
 function renderOutreach() {
   const container = document.getElementById('outreachCards');
   const sorted = [...OUTREACH].sort((a, b) => b.dateISO.localeCompare(a.dateISO));
-  // Group by month
+
+  // Separate NEW entries from the rest
+  const newItems = sorted.filter(o => o.isNew);
+  const restItems = sorted.filter(o => !o.isNew);
+
+  function renderOutreachCard(o) {
+    const os = getOutreachState(o.id);
+    const typeClass = TYPE_CLASSES[o.type] || 'type-architecture';
+    const typeLabel = o.type === 'RealEstate' ? 'Real Estate' : o.type;
+    return `
+      <div class="outreach-card" id="oc-${o.id}" data-type="${o.type}" data-contacted="${os.status}" data-dateiso="${o.dateISO}">
+        <div class="card-color-bar"></div>
+        <div class="card-inner">
+          <div class="card-main">
+            <div class="card-row-1">
+              <span class="card-date">${o.date}</span>
+              <span class="card-source">${o.source}</span>
+              <span class="firm-type-tag ${typeClass}">${typeLabel}</span>
+              ${getOutreachGmailBadge(o, os)}
+            </div>
+            <div class="card-row-2">
+              <span class="card-company"><a href="${o.website}" target="_blank" style="color:inherit;text-decoration:none;border-bottom:2px solid var(--haring-blue);">${o.company}</a></span>
+              ${getRepeatBadge(o.company, o.id)}
+            </div>
+            <div class="card-row-3">
+              <span class="card-address"><a href="https://www.google.com/maps/search/${encodeURIComponent(o.company + ' ' + o.location)}" target="_blank" style="color:inherit;text-decoration:none;" title="Open in Google Maps">&#128205; ${o.location}</a></span>
+            </div>
+            <div class="card-tags">
+              <span class="meta-tag"><a href="${o.website}" target="_blank" style="color:var(--haring-blue);text-decoration:none;font-weight:700;">&#127760; Website</a></span>
+              ${o.contact.includes('@') ? `<span class="meta-tag"><a href="mailto:${o.contact}" style="color:inherit;text-decoration:none;">&#9993; ${o.contact}</a></span>` : `<span class="meta-tag"><a href="${o.contact}" target="_blank" style="color:inherit;text-decoration:none;">&#128279; Contact</a></span>`}
+            </div>
+          </div>
+          <div class="card-actions">
+            <select class="status-select ${statusClass(os.status)}" onchange="updateOutreachStatus('${o.id}', this)">
+              <option value="not-started" ${os.status==='not-started'?'selected':''}>Not Contacted</option>
+              <option value="in-progress" ${os.status==='in-progress'?'selected':''}>Drafting</option>
+              <option value="applied" ${os.status==='applied'?'selected':''}>Email Sent</option>
+              <option value="interviewing" ${os.status==='interviewing'?'selected':''}>Response</option>
+              <option value="offer" ${os.status==='offer'?'selected':''}>Interview</option>
+              <option value="rejected" ${os.status==='rejected'?'selected':''}>No Interest</option>
+              <option value="not-interested" ${os.status==='not-interested'?'selected':''}>Not Interested</option>
+            </select>
+            <div class="card-btns">
+              <button class="btn-contact" onclick="openOutreachModal('${o.id}')">Contact</button>
+              <button class="btn-details" onclick="toggleDetails('oc${o.id}')">Details</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-details" id="details-oc${o.id}">
+          <div class="detail-row">
+            <div class="detail-label">Links</div>
+            <div class="detail-value">
+              <a href="${o.website}" target="_blank">${o.company} Website</a>
+              &middot; <a href="https://www.google.com/maps/search/${encodeURIComponent(o.company + ' ' + o.location)}" target="_blank">Google Maps</a>
+              ${o.contact.includes('@') ? ' &middot; <a href="mailto:' + o.contact + '">' + o.contact + '</a>' : ''}
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Why Reach Out</div>
+            <div class="role-sketch-box">${o.why}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Portfolio Angle</div>
+            <div class="detail-value" style="font-style:italic;">${o.angle}</div>
+          </div>
+          ${getOutreachDraftPreview(o.id, o)}
+          <div class="detail-row">
+            <div class="detail-label">Date Contacted</div>
+            <input class="date-applied-input" type="text" id="date-oc-${o.id}" placeholder="Auto-filled when contacted" value="${os.dateContacted || ''}" ${os.dateContacted ? 'readonly style="background:#f0f0f0;color:var(--ink-light);"' : ''} onchange="setOutreachField('${o.id}', 'dateContacted', this.value)">
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Notes</div>
+            <textarea class="notes-input" placeholder="Notes..." onchange="setOutreachField('${o.id}', 'notes', this.value)">${os.notes || ''}</textarea>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  let html = '';
+
+  // NEW TODAY section
+  if (newItems.length > 0) {
+    html += `<div class="new-today-wrapper">`;
+    html += `<div class="new-today-header">`;
+    html += `<span class="new-today-label">NEW TODAY</span>`;
+    html += `<span class="new-today-count">${newItems.length} new target${newItems.length !== 1 ? 's' : ''} added</span>`;
+    html += `</div>`;
+    for (const o of newItems) {
+      html += renderOutreachCard(o);
+    }
+    html += `</div>`;
+  }
+
+  // Group remaining items by month
   const groups = {};
-  for (const o of sorted) {
+  for (const o of restItems) {
     const month = parseMonth(o.dateISO);
     if (!groups[month]) groups[month] = [];
     groups[month].push(o);
   }
-  let html = '';
   for (const [month, items] of Object.entries(groups)) {
     html += `<div class="timeline-date-group">`;
     html += `<div class="timeline-date-label">${month}</div>`;
     for (const o of items) {
-      const os = getOutreachState(o.id);
-      const typeClass = TYPE_CLASSES[o.type] || 'type-architecture';
-      const typeLabel = o.type === 'RealEstate' ? 'Real Estate' : o.type;
-      html += `
-        <div class="outreach-card" id="oc-${o.id}" data-type="${o.type}" data-contacted="${os.status}" data-dateiso="${o.dateISO}">
-          <div class="card-color-bar"></div>
-          <div class="card-inner">
-            <div class="card-main">
-              <div class="card-row-1">
-                <span class="card-date">${o.date}</span>
-                <span class="card-source">${o.source}</span>
-                <span class="firm-type-tag ${typeClass}">${typeLabel}</span>
-                ${getOutreachGmailBadge(o, os)}
-              </div>
-              <div class="card-row-2">
-                <span class="card-company"><a href="${o.website}" target="_blank" style="color:inherit;text-decoration:none;border-bottom:2px solid var(--haring-blue);">${o.company}</a></span>
-                ${getRepeatBadge(o.company, o.id)}
-              </div>
-              <div class="card-row-3">
-                <span class="card-address"><a href="https://www.google.com/maps/search/${encodeURIComponent(o.company + ' ' + o.location)}" target="_blank" style="color:inherit;text-decoration:none;" title="Open in Google Maps">&#128205; ${o.location}</a></span>
-              </div>
-              <div class="card-tags">
-                <span class="meta-tag"><a href="${o.website}" target="_blank" style="color:var(--haring-blue);text-decoration:none;font-weight:700;">&#127760; Website</a></span>
-                ${o.contact.includes('@') ? `<span class="meta-tag"><a href="mailto:${o.contact}" style="color:inherit;text-decoration:none;">&#9993; ${o.contact}</a></span>` : `<span class="meta-tag"><a href="${o.contact}" target="_blank" style="color:inherit;text-decoration:none;">&#128279; Contact</a></span>`}
-              </div>
-            </div>
-            <div class="card-actions">
-              <select class="status-select ${statusClass(os.status)}" onchange="updateOutreachStatus('${o.id}', this)">
-                <option value="not-started" ${os.status==='not-started'?'selected':''}>Not Contacted</option>
-                <option value="in-progress" ${os.status==='in-progress'?'selected':''}>Drafting</option>
-                <option value="applied" ${os.status==='applied'?'selected':''}>Email Sent</option>
-                <option value="interviewing" ${os.status==='interviewing'?'selected':''}>Response</option>
-                <option value="offer" ${os.status==='offer'?'selected':''}>Interview</option>
-                <option value="rejected" ${os.status==='rejected'?'selected':''}>No Interest</option>
-                <option value="not-interested" ${os.status==='not-interested'?'selected':''}>Not Interested</option>
-              </select>
-              <div class="card-btns">
-                <button class="btn-contact" onclick="openOutreachModal('${o.id}')">Contact</button>
-                <button class="btn-details" onclick="toggleDetails('oc${o.id}')">Details</button>
-              </div>
-            </div>
-          </div>
-          <div class="card-details" id="details-oc${o.id}">
-            <div class="detail-row">
-              <div class="detail-label">Links</div>
-              <div class="detail-value">
-                <a href="${o.website}" target="_blank">${o.company} Website</a>
-                &middot; <a href="https://www.google.com/maps/search/${encodeURIComponent(o.company + ' ' + o.location)}" target="_blank">Google Maps</a>
-                ${o.contact.includes('@') ? ' &middot; <a href="mailto:' + o.contact + '">' + o.contact + '</a>' : ''}
-              </div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Why Reach Out</div>
-              <div class="role-sketch-box">${o.why}</div>
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Portfolio Angle</div>
-              <div class="detail-value" style="font-style:italic;">${o.angle}</div>
-            </div>
-            ${getOutreachDraftPreview(o.id, o)}
-            <div class="detail-row">
-              <div class="detail-label">Date Contacted</div>
-              <input class="date-applied-input" type="text" id="date-oc-${o.id}" placeholder="Auto-filled when contacted" value="${os.dateContacted || ''}" ${os.dateContacted ? 'readonly style="background:#f0f0f0;color:var(--ink-light);"' : ''} onchange="setOutreachField('${o.id}', 'dateContacted', this.value)">
-            </div>
-            <div class="detail-row">
-              <div class="detail-label">Notes</div>
-              <textarea class="notes-input" placeholder="Notes..." onchange="setOutreachField('${o.id}', 'notes', this.value)">${os.notes || ''}</textarea>
-            </div>
-          </div>
-        </div>`;
+      html += renderOutreachCard(o);
     }
     html += `</div>`;
   }
   container.innerHTML = html;
   applyOutreachFilter();
 }
+
 function getOutreachDraftPreview(outreachId, o) {
   const draft = OUTREACH_DRAFTS[outreachId];
   if (!draft) return '';
