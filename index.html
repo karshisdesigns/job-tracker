@@ -1279,8 +1279,22 @@ body::before {
             <div id="outreachMap"></div>
           </div>
         </div>
-        <div class="stats-bar" id="outreachStatsBar">
-            <div class="stat-pill"><strong>0</strong> Targets</div>
+        <div class="progress-section">
+            <div class="progress-title">Outreach Pipeline</div>
+            <div class="progress-steps">
+                <div class="progress-step">
+                    <div class="p-total"><div class="p-num" id="o-total">0</div><div class="p-label">Total</div></div>
+                </div>
+                <div class="progress-step">
+                    <div class="p-applied"><div class="p-num" id="o-emailed">0</div><div class="p-label">Emailed</div></div>
+                </div>
+                <div class="progress-step">
+                    <div class="p-interview"><div class="p-num" id="o-responded">0</div><div class="p-label">Responded</div></div>
+                </div>
+                <div class="progress-step">
+                    <div class="p-offer"><div class="p-num" id="o-not-contacted">0</div><div class="p-label">Not Contacted</div></div>
+                </div>
+            </div>
         </div>
         <div class="filter-bar">
             <span class="filter-label">Type:</span>
@@ -3689,15 +3703,14 @@ function updateOutreachStats() {
     if (s === 'interviewing' || s === 'offer') responded++;
     if (s === 'not-started' || s === 'in-progress') notContacted++;
   }
-  const bar = document.getElementById('outreachStatsBar');
-  if (bar) {
-    bar.innerHTML = `
-      <div class="stat-pill"><strong>${total}</strong> Targets</div>
-      <div class="stat-pill"><span class="stat-dot" style="background:var(--haring-blue)"></span><strong>${emailed}</strong> Emailed</div>
-      <div class="stat-pill"><span class="stat-dot" style="background:var(--haring-orange)"></span><strong>${responded}</strong> Responded</div>
-      <div class="stat-pill"><span class="stat-dot" style="background:#6B7280"></span><strong>${notContacted}</strong> Not Contacted</div>
-    `;
-  }
+  const elTotal = document.getElementById('o-total');
+  const elEmailed = document.getElementById('o-emailed');
+  const elResponded = document.getElementById('o-responded');
+  const elNotContacted = document.getElementById('o-not-contacted');
+  if (elTotal) elTotal.textContent = total;
+  if (elEmailed) elEmailed.textContent = emailed;
+  if (elResponded) elResponded.textContent = responded;
+  if (elNotContacted) elNotContacted.textContent = notContacted;
 }
 
 // ─────────────────────────────────────────────────────────
