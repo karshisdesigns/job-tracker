@@ -1289,7 +1289,6 @@ body::before {
             <button class="filter-btn" onclick="setOutreachFilter('Architecture', this)">Architecture</button>
             <button class="filter-btn" onclick="setOutreachFilter('GC', this)">GC</button>
             <button class="filter-btn" onclick="setOutreachFilter('Corporate', this)">Corporate</button>
-            <button class="filter-btn" onclick="toggleAgeFilter(this)">Last 30 Days</button>
             <span class="filter-label" style="margin-left:12px;">Contact:</span>
             <button class="filter-btn contact-filter active" onclick="setContactFilter('all', this)">All</button>
             <button class="filter-btn contact-filter" onclick="setContactFilter('emailed', this)">Emailed</button>
@@ -3157,7 +3156,7 @@ let activeFilter = 'not-started';
 let searchTerm = '';
 let outreachFilter = 'all';
 let contactFilter = 'all';
-let hideOldOutreach = true;
+let hideOldOutreach = false;
 function getJobState(id) {
   const job = JOBS.find(j => j.id === id);
   if (state[id]) return state[id];
@@ -3592,12 +3591,7 @@ function updateOutreachStatus(id, sel) {
     setOutreachField(id, 'dateContacted', today);
   }
 }
-function toggleAgeFilter(btn) {
-  hideOldOutreach = !hideOldOutreach;
-  btn.classList.toggle('active', hideOldOutreach);
-  btn.textContent = hideOldOutreach ? 'Last 30 Days' : 'Show All';
-  applyOutreachFilter();
-}
+
 // ─────────────────────────────────────────────────────────
 // FILTERS
 // ─────────────────────────────────────────────────────────
@@ -3640,24 +3634,19 @@ function setContactFilter(f, btn) {
   applyOutreachFilter();
 }
 function applyOutreachFilter() {
-  const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - 30);
   document.querySelectorAll('.outreach-card').forEach(card => {
     const t = card.dataset.type;
-    const iso = card.dataset.dateiso || '';
-    const d = iso ? new Date(iso) : new Date();
     const contacted = card.dataset.contacted || 'not-started';
     const typeMatch = outreachFilter === 'all' ||
                       t === outreachFilter ||
                       (outreachFilter === 'Corporate' && (t === 'Corporate' || t === 'RealEstate'));
-    const ageMatch = hideOldOutreach ? d >= cutoff : true;
     let contactMatch = true;
     if (contactFilter === 'emailed') {
       contactMatch = (contacted === 'applied' || contacted === 'interviewing' || contacted === 'offer');
     } else if (contactFilter === 'not-emailed') {
       contactMatch = (contacted === 'not-started' || contacted === 'in-progress');
     }
-    card.classList.toggle('hidden', !typeMatch || !ageMatch || !contactMatch);
+    card.classList.toggle('hidden', !typeMatch || !contactMatch);
   });
 }
 // ─────────────────────────────────────────────────────────
