@@ -242,6 +242,75 @@ body::before {
 .timeline-date-group {
   margin-bottom: 28px;
 }
+
+/* ── NEW TODAY GROUP ── */
+.new-today-wrapper {
+  position: relative;
+  border: 3px solid #E8383B;
+  padding: 18px 14px 14px;
+  margin-bottom: 32px;
+  background: linear-gradient(135deg, #FFF5F5 0%, #FFFFFF 100%);
+  box-shadow: 5px 5px 0 #E8383B;
+}
+.new-today-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.new-today-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #fff;
+  padding: 7px 16px;
+  background: #E8383B;
+  border: 2px solid #b02a2d;
+  display: inline-block;
+  animation: pulse-new 2s ease-in-out infinite;
+}
+.new-today-count {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #E8383B;
+  letter-spacing: 0.5px;
+}
+.new-today-wrapper .job-card {
+  border-left: 4px solid #E8383B;
+}
+.new-today-wrapper .timeline-date-group {
+  margin-bottom: 0;
+}
+
+/* ── NO NEW JOBS MESSAGE ── */
+.no-new-jobs {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  margin-bottom: 28px;
+  background: #F9FAFB;
+  border: 2px dashed #D1D5DB;
+  font-family: 'DM Sans', sans-serif;
+  color: #6B7280;
+  font-size: 0.88rem;
+}
+.no-new-jobs-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.no-new-jobs strong {
+  color: var(--ink);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.78rem;
+}
+
 .timeline-date-label {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.82rem;
@@ -3116,32 +3185,48 @@ function copyEmailDraft(jobId) {
 
 function renderJobs() {
   const container = document.getElementById('activeCards');
-  // Sort by posted date descending
   const sorted = [...JOBS].sort((a, b) => b.postedISO.localeCompare(a.postedISO));
-  // Group by TODAY first, then by month
-  const todayISO = new Date().toISOString().slice(0, 10);
+
+  // Separate NEW jobs from the rest
+  const newJobs = sorted.filter(j => j.isNew);
+  const restJobs = sorted.filter(j => !j.isNew);
+
+  let html = '';
+
+  // NEW TODAY section
+  if (newJobs.length > 0) {
+    html += `<div class="new-today-wrapper">`;
+    html += `<div class="new-today-header">`;
+    html += `<span class="new-today-label">NEW TODAY</span>`;
+    html += `<span class="new-today-count">${newJobs.length} new role${newJobs.length !== 1 ? 's' : ''} found</span>`;
+    html += `</div>`;
+    for (const job of newJobs) {
+      html += renderJobCard(job);
+    }
+    html += `</div>`;
+  } else {
+    html += `<div class="no-new-jobs">`;
+    html += `<span class="no-new-jobs-icon">&#9203;</span>`;
+    html += `<div><strong>No new jobs today</strong><br>The daily search runs at 9am. Check back later or hit Run Job Update above.</div>`;
+    html += `</div>`;
+  }
+
+  // Group remaining jobs by month
   const groups = {};
-  for (const job of sorted) {
-    const key = (job.postedISO === todayISO) ? '__TODAY__' : parseMonth(job.postedISO);
+  for (const job of restJobs) {
+    const key = parseMonth(job.postedISO);
     if (!groups[key]) groups[key] = [];
     groups[key].push(job);
   }
-  // Ensure TODAY group comes first if it exists
-  const orderedKeys = Object.keys(groups);
-  if (groups['__TODAY__']) {
-    orderedKeys.splice(orderedKeys.indexOf('__TODAY__'), 1);
-    orderedKeys.unshift('__TODAY__');
-  }
-  let html = '';
-  for (const key of orderedKeys) {
-    const label = (key === '__TODAY__') ? 'TODAY' : key;
+  for (const [month, jobs] of Object.entries(groups)) {
     html += `<div class="timeline-date-group">`;
-    html += `<div class="timeline-date-label">${label}</div>`;
-    for (const job of groups[key]) {
+    html += `<div class="timeline-date-label">${month}</div>`;
+    for (const job of jobs) {
       html += renderJobCard(job);
     }
     html += `</div>`;
   }
+
   container.innerHTML = html;
   applyFilter();
   updateStats();
