@@ -3538,6 +3538,11 @@ function renderOutreach() {
       html += renderOutreachCard(o);
     }
     html += `</div>`;
+  } else {
+    html += `<div class="no-new-jobs">`;
+    html += `<span class="no-new-jobs-icon">&#9203;</span>`;
+    html += `<div><strong>No new outreach today</strong><br>New cold outreach targets will appear here when added.</div>`;
+    html += `</div>`;
   }
 
   // Group remaining items by month
