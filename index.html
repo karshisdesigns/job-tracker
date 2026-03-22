@@ -448,6 +448,25 @@ body::before {
   align-items: center;
   gap: 4px;
 }
+.new-badge {
+  background: #E8383B;
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border: 2px solid #b02a2d;
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: middle;
+  animation: pulse-new 2s ease-in-out infinite;
+}
+@keyframes pulse-new {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
 .card-btns {
   display: flex;
   flex: 1;
@@ -1263,8 +1282,8 @@ const JOBS = [
       roleSketch: 'Project Architect at Studio ARQ in Chicago. Posted March 18 on AIA Chicago board. Great match for Revit documentation and PM experience.',
       defaultStatus: 'not-started',
       gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
+      gmailDate: '2026-03-19',
+      gmailBadge: 'gmail-sent'
     },
     {
       id: 'thomasarch',
@@ -1332,8 +1351,8 @@ const JOBS = [
       roleSketch: 'Retail and restaurant project management - directly aligns with commercial TI experience at DxU. Great salary range. Chicago location.',
       defaultStatus: 'not-started',
       gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
+      gmailDate: '2026-03-20',
+      gmailBadge: 'gmail-sent'
     },
     {
       id: 'environs',
@@ -1378,8 +1397,8 @@ const JOBS = [
       roleSketch: 'Construction PM at Accel Construction. Solid salary $85K-$105K. Posted March 17. Good fit for PM skills and construction knowledge.',
       defaultStatus: 'not-started',
       gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
+      gmailDate: '2026-03-20',
+      gmailBadge: 'gmail-sent'
     },
     {
       id: 'carlile',
@@ -1493,8 +1512,8 @@ const JOBS = [
     roleSketch: 'You would be working on adaptive reuse and mixed-use multifamily projects in SCB\'s Chicago studio. Day-to-day includes Revit documentation, consultant coordination, and contributing to design across all phases. SCB supports licensure with study resources and exam reimbursement.',
     defaultStatus: 'applied',
     gmailStatus: 'sent-no-confirm',
-    gmailDate: 'March 4, 2026',
-    gmailBadge: 'gmail-sent',
+    gmailDate: '2026-03-18',
+    gmailBadge: 'gmail-verified',
   },
   {
     id: 'arda',
@@ -1516,8 +1535,8 @@ const JOBS = [
     roleSketch: 'You would be documenting historic preservation and adaptive reuse projects using Revit and Bluebeam. Expect field verification of existing buildings, as-built documentation, and producing construction-ready CD sets for renovation and hospitality projects.',
     defaultStatus: 'not-started',
     gmailStatus: '',
-    gmailDate: '',
-    gmailBadge: '',
+    gmailDate: '2026-03-18',
+    gmailBadge: 'gmail-sent',
   },
   {
     id: 'koo',
@@ -1838,8 +1857,8 @@ const JOBS = [
     roleSketch: 'You would be preparing design details and technical drawings for residential and commercial office interiors. Leading projects and mentoring junior staff using Revit, Bluebeam, and Adobe Suite. Separate from the Architectural Designer role - this focuses specifically on interiors.',
     defaultStatus: 'not-started',
     gmailStatus: '',
-    gmailDate: '',
-    gmailBadge: '',
+    gmailDate: '2026-03-18',
+    gmailBadge: 'gmail-sent',
   },
   {
     id: 'bridgewater-fab',
@@ -1908,8 +1927,8 @@ const JOBS = [
     roleSketch: 'Manage retail and industrial properties across Cresco\'s national Sunnyside dispensary portfolio. Handle lease administration, property maintenance coordination, real estate tax payments, budgeting, and property onboarding for M&A activities. Chicago-HQ\'d MSO with one of the largest dispensary networks in the country.',
     defaultStatus: 'applied',
     gmailStatus: '',
-    gmailDate: 'March 18, 2026',
-    gmailBadge: 'gmail-sent',
+    gmailDate: '2026-03-19',
+    gmailBadge: 'gmail-verified',
     cannabis: true,
   },
   {
@@ -2293,6 +2312,7 @@ const JOBS = [
     },
     {
       id: 'waremalcomb-pm',
+      isNew: true,
       company: 'Ware Malcomb',
       title: 'Project Manager',
       score: 3,
@@ -2316,6 +2336,7 @@ const JOBS = [
     },
     {
       id: 'laurencoburn',
+      isNew: true,
       company: 'Lauren Coburn LLC',
       title: 'Senior Interior Designer / Interior Architecture',
       score: 3,
@@ -2339,6 +2360,7 @@ const JOBS = [
     },
     {
       id: 'cresco-lincoln',
+      isNew: true,
       company: 'Cresco Labs',
       title: 'Facility Maintenance Technician',
       score: 3,
@@ -2363,6 +2385,7 @@ const JOBS = [
     },
     {
       id: 'curaleaf-litchfield',
+      isNew: true,
       company: 'Curaleaf',
       title: 'Lead Maintenance Technician',
       score: 2,
@@ -2387,6 +2410,7 @@ const JOBS = [
     },
     {
       id: 'curaleaf-artdir',
+      isNew: true,
       company: 'Curaleaf',
       title: 'Senior Art Director',
       score: 3,
@@ -2411,6 +2435,7 @@ const JOBS = [
     },
     {
       id: 'lggroup',
+      isNew: true,
       company: 'LG GROUP',
       title: 'Assistant Project Manager',
       score: 3,
@@ -2434,6 +2459,7 @@ const JOBS = [
     },
     {
       id: 'mahogany',
+      isNew: true,
       company: 'Mahogany Builders',
       title: 'Residential Project Manager',
       score: 3,
@@ -2457,6 +2483,7 @@ const JOBS = [
     },
     {
       id: 'frost-cnc',
+      isNew: true,
       company: 'Frost',
       title: 'CNC Router Operator',
       score: 2,
@@ -2480,6 +2507,7 @@ const JOBS = [
     },
     {
       id: 'waremalcomb-sp',
+      isNew: true,
       company: 'Ware Malcomb',
       title: 'Architectural Designer II, Site Planning',
       score: 4,
@@ -2924,6 +2952,7 @@ const SOCIAL_LEADS = [
   
     {
       id: 'sl-cl-cad-franklinpark',
+      isNew: true,
       source: 'craigslist',
       poster: 'Unknown',
       posterTitle: '',
@@ -2938,6 +2967,7 @@ const SOCIAL_LEADS = [
     },
     {
       id: 'sl-cl-cnc-franklinpark',
+      isNew: true,
       source: 'craigslist',
       poster: 'Unknown',
       posterTitle: '',
@@ -3141,6 +3171,7 @@ function renderJobCard(job) {
             <span class="card-date">${job.posted}</span>
             <span class="card-source">${job.source}</span>
             <span class="score-pip">${job.score}</span>
+            ${job.isNew ? '<span class="new-badge">NEW</span>' : ''}
             ${gmailBadge}
           </div>
           <div class="card-row-2">
