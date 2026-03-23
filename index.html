@@ -1359,14 +1359,14 @@ const JOBS = [
       postedISO: '2026-03-18',
       source: 'AIA Chicago',
       deadline: '',
-      howToApply: 'Apply via AIA Chicago job board',
-      applyLink: 'https://aiachicago.org/job-board/',
-      postingLink: 'https://aiachicago.org/job-board/',
+      howToApply: 'Email csantoy@studioarq.com and info@studioarq.com',
+      applyLink: 'mailto:csantoy@studioarq.com',
+      postingLink: 'https://aiachicago.org/job_posting/studio-arq-llc-project-architect/',
       firmWebsite: '',
       roleSketch: 'Project Architect at Studio ARQ in Chicago. Posted March 18 on AIA Chicago board. Great match for Revit documentation and PM experience.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '2026-03-19',
+      defaultStatus: 'applied',
+      gmailStatus: 'verified',
+      gmailDate: 'March 19, 2026',
       gmailBadge: 'gmail-sent'
     },
     {
@@ -2080,10 +2080,10 @@ const JOBS = [
       postingLink: 'https://aiachicago.org/job_posting/matthei-colin-associates-llc-architectural-designer-i-entry-level/',
       firmWebsite: '',
       roleSketch: 'Entry-level Architectural Designer position at Matthei & Colin Associates in Chicago. May be junior given 2 years at DxU but worth checking.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
+      defaultStatus: 'applied',
+      gmailStatus: 'verified',
+      gmailDate: 'March 20, 2026',
+      gmailBadge: 'gmail-sent'
     },
     {
       id: 'rush-bim',
@@ -2207,17 +2207,17 @@ const JOBS = [
       company: 'Soucie Horner Design Collective',
       title: 'Associate Designer - Architecture',
       score: 3,
-      salary: '$55,000-$60,000',
+      salary: '$59,000-$78,000',
       location: 'Chicago, IL',
       address: '208 W Kinzie St, Chicago, IL',
-      remote: 'Hybrid',
+      remote: 'Remote',
       posted: 'March 20, 2026',
       postedISO: '2026-03-20',
       source: 'AIA Chicago',
       deadline: '',
-      howToApply: 'Email rbrouk@souciehorner.com',
-      applyLink: 'mailto:rbrouk@souciehorner.com',
-      postingLink: 'https://aiachicago.org/job-board/',
+      howToApply: 'Email asullivan@souciehorner.com',
+      applyLink: 'mailto:asullivan@souciehorner.com',
+      postingLink: 'https://aiachicago.org/job_posting/soucie-horner-design-collective-associate-designer-architecture-2/',
       firmWebsite: 'https://www.souciehorner.com/',
       roleSketch: 'Interior architecture focus at luxury residential/commercial design firm. AutoCAD, Adobe, millwork detailing. 3-4 years post-collegiate experience preferred.',
       defaultStatus: 'not-started',
@@ -2560,7 +2560,6 @@ const JOBS = [
     },
       {
       id: 'farrassoc',
-      isNew: true,
       company: 'Farr Associates',
       title: 'Architectural Designer',
       score: 4,
@@ -2584,7 +2583,6 @@ const JOBS = [
     },
     {
       id: 'cdogroup',
-      isNew: true,
       company: 'CDO Group, Inc',
       title: 'Construction Project Manager',
       score: 4,
@@ -2608,7 +2606,6 @@ const JOBS = [
     },
     {
       id: 'epstein',
-      isNew: true,
       company: 'Epstein Architecture, Engineering & Construction',
       title: 'Design Professional',
       score: 4,
@@ -2632,7 +2629,6 @@ const JOBS = [
     },
     {
       id: 'cl-bidder-apm',
-      isNew: true,
       company: 'Chicago Interior Design Firm (Confidential)',
       title: 'Bidder / Assistant Project Manager',
       score: 4,
@@ -2654,7 +2650,31 @@ const JOBS = [
       gmailDate: '',
       gmailBadge: ''
     },
-];
+    {
+      id: 'altusworks',
+      isNew: true,
+      company: 'AltusWorks, Inc.',
+      title: 'Preservation Architect',
+      score: 2,
+      salary: '$100,000-$125,000',
+      location: 'Chicago, IL',
+      address: '211 N. Clinton St, Suite 3S, Chicago, IL 60661',
+      remote: 'Hybrid',
+      posted: 'March 12, 2026',
+      postedISO: '2026-03-12',
+      source: 'AIA Chicago',
+      deadline: '',
+      howToApply: 'Email cover letter, resume, and portfolio (one PDF) to altus-info@altusworks.com',
+      applyLink: 'mailto:altus-info@altusworks.com',
+      postingLink: 'https://aiachicago.org/job_posting/altusworks-inc-preservation-architect-2/',
+      firmWebsite: 'https://altusworks.com/',
+      roleSketch: 'Preservation and building rehabilitation firm (WBE) seeks a lead Preservation Architect. Strong Revit/AutoCAD/Bluebeam fit. NOTE - requires 10+ years of historic preservation experience; this is a significant reach at 2 years post-grad. Worth watching as a firm for future senior role or cold outreach.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    }
+  ];
 const OUTREACH = [
   { id: 'dspace', company: 'dSPACE Studio', location: 'Lincoln Ave / Lakeview (~1 mi)', type: 'Architecture', contact: 'careers@dspacestudio.com', website: 'https://www.dspacestudio.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Award-winning residential firm within 1 mile of home. Recent AIA Chicago posting signals active hiring. Local proximity makes this a natural cold outreach target.', angle: 'Lead with design-forward work and adaptive reuse experience; emphasize Revit CD documentation depth.' },
   { id: 'moss', company: 'moss design', location: 'Logan Square (~2 mi)', type: 'Architecture', contact: 'laura@moss-design.com', website: 'https://moss-design.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Adaptive reuse, hospitality (breweries), and commercial work. Past job posting for Project Architect/Designer (5-8 yrs) suggests cyclical hiring. Laura is direct contact.', angle: 'Lead with hospitality TI and adaptive reuse work; showcase Revit CD documentation.' },
@@ -2886,6 +2906,24 @@ const EMAIL_DRAFTS = {
     subject: 'Bidder / Assistant Project Manager - Alexander Karshis',
     body: 'Howdy,\n\nI found your Bidder / Assistant Project Manager posting on Craigslist and wanted to reach out - the mix of bidding, subcontractor coordination, and pre-construction logistics is right in my wheelhouse.\n\nI have 2 years at DxU Architects as the primary Revit documentation lead on commercial tenant improvement and mixed-use projects in Chicago, which gave me hands-on experience coordinating with contractors, reviewing scopes, and keeping project documentation tight. I use Bluebeam regularly for markups and document management. I am comfortable with take-offs, plan review, and managing the back-and-forth that makes pre-construction run smoothly.\n\nI am Chicago-based and looking for exactly this kind of role with a firm that takes quality seriously.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
+  altusworks: {
+    to: 'altus-info@altusworks.com',
+    subject: 'Preservation Architect Application - Alexander Karshis',
+    body: `Howdy,
+
+I came across your Preservation Architect posting on AIA Chicago and wanted to reach out. I have spent the last 2 years as the primary Revit documentation lead at DxU Architects, working on commercial tenant improvements and mixed-use projects - where thorough field verification, as-built documentation, and detail-level CD production were central to my day-to-day work.
+
+While I recognize that the role calls for 10+ years of experience in historic preservation specifically, I am genuinely drawn to AltusWorks' focus on existing buildings as renewable assets. My background in building documentation, envelope coordination, and construction administration aligns with the technical foundation your team requires, and I am actively building toward work in preservation and adaptive reuse.
+
+I would welcome the chance to connect, even informally, about how my skills might contribute to your team in the future.
+
+My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.
+
+Have a great day,
+Alexander Karshis
+Chicago, IL
+karshisdesigns.webflow.io`
+  }
 };
 const OUTREACH_DRAFTS = {
   'dspace': {
@@ -3110,7 +3148,6 @@ const SOCIAL_LEADS = [
     },
       {
       id: 'sl-cl-bidder-apm',
-      isNew: true,
       source: 'craigslist',
       poster: 'Anonymous (top-rated interior design firm)',
       posterTitle: 'Hiring Manager',
@@ -3125,7 +3162,6 @@ const SOCIAL_LEADS = [
     },
     {
       id: 'sl-cl-zachary-design',
-      isNew: true,
       source: 'craigslist',
       poster: 'Zachary A. Design LLC',
       posterTitle: 'Studio Owner',
