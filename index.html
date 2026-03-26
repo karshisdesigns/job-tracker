@@ -2530,10 +2530,10 @@ const JOBS = [
       postingLink: 'https://to.indeed.com/aaphkxrt7jcm',
       firmWebsite: '',
       roleSketch: 'Residential Project Manager at Mahogany Builders in Chicago. Posted March 20 - very fresh. Good hourly rate ($41-$58/hr). Residential focus is different from commercial TI but PM skills transfer.',
-      defaultStatus: 'not-started',
-      gmailStatus: 'recruiter-reply',
-      gmailDate: 'March 22, 2026',
-      gmailBadge: 'in-progress'
+      defaultStatus: 'rejected',
+      gmailStatus: 'rejected',
+      gmailDate: 'March 26, 2026',
+      gmailBadge: 'rejected'
     },
     {
       id: 'frost-cnc',
@@ -2675,7 +2675,6 @@ const JOBS = [
     },
     {
       id: 'tsd',
-      isNew: true,
       company: 'Tom Stringer Design Partners',
       title: 'Architectural Designer',
       score: 4,
@@ -2699,7 +2698,6 @@ const JOBS = [
     },
     {
       id: 'waremalcomb-pm',
-      isNew: true,
       company: 'Ware Malcomb',
       title: 'Project Manager, Interior Architecture & Design',
       score: 5,
@@ -2723,7 +2721,6 @@ const JOBS = [
     },
     {
       id: 'summit-pm',
-      isNew: true,
       company: 'Summit Design + Build',
       title: 'Project Manager',
       score: 4,
@@ -2746,7 +2743,79 @@ const JOBS = [
       gmailBadge: 'applied'
     },
   
-  ];
+      {
+      id: 'fraerman',
+      isNew: true,
+      company: 'Fraerman Associates Architecture',
+      title: 'Residential Architect',
+      score: 3,
+      salary: 'TBD',
+      location: 'Highland Park, IL',
+      address: 'Highland Park, IL',
+      remote: 'On-site',
+      posted: 'March 25, 2026',
+      postedISO: '2026-03-25',
+      source: 'AIA Chicago Job Board',
+      deadline: '',
+      howToApply: 'Email fraerman@gmail.com with resume and portfolio',
+      applyLink: 'mailto:fraerman@gmail.com',
+      postingLink: 'https://aiachicago.org/job_posting/fraerman-associates-architecture-residential-architect/',
+      firmWebsite: 'https://fraermanarch.com',
+      roleSketch: 'North Shore boutique residential firm - one of the most prestigious on the North Shore - seeks architect for single-family custom home design through all project phases. Uses AutoCAD, SketchUp, Enscape. 1-5 years experience. Health insurance provided. Fresh March 25 posting.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+    {
+      id: 'fhpaschen-apm',
+      isNew: true,
+      company: 'F.H. Paschen',
+      title: 'Assistant Project Manager',
+      score: 4,
+      salary: '$85,000-$105,000',
+      location: 'Chicago, IL',
+      address: 'Chicago, IL',
+      remote: 'On-site',
+      posted: 'February 25, 2026',
+      postedISO: '2026-02-25',
+      source: 'Indeed',
+      deadline: '',
+      howToApply: 'Apply via Indeed - https://to.indeed.com/aa6pw6mgmxdw',
+      applyLink: 'https://to.indeed.com/aa6pw6mgmxdw',
+      postingLink: 'https://to.indeed.com/aa6pw6mgmxdw',
+      firmWebsite: 'https://www.fhpaschen.com',
+      roleSketch: 'F.H. Paschen is a 115-year-old Chicago GC with diverse public and private work. APM role supports PMs on scheduling, subcontractor coordination, RFIs, submittals, and cost tracking across multiple project types. Great path from design into construction management. Benefits include health/dental/vision, 401k match, and year-end bonus.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+    {
+      id: 'weisfeld-millwork',
+      isNew: true,
+      company: 'Weisfeld Construction',
+      title: 'Architectural Millwork Project Manager',
+      score: 4,
+      salary: 'Negotiable',
+      location: 'Chicago, IL',
+      address: '3525 W Medill Ave, Chicago, IL',
+      remote: 'On-site',
+      posted: 'March 22, 2026',
+      postedISO: '2026-03-22',
+      source: 'Craigslist (Skilled Trades)',
+      deadline: '',
+      howToApply: 'Reply via Craigslist post - principals only, no recruiters',
+      applyLink: 'https://chicago.craigslist.org/chc/trd/d/chicago-architecural-millwork-project/7922931510.html',
+      postingLink: 'https://chicago.craigslist.org/chc/trd/d/chicago-architecural-millwork-project/7922931510.html',
+      firmWebsite: 'https://www.weisfeldconstruction.com',
+      roleSketch: 'Chicago GC specializing in high-profile commercial and residential projects since 2000 with in-house 5,000 SF millwork and metal fabrication shop. PM role oversees custom millwork and metal fab projects from pre-construction through installation - liaising between clients, architects, designers, and production teams. Interprets architectural drawings, manages shop drawings and submittals, tracks budgets and schedules. Contract position. Strong fit with design background, fabrication interest, and DxU construction documentation experience.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+];
 const OUTREACH = [
   { id: 'dspace', company: 'dSPACE Studio', location: 'Lincoln Ave / Lakeview (~1 mi)', type: 'Architecture', contact: 'careers@dspacestudio.com', website: 'https://www.dspacestudio.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Award-winning residential firm within 1 mile of home. Recent AIA Chicago posting signals active hiring. Local proximity makes this a natural cold outreach target.', angle: 'Lead with design-forward work and adaptive reuse experience; emphasize Revit CD documentation depth.' },
   { id: 'moss', company: 'moss design', location: 'Logan Square (~2 mi)', type: 'Architecture', contact: 'laura@moss-design.com', website: 'https://moss-design.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Adaptive reuse, hospitality (breweries), and commercial work. Past job posting for Project Architect/Designer (5-8 yrs) suggests cyclical hiring. Laura is direct contact.', angle: 'Lead with hospitality TI and adaptive reuse work; showcase Revit CD documentation.' },
@@ -3042,7 +3111,22 @@ Alexander Karshis
 Chicago, IL
 karshisdesigns.webflow.io`
   },
-};
+  'fraerman': {
+    to: 'fraerman@gmail.com',
+    subject: 'Residential Architect - Alexander Karshis',
+    body: 'Howdy,\n\nI came across the Residential Architect posting on AIA Chicago and wanted to reach out. I have a Master of Architecture and 2 years as the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects - plus I run my own design consultancy, Karshis Designs, here in Chicago.\n\nI appreciate your work on the North Shore and would love to bring my all-phases design experience to your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+  },
+  'fhpaschen-apm': {
+    to: '',
+    subject: 'Assistant Project Manager - Alexander Karshis',
+    body: 'Howdy,\n\nI came across the Assistant Project Manager opening at F.H. Paschen and wanted to reach out. I have a Master of Architecture and 2 years as the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects in Chicago - where I coordinated with GCs, subcontractors, and consultants through construction administration.\n\nI have a strong interest in transitioning my design background into construction project management and believe my hands-on documentation and field coordination experience would be a real asset to your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+  },
+  'weisfeld-millwork': {
+    to: '',
+    subject: 'Architectural Millwork Project Manager - Alexander Karshis',
+    body: 'Howdy,\n\nI came across the Architectural Millwork Project Manager posting on Craigslist and wanted to reach out. I have a Master of Architecture and 2 years as the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects - reading and coordinating complex architectural drawings, submittals, and shop drawings alongside contractors and fabricators.\n\nI also have hands-on experience with 3D printing and fabrication through my own design consultancy, and I am genuinely excited about the combination of design coordination and in-house fabrication that Weisfeld offers.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+  },
+  };
 const OUTREACH_DRAFTS = {
   'dspace': {
     to: 'careers@dspacestudio.com',
