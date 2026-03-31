@@ -1410,10 +1410,10 @@ const JOBS = [
       postingLink: 'https://to.indeed.com/aa4rlpjbnnwn',
       firmWebsite: 'https://farnsworthgroup.com',
       roleSketch: 'Architectural PM at Farnsworth Group Healthcare Studio. Strong salary $88K-$115K. Healthcare is a growth sector. Posted March 18.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
+      defaultStatus: 'rejected',
+      gmailStatus: 'rejected',
+      gmailDate: 'March 27, 2026',
+      gmailBadge: 'rejected'
     },
     {
       id: 'silhouette',
@@ -2745,7 +2745,6 @@ const JOBS = [
   
       {
       id: 'fraerman',
-      isNew: true,
       company: 'Fraerman Associates Architecture',
       title: 'Residential Architect',
       score: 3,
@@ -2769,7 +2768,6 @@ const JOBS = [
     },
     {
       id: 'fhpaschen-apm',
-      isNew: true,
       company: 'F.H. Paschen',
       title: 'Assistant Project Manager',
       score: 4,
@@ -2793,7 +2791,6 @@ const JOBS = [
     },
     {
       id: 'weisfeld-millwork',
-      isNew: true,
       company: 'Weisfeld Construction',
       title: 'Architectural Millwork Project Manager',
       score: 4,
@@ -2810,6 +2807,31 @@ const JOBS = [
       postingLink: 'https://chicago.craigslist.org/chc/trd/d/chicago-architecural-millwork-project/7922931510.html',
       firmWebsite: 'https://www.weisfeldconstruction.com',
       roleSketch: 'Chicago GC specializing in high-profile commercial and residential projects since 2000 with in-house 5,000 SF millwork and metal fabrication shop. PM role oversees custom millwork and metal fab projects from pre-construction through installation - liaising between clients, architects, designers, and production teams. Interprets architectural drawings, manages shop drawings and submittals, tracks budgets and schedules. Contract position. Strong fit with design background, fabrication interest, and DxU construction documentation experience.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+
+    {
+      id: 'rivetna',
+      isNew: true,
+      company: 'Rivetna Architects Inc',
+      title: 'Project Architect+',
+      score: 4,
+      salary: '$60,000 - $80,000',
+      location: 'Chicago, IL',
+      address: 'Chicago, IL',
+      remote: 'Hybrid',
+      posted: 'March 28, 2026',
+      postedISO: '2026-03-28',
+      source: 'AIA Chicago',
+      deadline: '',
+      howToApply: 'Email hello@rivetna.com with cover letter, resume, and portfolio',
+      applyLink: 'mailto:hello@rivetna.com',
+      postingLink: 'https://aiachicago.org/job_posting/rivetna-architects-inc-project-architect/',
+      firmWebsite: 'https://rivetna.com',
+      roleSketch: 'Hybrid Project Architect+ role at Rivetna Architects, a MBE/DBE certified Chicago firm (est. 2005) doing mixed-use, high-end residential, and historic preservation. AIA 2030 Commitment signatory. Revit + AutoCAD required. 4-12 yrs preferred - email with portfolio.',
       defaultStatus: 'not-started',
       gmailStatus: '',
       gmailDate: '',
@@ -3126,7 +3148,21 @@ karshisdesigns.webflow.io`
     subject: 'Architectural Millwork Project Manager - Alexander Karshis',
     body: 'Howdy,\n\nI came across the Architectural Millwork Project Manager posting on Craigslist and wanted to reach out. I have a Master of Architecture and 2 years as the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects - reading and coordinating complex architectural drawings, submittals, and shop drawings alongside contractors and fabricators.\n\nI also have hands-on experience with 3D printing and fabrication through my own design consultancy, and I am genuinely excited about the combination of design coordination and in-house fabrication that Weisfeld offers.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
-  };
+    'rivetna': `Howdy,
+
+I came across Rivetna Architects' Project Architect+ posting on AIA Chicago and wanted to reach out. I have spent the last 2 years as the primary Revit documentation lead at DxU Architects, working on commercial tenant improvement and mixed-use projects in Chicago. Rivetna's commitment to design rooted in place, people, and purpose - and your MBE/DBE certification and AIA 2030 work - really resonates with me.
+
+I'm proficient in Revit and AutoCAD and have hands-on experience producing organized drawing sets across multiple projects simultaneously. I'm actively pursuing licensure and am genuinely excited about the hybrid opportunity to contribute to your mixed-use and historic preservation work.
+
+I've attached my resume and portfolio for your review.
+
+My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.
+
+Have a great day,
+Alexander Karshis
+Chicago, IL
+karshisdesigns.webflow.io`,
+};
 const OUTREACH_DRAFTS = {
   'dspace': {
     to: 'careers@dspacestudio.com',
