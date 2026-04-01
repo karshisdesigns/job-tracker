@@ -2009,10 +2009,10 @@ const JOBS = [
     postingLink: 'https://job-boards.greenhouse.io/crescolabs/jobs/8404651002',
     firmWebsite: 'https://crescolabs.com',
     roleSketch: 'Manage retail and industrial properties across Cresco\'s national Sunnyside dispensary portfolio. Handle lease administration, property maintenance coordination, real estate tax payments, budgeting, and property onboarding for M&A activities. Chicago-HQ\'d MSO with one of the largest dispensary networks in the country.',
-    defaultStatus: 'applied',
-    gmailStatus: '',
-    gmailDate: '2026-03-19',
-    gmailBadge: 'gmail-verified',
+    defaultStatus: 'rejected',
+    gmailStatus: 'rejected',
+    gmailDate: 'March 31, 2026',
+    gmailBadge: 'rejected',
     cannabis: true,
   },
   {
@@ -2691,10 +2691,10 @@ const JOBS = [
       postingLink: 'https://aiachicago.org/job_posting/tom-stringer-design-partners-architectural-designer/',
       firmWebsite: 'https://www.tomstringer.com',
       roleSketch: 'High-end residential interiors firm seeking a mid-level Architectural Designer to maintain Revit/CAD drawing sets through all design phases. Create Revit families, prepare PDFs for reviews and CDs, support construction administration. Requires 3+ years residential interior architecture, strong Revit proficiency. Great benefits - 75% health coverage, 5% 401k match, quarterly bonuses, summer Fridays.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
+      defaultStatus: 'applied',
+      gmailStatus: 'sent-no-confirm',
+      gmailDate: 'March 28, 2026',
+      gmailBadge: 'gmail-sent'
     },
     {
       id: 'waremalcomb-pm',
@@ -2714,7 +2714,7 @@ const JOBS = [
       postingLink: 'https://aiachicago.org/job_posting/ware-malcomb-project-manager-2/',
       firmWebsite: 'https://www.waremalcomb.com',
       roleSketch: 'Ware Malcomb reached out directly (Josh Kiddle, Director TA) for their PM role - lead internal/external teams through all project phases, manage budgets and schedules, primary client contact on commercial work (industrial, office, retail). 7+ years preferred but they are recruiting Alex. Phone screen scheduled for March 25 at 1:00 PM.',
-      defaultStatus: 'not-started',
+      defaultStatus: 'in-progress',
       gmailStatus: 'verified',
       gmailDate: 'March 23, 2026',
       gmailBadge: 'in-progress'
@@ -2815,7 +2815,6 @@ const JOBS = [
 
     {
       id: 'rivetna',
-      isNew: true,
       company: 'Rivetna Architects Inc',
       title: 'Project Architect+',
       score: 4,
@@ -2837,7 +2836,32 @@ const JOBS = [
       gmailDate: '',
       gmailBadge: ''
     },
-];
+
+    {
+      id: 'maxxit',
+      isNew: true,
+      company: 'Maxxit Systems Inc.',
+      title: 'Senior Designer',
+      score: 3,
+      salary: '$90,000 - $115,000',
+      location: 'Schaumburg, IL',
+      address: '2525 Cabot Dr, Lisle, IL 60532',
+      remote: 'Hybrid',
+      posted: 'March 30, 2026',
+      postedISO: '2026-03-30',
+      source: 'Indeed',
+      deadline: '',
+      howToApply: 'Apply via Indeed',
+      applyLink: 'https://www.indeed.com/viewjob?jk=2a8e2cc3da125352',
+      postingLink: 'https://www.indeed.com/viewjob?jk=2a8e2cc3da125352',
+      firmWebsite: 'https://maxxitgroup.com',
+      roleSketch: 'Architectural fabrication firm seeking Senior Designer to lead projects from concept to fabrication. Strong overlap with Alex\'s architecture and industrial design background, 3D printing/fabrication experience. Requires Rhino/Grasshopper/SolidWorks - a stretch, but the M.Arch + M.Industrial Design combo is a direct match. $90k-$115k. 4 days on-site in Schaumburg.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+  ];
 const OUTREACH = [
   { id: 'dspace', company: 'dSPACE Studio', location: 'Lincoln Ave / Lakeview (~1 mi)', type: 'Architecture', contact: 'careers@dspacestudio.com', website: 'https://www.dspacestudio.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Award-winning residential firm within 1 mile of home. Recent AIA Chicago posting signals active hiring. Local proximity makes this a natural cold outreach target.', angle: 'Lead with design-forward work and adaptive reuse experience; emphasize Revit CD documentation depth.' },
   { id: 'moss', company: 'moss design', location: 'Logan Square (~2 mi)', type: 'Architecture', contact: 'laura@moss-design.com', website: 'https://moss-design.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Adaptive reuse, hospitality (breweries), and commercial work. Past job posting for Project Architect/Designer (5-8 yrs) suggests cyclical hiring. Laura is direct contact.', angle: 'Lead with hospitality TI and adaptive reuse work; showcase Revit CD documentation.' },
@@ -3162,6 +3186,24 @@ Have a great day,
 Alexander Karshis
 Chicago, IL
 karshisdesigns.webflow.io`,
+
+    maxxit: {
+      subject: 'Senior Designer Application - Alexander Karshis',
+      body: `Howdy Maxxit Team,
+
+I came across your Senior Designer posting on Indeed and wanted to reach out. Maxxit's work translating design intent into fabricated architectural components is exactly the kind of hands-on, production-minded design I am drawn to.
+
+I spent the last 2 years as the primary Revit documentation lead at DxU Architects, where I managed commercial tenant improvement and mixed-use documentation sets from schematic design through construction administration. I also hold a Master of Industrial Design alongside my Master of Architecture, and my personal practice - Karshis Designs - has a strong thread of fabrication work including 3D printing, CNC-ready detailing, and custom millwork coordination.
+
+I am comfortable in AutoCAD and Revit for detailed technical drawings and construction documents, and I have hands-on experience with 3D printing and prototyping workflows. I would be genuinely excited to bring that intersection of architecture and industrial design to Maxxit's project pipeline.
+
+My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.
+
+Have a great day,
+Alexander Karshis
+Chicago, IL
+karshisdesigns.webflow.io`
+    },
 };
 const OUTREACH_DRAFTS = {
   'dspace': {
