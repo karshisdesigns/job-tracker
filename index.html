@@ -2150,9 +2150,9 @@ const JOBS = [
       firmWebsite: 'https://www.skender.com',
       roleSketch: 'APM at Skender, a top Chicago GC known for innovation and Lean construction. Great entry for someone with architecture background transitioning to construction management side. NOTE: Skender already has a cold outreach card - this is a specific new APM opening.',
       defaultStatus: 'applied',
-      gmailStatus: 'applied',
-      gmailDate: '2026-03-20',
-      gmailBadge: 'applied'
+      gmailStatus: 'rejected',
+      gmailDate: 'March 30, 2026',
+      gmailBadge: 'rejected'
     },
     {
       id: 'cresco-kankakee',
@@ -2956,7 +2956,6 @@ const JOBS = [
     
     {
       id: 'corston-fab',
-      isNew: true,
       company: 'Corston Architectural Detail',
       title: 'Lead Builder / Construction Manager (Trade Show & Showroom Builds)',
       score: 4,
@@ -2980,7 +2979,6 @@ const JOBS = [
     },
     {
       id: 'mcdonalds-newconst',
-      isNew: true,
       company: "McDonald's Corporation",
       title: 'Supervisor, New Construction',
       score: 3,
@@ -3004,7 +3002,6 @@ const JOBS = [
     },
     {
       id: 'cb-design-mgr',
-      isNew: true,
       company: 'Crate & Barrel',
       title: 'Design Manager',
       score: 5,
@@ -3028,7 +3025,6 @@ const JOBS = [
     },
     {
       id: 'porter-pm',
-      isNew: true,
       company: 'PORTER Design Build',
       title: 'Project Manager',
       score: 4,
@@ -3052,7 +3048,6 @@ const JOBS = [
     },
     {
       id: 'porter-designer',
-      isNew: true,
       company: 'PORTER Design Build',
       title: 'Designer (Environmental/Industrial)',
       score: 5,
@@ -3069,6 +3064,55 @@ const JOBS = [
       postingLink: 'https://www.thisisporter.com/careers',
       firmWebsite: 'https://www.thisisporter.com',
       roleSketch: 'Environmental and industrial design for retail and hospitality environments. PORTER creates experiential brand spaces - this combines your architecture, industrial design (M.ID), and fabrication skills perfectly. Remote position with portfolio required. Your dual M.Arch/M.ID background makes you an ideal candidate.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: '',
+    },
+  
+    {
+      id: 'leopardo-pm-healthcare',
+      isNew: true,
+      company: 'Leopardo Companies',
+      title: 'Project Manager I (Healthcare)',
+      score: 4,
+      salary: '$80,000 - $100,000',
+      location: 'Chicago, IL',
+      address: 'Chicago, IL',
+      remote: 'On-site',
+      posted: 'April 2026',
+      postedISO: '2026-04-01',
+      source: 'Leopardo Careers',
+      deadline: '',
+      howToApply: 'Apply via Jobvite on leopardo.com/careers',
+      applyLink: 'https://leopardo.com/careers/',
+      postingLink: 'https://leopardo.com/careers/',
+      firmWebsite: 'https://leopardo.com',
+      roleSketch: 'PM role in Leopardo\'s growing healthcare construction division. Leopardo is a top Chicago GC with design-build capabilities. Healthcare market experience is a plus but your municipal/education project experience from DxU translates well. 3+ years PE experience required - your 2 years of documentation lead work plus project coordination qualifies.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: '',
+    },
+    {
+      id: 'dannys-construction-pm',
+      isNew: true,
+      company: 'Danny\'s Construction Company',
+      title: 'Construction Project Manager',
+      score: 3,
+      salary: '$80,000 - $120,000',
+      location: 'Chicago, IL',
+      address: 'Chicago, IL',
+      remote: 'On-site',
+      posted: 'March 25, 2026',
+      postedISO: '2026-03-25',
+      source: 'Indeed',
+      deadline: '',
+      howToApply: 'Apply via Indeed',
+      applyLink: 'https://to.indeed.com/aa7lfcnkrzry',
+      postingLink: 'https://to.indeed.com/aa7lfcnkrzry',
+      firmWebsite: '',
+      roleSketch: 'Construction PM role at a Chicago-based general contractor. Broad construction management scope. Your Revit documentation and project coordination experience from DxU provides a solid foundation, though this is more field-focused than design-focused.',
       defaultStatus: 'not-started',
       gmailStatus: '',
       gmailDate: '',
@@ -3458,6 +3502,36 @@ karshisdesigns.webflow.io`
     'porter-designer': {
       subject: 'Designer (Environmental/Industrial) - PORTER Design Build',
       body: "Howdy,\n\nI am writing to express my strong interest in the Designer position at PORTER. Your work creating experiential retail and hospitality environments is a perfect match for my dual background in architecture and industrial design.\n\nI hold both a Master of Architecture and a Master of Industrial Design from the University of Houston, and I spent 2 years at DxU Architects as the primary Revit documentation lead on commercial tenant improvement and mixed-use projects. I also run my own design consultancy where I take environmental design projects from concept through fabrication, including 3D printing, CNC, and physical prototyping.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+    },
+    'leopardo-pm-healthcare': {
+      subject: 'Project Manager I (Healthcare) - Alexander Karshis',
+      body: `Howdy,
+
+I came across the Project Manager I (Healthcare) opening at Leopardo and wanted to express my strong interest. Leopardo\'s reputation for construction excellence - especially in healthcare - aligns perfectly with the direction I want to take my career.
+
+I have spent the last 2 years as the primary Revit documentation lead at DxU Architects, where I managed construction document sets for commercial TI and mixed-use projects from SD through CA. That experience gave me a deep understanding of coordination between design intent and field execution, which I believe translates directly to the PM role on the GC side.
+
+My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.
+
+Have a great day,
+Alexander Karshis
+Chicago, IL
+karshisdesigns.webflow.io`
+    },
+    'dannys-construction-pm': {
+      subject: 'Construction Project Manager - Alexander Karshis',
+      body: `Howdy,
+
+I saw the Construction Project Manager posting and wanted to reach out. I am an architectural designer looking to bring my documentation and coordination skills to the GC side of the industry.
+
+I have spent the last 2 years as the primary Revit documentation lead at DxU Architects, managing full CD sets for commercial TI and mixed-use projects. I coordinated with consultants, contractors, and clients through every phase from SD to CA - giving me a thorough understanding of what it takes to deliver a project on time and on budget.
+
+My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.
+
+Have a great day,
+Alexander Karshis
+Chicago, IL
+karshisdesigns.webflow.io`
     },
   };
 const OUTREACH_DRAFTS = {
