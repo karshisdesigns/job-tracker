@@ -3143,7 +3143,6 @@ const JOBS = [
     
     {
       id: 'northwestern-med-pm',
-      isNew: true,
       company: 'Northwestern Medicine',
       title: 'Project Manager',
       score: 3,
@@ -3167,7 +3166,6 @@ const JOBS = [
     },
     {
       id: 'flowhire-construction-pm',
-      isNew: true,
       company: 'Flowhire',
       title: 'Construction Project Manager',
       score: 3,
@@ -3189,6 +3187,103 @@ const JOBS = [
       gmailDate: '',
       gmailBadge: ''
     },
+    
+      {
+        id: 'fullcircle-designer',
+        isNew: true,
+        company: 'Full Circle Architects',
+        title: 'Architectural Designer',
+        score: 4,
+        salary: '$60,000 - $80,000',
+        location: 'Chicago, IL (Lincoln Park)',
+        address: 'Lincoln Park, Chicago, IL',
+        remote: 'On-site',
+        posted: 'April 8, 2026',
+        postedISO: '2026-04-08',
+        source: 'AIA Chicago Job Board',
+        deadline: '',
+        howToApply: 'Email resume to dan@fullcirclearchitects.com',
+        applyLink: 'mailto:dan@fullcirclearchitects.com',
+        postingLink: 'https://aiachicago.org/job_posting/full-circle-architects-architectural-designer/',
+        firmWebsite: 'https://www.fullcirclearchitects.com/',
+        roleSketch: 'Small firm seeking designer for all project phases. Requires AutoCAD, SketchUp, Enscape, Adobe Suite. 3-8 years experience. Good benefits including paid ARE prep and licensing bonus. Strong fit for Alex\'s skill set.',
+        defaultStatus: 'not-started',
+        gmailStatus: '',
+        gmailDate: '',
+        gmailBadge: ''
+      },
+      {
+        id: 'okellykasprak-designer',
+        isNew: true,
+        company: "O\'Kelly Kasprak (Eleven 9 Studio)",
+        title: 'Architectural Designer',
+        score: 4,
+        salary: 'Competitive',
+        location: 'Chicago, IL (West Loop)',
+        address: 'West Loop, Chicago, IL',
+        remote: 'On-site',
+        posted: 'April 7, 2026',
+        postedISO: '2026-04-07',
+        source: 'AIA Chicago Job Board',
+        deadline: '',
+        howToApply: 'Email resume to resumes@okellykasprak.com',
+        applyLink: 'mailto:resumes@okellykasprak.com',
+        postingLink: 'https://aiachicago.org/job_posting/okelly-kasprak-architectural-designer/',
+        firmWebsite: 'https://www.okellykasprak.com/',
+        roleSketch: 'Hospitality design firm (hotels, restaurants, aviation, entertainment). Revit and AutoCAD required. 3-10 years experience. Great fit for Alex\'s interest in experiential and entertainment design.',
+        defaultStatus: 'not-started',
+        gmailStatus: '',
+        gmailDate: '',
+        gmailBadge: ''
+      },
+      {
+        id: 'lbba-architect',
+        isNew: true,
+        company: 'LBBA Architects',
+        title: 'Project Architect/Designer',
+        score: 3,
+        salary: '$31-$41/hr (~$64K-$85K)',
+        location: 'Chicago, IL',
+        address: 'Chicago, IL',
+        remote: 'Hybrid',
+        posted: 'April 8, 2026',
+        postedISO: '2026-04-08',
+        source: 'AIA Chicago Job Board',
+        deadline: '',
+        howToApply: 'Email resume and portfolio to lbbahiring@lbba.com',
+        applyLink: 'mailto:lbbahiring@lbba.com',
+        postingLink: 'https://aiachicago.org/job_posting/lbba-architects-project-architect-designer/',
+        firmWebsite: 'https://www.lbba.com/',
+        roleSketch: 'Socially-minded firm focused on affordable housing and community spaces. Multi-unit housing projects. Requires 5-10 years experience and deep Chicago code knowledge. Good benefits including 401k and paid OT. May be slightly senior for Alex\'s level but worth applying.',
+        defaultStatus: 'not-started',
+        gmailStatus: '',
+        gmailDate: '',
+        gmailBadge: ''
+      },
+      {
+        id: 'struxc-construction-mgr',
+        isNew: true,
+        company: 'Structures Construction',
+        title: 'Construction Manager/Estimator',
+        score: 3,
+        salary: 'Commensurate with experience',
+        location: 'Chicago, IL (Diversey/Oakley)',
+        address: 'Diversey near Oakley, Chicago, IL 60647',
+        remote: 'On-site',
+        posted: 'April 7, 2026',
+        postedISO: '2026-04-07',
+        source: 'Craigslist',
+        deadline: '',
+        howToApply: 'Email TL@StruxC.com with salary requirements and credentials',
+        applyLink: 'mailto:TL@StruxC.com',
+        postingLink: 'https://chicago.craigslist.org/chc/egr/d/chicago-construction-manager-estimator/7926319617.html',
+        firmWebsite: 'https://www.StruxC.com',
+        roleSketch: 'Small Chicago GC seeking 0-5 years experience. Bidding, scheduling, subcontractor management. Degree in architecture, engineering, or construction management accepted. Close to Alex\'s neighborhood.',
+        defaultStatus: 'not-started',
+        gmailStatus: '',
+        gmailDate: '',
+        gmailBadge: ''
+      },
     ];
 const OUTREACH = [
   { id: 'dspace', company: 'dSPACE Studio', location: 'Lincoln Ave / Lakeview (~1 mi)', type: 'Architecture', contact: 'careers@dspacestudio.com', website: 'https://www.dspacestudio.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Award-winning residential firm within 1 mile of home. Recent AIA Chicago posting signals active hiring. Local proximity makes this a natural cold outreach target.', angle: 'Lead with design-forward work and adaptive reuse experience; emphasize Revit CD documentation depth.' },
@@ -3631,7 +3726,28 @@ karshisdesigns.webflow.io`
       subject: 'Construction Project Manager Position - Alexander Karshis',
       body: 'Howdy,\n\nI am reaching out regarding the Construction Project Manager opportunity listed through Flowhire. With 2 years as the primary Revit documentation lead at DxU Architects, I have hands-on experience coordinating commercial tenant improvement and mixed-use construction projects from design through completion. I am skilled in Revit, BIM 360, Bluebeam, and AutoCAD, and I bring a detail-oriented approach to project delivery.\n\nI am eager to transition my architecture and project coordination experience into a dedicated construction PM role where I can leverage my technical knowledge of building systems and construction documentation.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
     },
-  };
+  
+      'fullcircle-designer': {
+        to: 'dan@fullcirclearchitects.com',
+        subject: 'Architectural Designer Position - Alexander Karshis',
+        body: "Howdy,\n\nI came across your Architectural Designer posting on the AIA Chicago Job Board and wanted to reach out. Full Circle Architects' work across multiple project types is exciting, and I would love to contribute to your team.\n\nI have 2 years of experience at DxU Architects where I served as the primary Revit documentation lead on commercial tenant improvement and mixed-use projects. I am proficient in AutoCAD, Adobe Creative Suite, SketchUp, and Revit, and I bring strong experience across all project phases from schematic design through construction documentation.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+      },
+      'okellykasprak-designer': {
+        to: 'resumes@okellykasprak.com',
+        subject: 'Architectural Designer Position - Alexander Karshis',
+        body: "Howdy,\n\nI am writing to express my interest in the Architectural Designer role at O'Kelly Kasprak. Your hospitality design portfolio - spanning aviation, hotels, restaurants, and entertainment venues - is exactly the kind of experiential work I am passionate about.\n\nI bring 2 years of experience at DxU Architects as the primary Revit documentation lead on commercial tenant improvement and mixed-use projects. I am skilled in Revit, AutoCAD, Adobe Creative Suite, and have a background in both architecture and industrial design that gives me a unique perspective on user experience.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+      },
+      'lbba-architect': {
+        to: 'lbbahiring@lbba.com',
+        subject: 'Project Architect/Designer Position - Alexander Karshis',
+        body: "Howdy,\n\nI saw your Project Architect/Designer posting on the AIA Chicago Job Board and am excited about LBBA's mission-driven focus on sustainable, affordable housing and community spaces.\n\nI have 2 years of experience at DxU Architects where I served as the primary Revit documentation lead on commercial tenant improvement and mixed-use projects. I have strong knowledge of Chicago building and zoning code from my project work across the city, and I am experienced across all design phases from schematic design through construction administration.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+      },
+      'struxc-construction-mgr': {
+        to: 'TL@StruxC.com',
+        subject: 'Construction Manager/Estimator Position - Alexander Karshis',
+        body: "Howdy,\n\nI saw your Construction Manager/Estimator posting on Craigslist and am interested in joining Structures Construction. My background bridging design and construction makes me a strong fit for this role.\n\nI have 2 years of experience at DxU Architects as the primary Revit documentation lead on commercial tenant improvement and mixed-use projects, giving me deep experience with construction documentation, subcontractor coordination, and project scheduling. I hold a Master of Architecture and Master of Industrial Design from the University of Houston.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+      },
+    };
 const OUTREACH_DRAFTS = {
   'dspace': {
     to: 'careers@dspacestudio.com',
@@ -3927,7 +4043,6 @@ const SOCIAL_LEADS = [
     
     {
       id: 'sl-cl-millwork-pm',
-      isNew: true,
       source: 'craigslist',
       poster: 'Anonymous Poster',
       posterTitle: 'Hiring Manager',
@@ -3940,6 +4055,37 @@ const SOCIAL_LEADS = [
       score: 3,
       cannabis: false
     },
+    
+      {
+        id: 'sl-cl-struxc-constmgr',
+        isNew: true,
+        source: 'craigslist',
+        poster: 'Structures Construction',
+        posterTitle: 'Hiring Manager',
+        company: 'Structures Construction',
+        role: 'Construction Manager/Estimator/Field Super',
+        snippet: 'Chicago GC near Diversey/Oakley hiring for construction management. 0-5 years experience, architecture degree accepted. Bidding, scheduling, subcontractor management.',
+        link: 'https://chicago.craigslist.org/chc/egr/d/chicago-construction-manager-estimator/7926319617.html',
+        postedTime: 'April 7, 2026',
+        postedISO: '2026-04-07',
+        score: 3,
+        cannabis: false
+      },
+      {
+        id: 'sl-cl-desplaines-facilitiespm',
+        isNew: true,
+        source: 'craigslist',
+        poster: 'Des Plaines Material and Supply',
+        posterTitle: 'Hiring Manager',
+        company: 'Des Plaines Material and Supply',
+        role: 'Facilities / Project Manager',
+        snippet: 'Facilities and project management for landscaping materials supplier. Building maintenance, renovation projects, vendor coordination. Mon-Fri 7am-3:30pm.',
+        link: 'https://chicago.craigslist.org/nch/lab/d/des-plaines-facilities-project-manager/7926459798.html',
+        postedTime: 'April 8, 2026',
+        postedISO: '2026-04-08',
+        score: 2,
+        cannabis: false
+      },
     ];
 // ─────────────────────────────────────────────────────────
 
