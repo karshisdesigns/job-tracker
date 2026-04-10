@@ -3190,7 +3190,6 @@ const JOBS = [
     
       {
         id: 'fullcircle-designer',
-        isNew: true,
         company: 'Full Circle Architects',
         title: 'Architectural Designer',
         score: 4,
@@ -3214,7 +3213,6 @@ const JOBS = [
       },
       {
         id: 'okellykasprak-designer',
-        isNew: true,
         company: "O\'Kelly Kasprak (Eleven 9 Studio)",
         title: 'Architectural Designer',
         score: 4,
@@ -3238,7 +3236,6 @@ const JOBS = [
       },
       {
         id: 'lbba-architect',
-        isNew: true,
         company: 'LBBA Architects',
         title: 'Project Architect/Designer',
         score: 3,
@@ -3262,7 +3259,6 @@ const JOBS = [
       },
       {
         id: 'struxc-construction-mgr',
-        isNew: true,
         company: 'Structures Construction',
         title: 'Construction Manager/Estimator',
         score: 3,
@@ -3279,6 +3275,78 @@ const JOBS = [
         postingLink: 'https://chicago.craigslist.org/chc/egr/d/chicago-construction-manager-estimator/7926319617.html',
         firmWebsite: 'https://www.StruxC.com',
         roleSketch: 'Small Chicago GC seeking 0-5 years experience. Bidding, scheduling, subcontractor management. Degree in architecture, engineering, or construction management accepted. Close to Alex\'s neighborhood.',
+        defaultStatus: 'not-started',
+        gmailStatus: '',
+        gmailDate: '',
+        gmailBadge: ''
+      },
+      {
+        id: 'lurie-pm-design-construction',
+        isNew: true,
+        company: "Ann & Robert H. Lurie Children's Hospital of Chicago",
+        title: 'Project Manager, Design & Construction',
+        score: 5,
+        salary: '$93,600-$154,440',
+        location: 'Streeterville, Chicago, IL',
+        address: '225 E Chicago Ave, Chicago, IL 60611',
+        remote: 'On-site',
+        posted: 'April 9, 2026',
+        postedISO: '2026-04-09',
+        source: 'Indeed',
+        deadline: '',
+        howToApply: 'Apply via Indeed / Lurie Children\'s careers site',
+        applyLink: 'https://to.indeed.com/aapf2xvjphn9',
+        postingLink: 'https://to.indeed.com/aapf2xvjphn9',
+        firmWebsite: 'https://www.luriechildrens.org/',
+        roleSketch: 'Healthcare capital projects PM role at a top-tier pediatric hospital. Strong salary band well above Alex\'s floor. Manages design and construction of facility projects from planning through closeout - a natural fit for TI/interiors background with Revit documentation leadership. Healthcare is a stable, growing sector in Chicago.',
+        defaultStatus: 'not-started',
+        gmailStatus: '',
+        gmailDate: '',
+        gmailBadge: ''
+      },
+      {
+        id: 'cushman-wakefield-cpm',
+        isNew: true,
+        company: 'Cushman & Wakefield',
+        title: 'Construction Project Manager',
+        score: 4,
+        salary: '$76,500-$90,000',
+        location: 'Chicago, IL',
+        address: 'Chicago, IL',
+        remote: 'Hybrid',
+        posted: 'April 9, 2026',
+        postedISO: '2026-04-09',
+        source: 'Indeed',
+        deadline: '',
+        howToApply: 'Apply via Indeed',
+        applyLink: 'https://to.indeed.com/aajdg7mbgxj7',
+        postingLink: 'https://to.indeed.com/aajdg7mbgxj7',
+        firmWebsite: 'https://www.cushmanwakefield.com/',
+        roleSketch: 'Owner-rep / corporate real estate construction PM role at a global CRE firm. Mix of TI and capital projects across a portfolio of client assets. Salary is right in Alex\'s target band and aligns with his DxU commercial TI background. Good stepping stone into corporate real estate side of the industry.',
+        defaultStatus: 'not-started',
+        gmailStatus: '',
+        gmailDate: '',
+        gmailBadge: ''
+      },
+      {
+        id: 'futurefirm-designer',
+        isNew: true,
+        company: 'Future Firm',
+        title: 'Architectural Designer (0-3 years)',
+        score: 3,
+        salary: '$50,000-$60,000',
+        location: 'Chicago, IL',
+        address: 'Chicago, IL',
+        remote: 'On-site',
+        posted: 'April 9, 2026',
+        postedISO: '2026-04-09',
+        source: 'AIA Chicago Job Board',
+        deadline: '',
+        howToApply: 'Apply via Future Firm website',
+        applyLink: 'https://futurefirm.space/apply',
+        postingLink: 'https://aiachicago.org/job_posting/future-firm-architectural-designer-0-3-years/',
+        firmWebsite: 'https://futurefirm.space/',
+        roleSketch: 'Small boutique experimental Chicago practice known for conceptual and research-driven work. Requires Revit, Enscape, Rhino, Adobe CS - all in Alex\'s toolkit. Salary is below Alex\'s target floor ($65K) so lower priority, but the studio culture and portfolio-building potential could be a draw. Worth a quick application if interested in smaller design-forward shops.',
         defaultStatus: 'not-started',
         gmailStatus: '',
         gmailDate: '',
@@ -3747,6 +3815,21 @@ karshisdesigns.webflow.io`
         subject: 'Construction Manager/Estimator Position - Alexander Karshis',
         body: "Howdy,\n\nI saw your Construction Manager/Estimator posting on Craigslist and am interested in joining Structures Construction. My background bridging design and construction makes me a strong fit for this role.\n\nI have 2 years of experience at DxU Architects as the primary Revit documentation lead on commercial tenant improvement and mixed-use projects, giving me deep experience with construction documentation, subcontractor coordination, and project scheduling. I hold a Master of Architecture and Master of Industrial Design from the University of Houston.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
       },
+      'lurie-pm-design-construction': {
+        to: '',
+        subject: "Project Manager, Design & Construction - Alexander Karshis",
+        body: "Howdy,\n\nI came across the Project Manager, Design & Construction opening at Lurie Children\'s Hospital and wanted to reach out. I spent the last 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects, carrying drawings from schematic design through construction administration. I also run my own design consultancy here in Chicago and have dual master\'s degrees in Architecture and Industrial Design.\n\nThe mix of design coordination and capital projects delivery in this role looks like a strong fit for my background, and I\'d welcome the chance to discuss how I could support the team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+      },
+      'cushman-wakefield-cpm': {
+        to: '',
+        subject: 'Construction Project Manager - Alexander Karshis',
+        body: "Howdy,\n\nI came across the Construction Project Manager opening at Cushman & Wakefield in Chicago and wanted to reach out. I spent the last 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects, which gave me day-to-day exposure to owners, contractors, and consultants through the full delivery cycle. I also run my own design consultancy here in Chicago and hold dual master\'s degrees in Architecture and Industrial Design.\n\nOwner-rep and corporate real estate project management is a direction I\'ve been actively targeting, and I\'d love to share how my background could contribute to your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+      },
+      'futurefirm-designer': {
+        to: '',
+        subject: 'Architectural Designer - Alexander Karshis',
+        body: "Howdy,\n\nI came across the Architectural Designer opening at Future Firm and wanted to reach out. I spent the last 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects, and I\'m fluent in Revit, Rhino, Enscape, and the Adobe Suite. I hold dual master\'s degrees in Architecture and Industrial Design and run my own design consultancy here in Chicago.\n\nYour studio\'s research-driven approach and willingness to take on unusual typologies is exactly the kind of environment I\'m hoping to contribute to next, and I\'d love to discuss the role.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+      },
     };
 const OUTREACH_DRAFTS = {
   'dspace': {
@@ -4058,7 +4141,6 @@ const SOCIAL_LEADS = [
     
       {
         id: 'sl-cl-struxc-constmgr',
-        isNew: true,
         source: 'craigslist',
         poster: 'Structures Construction',
         posterTitle: 'Hiring Manager',
@@ -4073,7 +4155,6 @@ const SOCIAL_LEADS = [
       },
       {
         id: 'sl-cl-desplaines-facilitiespm',
-        isNew: true,
         source: 'craigslist',
         poster: 'Des Plaines Material and Supply',
         posterTitle: 'Hiring Manager',
