@@ -3252,10 +3252,10 @@ const JOBS = [
         postingLink: 'https://aiachicago.org/job_posting/lbba-architects-project-architect-designer/',
         firmWebsite: 'https://www.lbba.com/',
         roleSketch: 'Socially-minded firm focused on affordable housing and community spaces. Multi-unit housing projects. Requires 5-10 years experience and deep Chicago code knowledge. Good benefits including 401k and paid OT. May be slightly senior for Alex\'s level but worth applying.',
-        defaultStatus: 'not-started',
-        gmailStatus: '',
-        gmailDate: '',
-        gmailBadge: ''
+        defaultStatus: 'applied',
+        gmailStatus: 'Applied Apr 9 - emailed lbbahiring@lbba.com',
+        gmailDate: 'April 9, 2026',
+        gmailBadge: 'applied'
       },
       {
         id: 'struxc-construction-mgr',
@@ -3282,7 +3282,6 @@ const JOBS = [
       },
       {
         id: 'lurie-pm-design-construction',
-        isNew: true,
         company: "Ann & Robert H. Lurie Children's Hospital of Chicago",
         title: 'Project Manager, Design & Construction',
         score: 5,
@@ -3306,7 +3305,6 @@ const JOBS = [
       },
       {
         id: 'cushman-wakefield-cpm',
-        isNew: true,
         company: 'Cushman & Wakefield',
         title: 'Construction Project Manager',
         score: 4,
@@ -3330,7 +3328,6 @@ const JOBS = [
       },
       {
         id: 'futurefirm-designer',
-        isNew: true,
         company: 'Future Firm',
         title: 'Architectural Designer (0-3 years)',
         score: 3,
@@ -3352,7 +3349,32 @@ const JOBS = [
         gmailDate: '',
         gmailBadge: ''
       },
-    ];
+    
+    {
+      id: 'bulley-andrews-pe',
+      isNew: true,
+      company: 'Bulley & Andrews',
+      title: 'Project Engineer',
+      score: 4,
+      salary: '$75,000-$95,000',
+      location: 'Chicago, IL',
+      address: '1755 W Armitage Ave, Chicago, IL 60622',
+      remote: 'On-site',
+      posted: 'April 2026',
+      postedISO: '2026-04-11',
+      source: 'Bulley & Andrews Careers',
+      deadline: '',
+      howToApply: 'Apply via Hireology careers portal at bulleyandrews.hireology.careers',
+      applyLink: 'https://bulleyandrews.hireology.careers/',
+      postingLink: 'https://bulleyandrews.hireology.careers/',
+      firmWebsite: 'https://www.bulley.com',
+      roleSketch: 'Entry-to-mid construction PM role at a respected family-owned Chicago GC founded in 1891. Assists with all aspects of project management: estimating, cost control, scheduling. Salary $75k-$95k + annual bonus + cell phone reimbursement. Full-service GC including preconstruction, general contracting, CM, VDC, and historic restoration. Alex\'s commercial TI background and Revit/BIM 360 skills are a strong match.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    }
+];
 const OUTREACH = [
   { id: 'dspace', company: 'dSPACE Studio', location: 'Lincoln Ave / Lakeview (~1 mi)', type: 'Architecture', contact: 'careers@dspacestudio.com', website: 'https://www.dspacestudio.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Award-winning residential firm within 1 mile of home. Recent AIA Chicago posting signals active hiring. Local proximity makes this a natural cold outreach target.', angle: 'Lead with design-forward work and adaptive reuse experience; emphasize Revit CD documentation depth.' },
   { id: 'moss', company: 'moss design', location: 'Logan Square (~2 mi)', type: 'Architecture', contact: 'laura@moss-design.com', website: 'https://moss-design.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Adaptive reuse, hospitality (breweries), and commercial work. Past job posting for Project Architect/Designer (5-8 yrs) suggests cyclical hiring. Laura is direct contact.', angle: 'Lead with hospitality TI and adaptive reuse work; showcase Revit CD documentation.' },
@@ -3830,7 +3852,12 @@ karshisdesigns.webflow.io`
         subject: 'Architectural Designer - Alexander Karshis',
         body: "Howdy,\n\nI came across the Architectural Designer opening at Future Firm and wanted to reach out. I spent the last 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects, and I\'m fluent in Revit, Rhino, Enscape, and the Adobe Suite. I hold dual master\'s degrees in Architecture and Industrial Design and run my own design consultancy here in Chicago.\n\nYour studio\'s research-driven approach and willingness to take on unusual typologies is exactly the kind of environment I\'m hoping to contribute to next, and I\'d love to discuss the role.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
       },
-    };
+    'bulley-andrews-pe': {
+      to: '',
+      subject: 'Project Engineer Application - Alexander Karshis',
+      body: "Howdy,\n\nI came across Bulley & Andrews' Project Engineer opening and wanted to reach out. Your firm's 135-year reputation for quality commercial construction in Chicago - from complex renovations to historic restoration - is exactly the kind of environment where I want to grow as a builder.\n\nI spent the last 2 years as the primary Revit documentation lead at DxU Architects, where I managed full construction documentation sets for commercial tenant improvement and mixed-use projects across Chicago. I coordinated with consultants, tracked RFI and submittal workflows in BIM 360, and maintained project schedules through design and construction phases.\n\nI'm ready to move to the GC side and bring the documentation discipline of an architect to project management. I pick up systems quickly and am genuinely excited by the full lifecycle of a project - from estimating through closeout.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+    }
+  };
 const OUTREACH_DRAFTS = {
   'dspace': {
     to: 'careers@dspacestudio.com',
