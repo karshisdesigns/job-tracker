@@ -1663,9 +1663,9 @@ const JOBS = [
     postingLink: 'https://aiachicago.org/job_posting/latent-project-manager/',
     firmWebsite: 'https://latent.design',
     roleSketch: 'You would be managing project timelines and deliverables across all phases, attending construction meetings, and coordinating with consultants. Latent is a small, community-centered architecture and urban design firm - you would have significant project ownership.',
-    defaultStatus: 'applied',
-    gmailStatus: 'Interview 4/17 3pm',
-    gmailDate: '2026-04-07',
+    defaultStatus: 'interviewing',
+    gmailStatus: 'In-person interview 4/17 @ 3pm - 1006 S. Michigan Ave',
+    gmailDate: 'April 7, 2026',
     gmailBadge: 'interview',
   },
   {
@@ -3206,10 +3206,10 @@ const JOBS = [
         postingLink: 'https://aiachicago.org/job_posting/full-circle-architects-architectural-designer/',
         firmWebsite: 'https://www.fullcirclearchitects.com/',
         roleSketch: 'Small firm seeking designer for all project phases. Requires AutoCAD, SketchUp, Enscape, Adobe Suite. 3-8 years experience. Good benefits including paid ARE prep and licensing bonus. Strong fit for Alex\'s skill set.',
-        defaultStatus: 'not-started',
-        gmailStatus: '',
-        gmailDate: '',
-        gmailBadge: ''
+        defaultStatus: 'interviewing',
+        gmailStatus: 'Zoom interview Tues 4/14 @ 2:30pm - Daniel Baigelman, AIA',
+        gmailDate: 'April 11, 2026',
+        gmailBadge: 'interview'
       },
       {
         id: 'okellykasprak-designer',
@@ -3229,10 +3229,10 @@ const JOBS = [
         postingLink: 'https://aiachicago.org/job_posting/okelly-kasprak-architectural-designer/',
         firmWebsite: 'https://www.okellykasprak.com/',
         roleSketch: 'Hospitality design firm (hotels, restaurants, aviation, entertainment). Revit and AutoCAD required. 3-10 years experience. Great fit for Alex\'s interest in experiential and entertainment design.',
-        defaultStatus: 'not-started',
-        gmailStatus: '',
-        gmailDate: '',
-        gmailBadge: ''
+        defaultStatus: 'applied',
+        gmailStatus: 'Applied Apr 9 - Belinda O\'Kelly responded 4/10, call being scheduled',
+        gmailDate: 'April 10, 2026',
+        gmailBadge: 'interview'
       },
       {
         id: 'lbba-architect',
@@ -3352,7 +3352,6 @@ const JOBS = [
     
     {
       id: 'bulley-andrews-pe',
-      isNew: true,
       company: 'Bulley & Andrews',
       title: 'Project Engineer',
       score: 4,
@@ -3373,7 +3372,55 @@ const JOBS = [
       gmailStatus: '',
       gmailDate: '',
       gmailBadge: ''
-    }
+    },
+    {
+      id: 'jlk-arch-pm',
+      isNew: true,
+      company: 'JLK Architects',
+      title: 'Experienced Architect/PM with Preservation Experience',
+      score: 3,
+      salary: '$90,000 - $110,000',
+      location: 'Chicago, IL (Hybrid)',
+      address: 'Chicago, IL',
+      remote: 'Hybrid',
+      posted: 'April 10, 2026',
+      postedISO: '2026-04-10',
+      source: 'AIA Chicago Job Board',
+      deadline: '',
+      howToApply: 'Email mkindelin@jlkarch.com',
+      applyLink: 'mailto:mkindelin@jlkarch.com',
+      postingLink: 'https://aiachicago.org/job_posting/jlk-architects-experienced-architect-pm-with-preservation-experience/',
+      firmWebsite: 'https://www.jlkarch.com',
+      roleSketch: 'Woman-owned Chicago firm (25 staff, WBE/DBE) specializing in historic preservation, civic architecture, and transportation infrastructure. Role leads teams on preservation master plans, building envelope repairs, adaptive reuse, and condition assessments. Strong Revit required. 7+ years and active licensure required - stretch role for Alex, but strong salary and hybrid schedule.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+    {
+      id: 'wight-co-actalent',
+      isNew: true,
+      company: 'Wight & Company',
+      title: 'Architect - 6 to 8 Month Contract (via Actalent)',
+      score: 4,
+      salary: 'Contract rate TBD via Actalent',
+      location: 'Chicago area, IL',
+      address: 'Chicago, IL',
+      remote: 'Unknown',
+      posted: 'April 7, 2026',
+      postedISO: '2026-04-07',
+      source: 'Actalent Recruiter (Kacy Furjanic / Caitlin Furmanek)',
+      deadline: '',
+      howToApply: 'Via Actalent - contact Caitlin Furmanek at cfurmane@actalentservices.com',
+      applyLink: 'mailto:cfurmane@actalentservices.com',
+      postingLink: '',
+      firmWebsite: 'https://www.wightco.com',
+      roleSketch: '6 to 8 month contract/temp support role at Wight & Company, an architecture and engineering firm serving civic, education, and commercial markets in the Chicago metro area. Introduced by Actalent recruiter Kacy Furjanic on April 7; Caitlin Furmanek submitted Alex\'s resume to the hiring manager on April 8. Feedback expected end of week of April 7. Could convert to full-time.',
+      defaultStatus: 'applied',
+      gmailStatus: 'Submitted by Actalent (Caitlin Furmanek) Apr 8 - awaiting hiring manager feedback',
+      gmailDate: 'April 8, 2026',
+      gmailBadge: 'applied'
+    },
 ];
 const OUTREACH = [
   { id: 'dspace', company: 'dSPACE Studio', location: 'Lincoln Ave / Lakeview (~1 mi)', type: 'Architecture', contact: 'careers@dspacestudio.com', website: 'https://www.dspacestudio.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Award-winning residential firm within 1 mile of home. Recent AIA Chicago posting signals active hiring. Local proximity makes this a natural cold outreach target.', angle: 'Lead with design-forward work and adaptive reuse experience; emphasize Revit CD documentation depth.' },
@@ -3856,6 +3903,14 @@ karshisdesigns.webflow.io`
       to: '',
       subject: 'Project Engineer Application - Alexander Karshis',
       body: "Howdy,\n\nI came across Bulley & Andrews' Project Engineer opening and wanted to reach out. Your firm's 135-year reputation for quality commercial construction in Chicago - from complex renovations to historic restoration - is exactly the kind of environment where I want to grow as a builder.\n\nI spent the last 2 years as the primary Revit documentation lead at DxU Architects, where I managed full construction documentation sets for commercial tenant improvement and mixed-use projects across Chicago. I coordinated with consultants, tracked RFI and submittal workflows in BIM 360, and maintained project schedules through design and construction phases.\n\nI'm ready to move to the GC side and bring the documentation discipline of an architect to project management. I pick up systems quickly and am genuinely excited by the full lifecycle of a project - from estimating through closeout.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+    },
+    'jlk-arch-pm': {
+      subject: 'Experienced Architect/PM Position - Alexander Karshis',
+      body: "Howdy,\n\nI saw the Experienced Architect/PM posting on the AIA Chicago Job Board and am excited to apply. JLK Architects' focus on historic preservation, civic architecture, and transportation infrastructure aligns well with my background in documentation-heavy commercial work.\n\nI bring 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects, along with hands-on experience coordinating across design phases from SD through CA. I have strong Revit skills, a sharp eye for detail in construction documents, and a deep appreciation for buildings that carry history and serve communities.\n\nI know the posting calls for 7+ years and active licensure - I am actively pursuing my ARE exams and see this as a firm I would want to grow with long-term. I would welcome the chance to show you how my documentation depth and drive translate to your preservation-focused work.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+    },
+    'wight-co-actalent': {
+      subject: 'Architect Contract Role - Alexander Karshis (via Actalent)',
+      body: "Howdy,\n\nI am writing to express my strong interest in the contract architect support role at Wight & Company. Caitlin Furmanek at Actalent connected us and has submitted my resume on my behalf.\n\nI bring 2 years as the primary Revit documentation lead at DxU Architects, where I managed construction documents for commercial TI and mixed-use projects from schematic design through construction administration. I am comfortable jumping into active projects quickly and working independently on documentation-heavy deliverables.\n\nWight & Company's civic and community project portfolio is exactly the kind of meaningful work I want to be doing, and I see this contract as a strong opportunity to contribute immediately while exploring a longer-term fit.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
     }
   };
 const OUTREACH_DRAFTS = {
