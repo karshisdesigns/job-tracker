@@ -3207,8 +3207,8 @@ const JOBS = [
         firmWebsite: 'https://www.fullcirclearchitects.com/',
         roleSketch: 'Small firm seeking designer for all project phases. Requires AutoCAD, SketchUp, Enscape, Adobe Suite. 3-8 years experience. Good benefits including paid ARE prep and licensing bonus. Strong fit for Alex\'s skill set.',
         defaultStatus: 'interviewing',
-        gmailStatus: 'Zoom interview Tues 4/14 @ 2:30pm - Daniel Baigelman, AIA',
-        gmailDate: 'April 11, 2026',
+        gmailStatus: 'Zoom invite received 4/13 - Interview Tues 4/14 @ 2:30pm with Daniel Baigelman, AIA',
+        gmailDate: 'April 13, 2026',
         gmailBadge: 'interview'
       },
       {
@@ -3375,7 +3375,6 @@ const JOBS = [
     },
     {
       id: 'jlk-arch-pm',
-      isNew: true,
       company: 'JLK Architects',
       title: 'Experienced Architect/PM with Preservation Experience',
       score: 3,
@@ -3399,7 +3398,6 @@ const JOBS = [
     },
     {
       id: 'wight-co-actalent',
-      isNew: true,
       company: 'Wight & Company',
       title: 'Architect - 6 to 8 Month Contract (via Actalent)',
       score: 4,
@@ -3421,7 +3419,32 @@ const JOBS = [
       gmailDate: 'April 8, 2026',
       gmailBadge: 'applied'
     },
-];
+
+    {
+      id: 'enmasse-arch1',
+      isNew: true,
+      company: 'En Masse Architecture and Design',
+      title: 'Architect I',
+      score: 3,
+      salary: 'TBD',
+      location: 'Chicago, IL (Wicker Park area)',
+      address: 'Wicker Park, Chicago, IL',
+      remote: 'On-site',
+      posted: 'April 13, 2026',
+      postedISO: '2026-04-13',
+      source: 'AIA Chicago Job Board',
+      deadline: '',
+      howToApply: 'Email cover letter, resume, and portfolio to sarah@designenmasse.com',
+      applyLink: 'mailto:sarah@designenmasse.com',
+      postingLink: 'https://aiachicago.org/job_posting/en-masse-architecture-and-design-archictect-i/',
+      firmWebsite: 'https://designenmasse.com',
+      roleSketch: 'Entry-level Architect I for residential and commercial projects. Prefers Archicad (firm is transitioning to BIM). 1-3 years experience with Master\'s preferred. Full project phases including client interfacing, CDs, and consultant coordination. Archicad preference may be a minor mismatch with Alex\'s Revit background but strong BIM fundamentals should transfer.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+  ];
 const OUTREACH = [
   { id: 'dspace', company: 'dSPACE Studio', location: 'Lincoln Ave / Lakeview (~1 mi)', type: 'Architecture', contact: 'careers@dspacestudio.com', website: 'https://www.dspacestudio.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Award-winning residential firm within 1 mile of home. Recent AIA Chicago posting signals active hiring. Local proximity makes this a natural cold outreach target.', angle: 'Lead with design-forward work and adaptive reuse experience; emphasize Revit CD documentation depth.' },
   { id: 'moss', company: 'moss design', location: 'Logan Square (~2 mi)', type: 'Architecture', contact: 'laura@moss-design.com', website: 'https://moss-design.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Adaptive reuse, hospitality (breweries), and commercial work. Past job posting for Project Architect/Designer (5-8 yrs) suggests cyclical hiring. Laura is direct contact.', angle: 'Lead with hospitality TI and adaptive reuse work; showcase Revit CD documentation.' },
@@ -3911,8 +3934,24 @@ karshisdesigns.webflow.io`
     'wight-co-actalent': {
       subject: 'Architect Contract Role - Alexander Karshis (via Actalent)',
       body: "Howdy,\n\nI am writing to express my strong interest in the contract architect support role at Wight & Company. Caitlin Furmanek at Actalent connected us and has submitted my resume on my behalf.\n\nI bring 2 years as the primary Revit documentation lead at DxU Architects, where I managed construction documents for commercial TI and mixed-use projects from schematic design through construction administration. I am comfortable jumping into active projects quickly and working independently on documentation-heavy deliverables.\n\nWight & Company's civic and community project portfolio is exactly the kind of meaningful work I want to be doing, and I see this contract as a strong opportunity to contribute immediately while exploring a longer-term fit.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
-    }
-  };
+    },
+  
+  'enmasse-arch1': {
+    subject: 'Architect I Application - Alexander Karshis',
+    body: `Howdy Sarah,
+
+I came across the Architect I opening at En Masse Architecture and Design on the AIA Chicago job board and wanted to reach out - the studio's focus on residential and commercial work, combined with your active transition to BIM documentation, lines up well with where I am in my career.
+
+I spent 2 years at DxU Architects as the primary Revit documentation lead on commercial tenant improvement and mixed-use projects, taking drawings through all project phases from schematic design through construction administration. My background spans both the technical documentation side and the design development work in between. While my BIM experience has been built in Revit, I have a strong foundation in the broader BIM workflow and pick up new platforms quickly.
+
+My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.
+
+Have a great day,
+Alexander Karshis
+Chicago, IL
+karshisdesigns.webflow.io`
+  },
+};
 const OUTREACH_DRAFTS = {
   'dspace': {
     to: 'careers@dspacestudio.com',
