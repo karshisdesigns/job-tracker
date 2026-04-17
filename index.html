@@ -3585,7 +3585,6 @@ const JOBS = [
     },
     {
       id: 'designbridge',
-      isNew: true,
       company: 'DesignBridge Ltd',
       title: 'Architect / Senior Architect',
       score: 2,
@@ -3606,8 +3605,56 @@ const JOBS = [
       gmailStatus: '',
       gmailDate: '',
       gmailBadge: ''
-    }
-  ];
+    },
+    {
+      id: 'evergreen-construction-pm',
+      isNew: true,
+      company: 'Evergreen Real Estate Group',
+      title: 'Construction Project Manager',
+      score: 4,
+      salary: '$100,000 - $125,000',
+      location: 'Chicago, IL',
+      address: '',
+      remote: 'On-site',
+      posted: 'April 16, 2026',
+      postedISO: '2026-04-16',
+      source: 'Indeed',
+      deadline: '',
+      howToApply: 'Apply via Indeed',
+      applyLink: 'https://to.indeed.com/aawvxzg9vsvy',
+      postingLink: 'https://to.indeed.com/aawvxzg9vsvy',
+      firmWebsite: 'https://www.evergreenreg.com',
+      roleSketch: 'Construction PM at Evergreen Real Estate Group, a Chicago-based affordable housing and mixed-use developer. Oversees construction projects from pre-construction through closeout. Strong fit - combines PM experience with real estate development exposure. Salary in target range.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+    {
+      id: 'bushman-construction-pm',
+      isNew: true,
+      company: 'Bushman Construction Management',
+      title: 'Construction Management Project Manager',
+      score: 3,
+      salary: '$65,000 - $100,000',
+      location: 'Chicago, IL',
+      address: '',
+      remote: 'On-site',
+      posted: 'April 15, 2026',
+      postedISO: '2026-04-15',
+      source: 'Indeed',
+      deadline: '',
+      howToApply: 'Apply via Indeed',
+      applyLink: 'https://to.indeed.com/aa6r8lky97bm',
+      postingLink: 'https://to.indeed.com/aa6r8lky97bm',
+      firmWebsite: '',
+      roleSketch: 'Construction PM role at Bushman Construction Management in Chicago. Salary range aligns with target ($65K-$100K). Good entry point for construction management. Worth applying - PM skills from DxU and architecture background are relevant.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+    ];
 const OUTREACH = [
   { id: 'dspace', company: 'dSPACE Studio', location: 'Lincoln Ave / Lakeview (~1 mi)', type: 'Architecture', contact: 'careers@dspacestudio.com', website: 'https://www.dspacestudio.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Award-winning residential firm within 1 mile of home. Recent AIA Chicago posting signals active hiring. Local proximity makes this a natural cold outreach target.', angle: 'Lead with design-forward work and adaptive reuse experience; emphasize Revit CD documentation depth.' },
   { id: 'moss', company: 'moss design', location: 'Logan Square (~2 mi)', type: 'Architecture', contact: 'laura@moss-design.com', website: 'https://moss-design.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Adaptive reuse, hospitality (breweries), and commercial work. Past job posting for Project Architect/Designer (5-8 yrs) suggests cyclical hiring. Laura is direct contact.', angle: 'Lead with hospitality TI and adaptive reuse work; showcase Revit CD documentation.' },
@@ -4164,7 +4211,16 @@ Alexander Karshis
 Chicago, IL
 karshisdesigns.webflow.io`
   },
-  };
+  
+    'evergreen-construction-pm': {
+      subject: 'Construction Project Manager - Evergreen Real Estate Group',
+      body: "Howdy,\n\nI am writing to express my interest in the Construction Project Manager position at Evergreen Real Estate Group. With 2 years as the primary Revit documentation lead at DxU Architects, where I managed commercial TI and mixed-use projects from schematic design through construction administration, I have developed a strong foundation in project coordination, documentation, and stakeholder communication that translates directly to construction project management.\n\nMy architecture background gives me a unique advantage in understanding design intent, reading construction documents, and bridging the gap between design teams and field operations. I am excited about Evergreen's focus on affordable housing and community-centered development in Chicago.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+    },
+    'bushman-construction-pm': {
+      subject: 'Construction Management Project Manager - Bushman Construction Management',
+      body: "Howdy,\n\nI am reaching out regarding the Construction Management Project Manager role at Bushman Construction Management. I bring 2 years of experience as the primary Revit documentation lead at DxU Architects, where I coordinated commercial tenant improvement and mixed-use projects through all phases of design and construction administration. My hands-on experience with BIM coordination, consultant management, and construction documentation has prepared me well for a construction PM role.\n\nI hold a Master of Architecture and a Master of Industrial Design, and I am passionate about delivering projects on time and on budget while maintaining design quality.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+    },
+    };
 const OUTREACH_DRAFTS = {
   'dspace': {
     to: 'careers@dspacestudio.com',
@@ -4501,6 +4557,22 @@ const SOCIAL_LEADS = [
         score: 2,
         cannabis: false
       },
+    
+    {
+      id: 'sl-cl-retail-super-041726',
+      isNew: true,
+      source: 'craigslist',
+      poster: 'Anonymous Poster',
+      posterTitle: 'Unknown',
+      company: 'Unknown (Retail Construction)',
+      role: 'Experienced Retail Construction Superintendent',
+      snippet: 'Looking for experienced retail construction superintendent in Chicago area. Posted on Craigslist construction jobs section.',
+      link: 'https://chicago.craigslist.org/search/construction-jobs',
+      postedTime: 'April 2026',
+      postedISO: '2026-04-17',
+      score: 2,
+      cannabis: false
+    },
     ];
 // ─────────────────────────────────────────────────────────
 
