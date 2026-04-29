@@ -5773,19 +5773,41 @@ function renderPipeline() {
   var canvas = document.getElementById('pipelineSankey');
   if (canvas) {
     var rects = canvas.querySelectorAll('rect.sk-node');
-    var bucketIds = ['interview','awaiting','rejected','bounced','offer','upcoming','awaitDecide','nextRound'];
+    var labelMap = {'INTERVIEWING':'interview','AWAITING REPLY':'awaiting','REJECTED':'rejected','BOUNCED':'bounced','OFFER':'offer','UPCOMING':'upcoming','AWAITING DECISION':'awaitDecide','NEXT ROUND':'nextRound'};
     rects.forEach(function(rect) {
       var titleEl = rect.querySelector('title');
       if (!titleEl) return;
       var label = titleEl.textContent.split(':')[0];
-      var key = null;
-      var labelMap = {'INTERVIEWING':'interview','AWAITING REPLY':'awaiting','REJECTED':'rejected','BOUNCED':'bounced','OFFER':'offer','UPCOMING':'upcoming','AWAITING DECISION':'awaitDecide','NEXT ROUND':'nextRound'};
-      key = labelMap[label] || null;
+      var key = labelMap[label] || null;
       if (!key) return;
       rect.setAttribute('data-bucket', key);
-      rect.addEventListener('click', function() { openSkModal(key); });
     });
+    // Delegated click on the canvas (works even if loader briefly overlays)
+    if (!canvas.__skClickBound) {
+      canvas.addEventListener('click', function(e) {
+        var t = e.target;
+        while (t && t !== canvas) {
+          if (t.getAttribute && t.getAttribute('data-bucket')) {
+            openSkModal(t.getAttribute('data-bucket'));
+            return;
+          }
+          t = t.parentNode;
+        }
+      });
+      canvas.__skClickBound = true;
+    }
   }
+  // Force-hide loader after it has had time to fade out (CSS keyframe forwards
+  // was unreliable and was leaving the loader on top, blocking clicks).
+  setTimeout(function() {
+    var l = document.getElementById('sankeyLoader');
+    if (l) {
+      l.style.opacity = '0';
+      l.style.visibility = 'hidden';
+      l.style.pointerEvents = 'none';
+      l.style.display = 'none';
+    }
+  }, 2100);
 
   setTimeout(function() {
     var nums = document.querySelectorAll('#pipelineSankey .sk-num');
