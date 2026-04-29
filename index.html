@@ -1145,6 +1145,107 @@ body::before {
   font-family: monospace;
 }
 
+
+/* ── Click-to-popup modal for chart buckets ── */
+.sk-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(11, 12, 16, 0.62);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: skModalFadeIn 0.2s ease-out;
+}
+.sk-modal.sk-modal-open { display: flex; }
+@keyframes skModalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+.sk-modal-box {
+  background: var(--eames-cream, #FFF8F0);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-brutal);
+  width: min(720px, 100%);
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  animation: skModalRise 0.3s cubic-bezier(.22,1,.36,1);
+}
+@keyframes skModalRise { from { transform: translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+.sk-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px 14px;
+  border-bottom: var(--border-thin);
+}
+.sk-modal-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-light, #555);
+}
+.sk-modal-title {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: -0.01em;
+  margin: 4px 0 0;
+  color: var(--ink, #1A1A1A);
+}
+.sk-modal-close {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 1;
+  background: transparent;
+  border: var(--border-thin);
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  color: var(--ink, #1A1A1A);
+  transition: transform 0.15s ease;
+}
+.sk-modal-close:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+.sk-modal-list {
+  overflow-y: auto;
+  padding: 8px 22px 22px;
+}
+.sk-modal-item {
+  padding: 14px 14px 12px;
+  border-left: 6px solid var(--bucket-color, #999);
+  border-bottom: 1px dashed rgba(0,0,0,0.12);
+  background: white;
+  margin-top: 10px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+.sk-modal-item:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 rgba(0,0,0,0.85); }
+.sk-modal-item-main { flex: 1 1 auto; min-width: 0; }
+.sk-modal-item-co { font-weight: 800; font-size: 16px; color: var(--ink, #1A1A1A); }
+.sk-modal-item-role { font-size: 13px; color: var(--ink-light, #555); margin-top: 2px; }
+.sk-modal-item-status { font-size: 12px; color: #333; margin-top: 6px; line-height: 1.4; }
+.sk-modal-item-date {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bucket-color, #555);
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+.sk-modal-empty { padding: 30px 0; text-align: center; color: var(--ink-light, #555); font-style: italic; }
+
+/* Make Sankey nodes feel clickable */
+.sk-node[data-bucket] { cursor: pointer; }
+
+
 /* ===== CHART TAB (stripped: no background, max size) ===== */
 .sankey-stage {
   position: relative;
@@ -1453,6 +1554,18 @@ body::before {
                 </div>
             </div>
             <div id="pipelineSankey" class="sankey-canvas"></div>
+            <div class="sk-modal" id="skModal" onclick="closeSkModal(event)">
+                <div class="sk-modal-box" onclick="event.stopPropagation()">
+                    <div class="sk-modal-head">
+                        <div>
+                            <div class="sk-modal-eyebrow" id="skModalEyebrow">Bucket</div>
+                            <h3 class="sk-modal-title" id="skModalTitle">Title</h3>
+                        </div>
+                        <button class="sk-modal-close" onclick="closeSkModal()" aria-label="Close">×</button>
+                    </div>
+                    <div class="sk-modal-list" id="skModalList"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -1561,76 +1674,7 @@ const JOBS = [
       gmailDate: '2026-03-27',
       gmailBadge: 'rejected'
     },
-    {
-      id: 'silhouette',
-      company: 'Silhouette Design Architecture',
-      title: 'Architectural PM - Retail and Restaurant',
-      score: 5,
-      salary: '$65,100 - $120,000',
-      location: 'Chicago, IL',
-      address: 'Chicago, IL',
-      remote: 'On-site',
-      posted: 'March 5, 2026',
-      postedISO: '2026-03-05',
-      source: 'Indeed',
-      deadline: '',
-      howToApply: 'Apply via Indeed',
-      applyLink: 'https://to.indeed.com/aafxdny9vjn6',
-      postingLink: 'https://to.indeed.com/aafxdny9vjn6',
-      firmWebsite: '',
-      roleSketch: 'Retail and restaurant project management - directly aligns with commercial TI experience at DxU. Great salary range. Chicago location.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '2026-03-20',
-      gmailBadge: 'gmail-sent'
-    },
-    {
-      id: 'environs',
-      company: 'Environs Development Inc.',
-      title: 'Project Architect - Custom Residential',
-      score: 3,
-      salary: 'From $80,000',
-      location: 'Chicago, IL',
-      address: 'Chicago, IL',
-      remote: 'On-site',
-      posted: 'March 5, 2026',
-      postedISO: '2026-03-05',
-      source: 'Indeed / AIA Chicago',
-      deadline: '',
-      howToApply: 'Apply via Indeed',
-      applyLink: 'https://to.indeed.com/aafrnjszs2gf',
-      postingLink: 'https://to.indeed.com/aafrnjszs2gf',
-      firmWebsite: '',
-      roleSketch: 'Custom residential PA role. Good salary floor at $80K. Residential focus is different from commercial TI background but broadens options.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-    {
-      id: 'accel',
-      company: 'Accel Construction Services',
-      title: 'Project Manager - Construction',
-      score: 4,
-      salary: '$85,000 - $105,000',
-      location: 'Chicago, IL',
-      address: 'Chicago, IL',
-      remote: 'On-site',
-      posted: 'March 17, 2026',
-      postedISO: '2026-03-17',
-      source: 'Indeed',
-      deadline: '',
-      howToApply: 'Apply via Indeed',
-      applyLink: 'https://to.indeed.com/aavfbnlhzcgk',
-      postingLink: 'https://to.indeed.com/aavfbnlhzcgk',
-      firmWebsite: '',
-      roleSketch: 'Construction PM at Accel Construction. Solid salary $85K-$105K. Posted March 17. Good fit for PM skills and construction knowledge.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '2026-03-20',
-      gmailBadge: 'gmail-sent'
-    },
-    {
+                {
       id: 'carlile',
       company: 'Carlile Architects',
       title: 'Architectural Project Manager',
@@ -1975,30 +2019,7 @@ const JOBS = [
     gmailDate: '',
     gmailBadge: '',
   },
-  {
-    id: 'corespaces',
-    company: 'Core Spaces',
-    title: 'Associate, Project Designer',
-    score: 5,
-    salary: '$85,000-$95,000',
-    location: 'Chicago, IL',
-    address: 'Chicago, IL',
-    remote: 'Hybrid',
-    posted: 'January 22, 2026',
-    postedISO: '2026-01-22',
-    source: 'Indeed',
-    deadline: 'None listed',
-    howToApply: 'Apply via Indeed or Core Spaces careers page',
-    applyLink: 'https://to.indeed.com/aac244tm7qh9',
-    postingLink: 'https://to.indeed.com/aac244tm7qh9',
-    firmWebsite: 'https://www.corespaces.com',
-    roleSketch: 'You would be part of a small in-house design team doing site planning, floor plans, and exterior design for student housing projects across the country. As both client and designer, you would influence every stage of design. Expect SketchUp, Rhino, Revit work with occasional travel. Top of salary range at $95K.',
-    defaultStatus: 'not-started',
-    gmailStatus: '',
-    gmailDate: '',
-    gmailBadge: '',
-  },
-  {
+    {
     id: 'waremalcomb-jc',
     company: 'Ware Malcomb',
     title: 'Job Captain',
@@ -2021,53 +2042,7 @@ const JOBS = [
     gmailDate: '2026-03-18',
     gmailBadge: 'gmail-sent',
   },
-  {
-    id: 'waremalcomb-ad',
-    company: 'Ware Malcomb',
-    title: 'Architectural Designer II, Site Planning',
-    score: 3,
-    salary: '$60,000-$75,000',
-    location: 'Oak Brook, IL',
-    address: 'Oak Brook, IL',
-    remote: 'In-office',
-    posted: 'February 25, 2026',
-    postedISO: '2026-02-25',
-    source: 'Indeed',
-    deadline: 'None listed',
-    howToApply: 'Apply via Ware Malcomb Lever portal',
-    applyLink: 'https://jobs.lever.co/waremalcomb/',
-    postingLink: 'https://to.indeed.com/aapr844ksh86',
-    firmWebsite: 'https://waremalcomb.com',
-    roleSketch: 'You would be developing site planning concepts for commercial developments - conducting zoning research, coordinating architectural and civil drawings, and presenting design options to clients. Requires AutoCAD and Revit with 2 years commercial experience.',
-    defaultStatus: 'not-started',
-    gmailStatus: '',
-    gmailDate: '2026-03-18',
-    gmailBadge: 'gmail-sent',
-  },
-  {
-    id: 'wdpartners',
-    company: 'WD Partners',
-    title: 'Designer, Architecture',
-    score: 4,
-    salary: 'Not posted (market est. $65,000-$85,000)',
-    location: 'Remote (US)',
-    address: 'Remote',
-    remote: 'Remote',
-    posted: 'March 11, 2026',
-    postedISO: '2026-03-11',
-    source: 'Indeed',
-    deadline: 'None listed',
-    howToApply: 'Apply via Indeed or WD Partners careers page',
-    applyLink: 'https://to.indeed.com/aacrghs4pvrl',
-    postingLink: 'https://to.indeed.com/aacrghs4pvrl',
-    firmWebsite: 'https://www.wdpartners.com',
-    roleSketch: 'You would be producing architectural construction documents for national retail, restaurant, and healthcare clients. Fully remote role using AutoCAD and Revit. Expect to train and assist team members while managing multiple concurrent CD sets with site-specific adjustments.',
-    defaultStatus: 'not-started',
-    gmailStatus: '',
-    gmailDate: '',
-    gmailBadge: '',
-  },
-  {
+      {
     id: 'scb-interiors',
     company: 'SCB',
     title: 'Technical Interior Designer',
@@ -2207,53 +2182,7 @@ const JOBS = [
       gmailDate: 'March 20, 2026',
       gmailBadge: 'gmail-sent'
     },
-    {
-      id: 'rush-bim',
-      company: 'Rush University Medical Center',
-      title: 'Sr BIM Coordinator',
-      score: 4,
-      salary: '$86K-$140K',
-      location: 'Chicago, IL',
-      address: 'Chicago, IL',
-      remote: 'No',
-      posted: 'Jan 14, 2026',
-      postedISO: '2026-01-14',
-      source: 'Indeed',
-      deadline: '',
-      howToApply: 'Apply on Indeed',
-      applyLink: 'https://to.indeed.com/aazqhkc46ltx',
-      postingLink: 'https://to.indeed.com/aazqhkc46ltx',
-      firmWebsite: 'https://www.rush.edu',
-      roleSketch: 'Senior BIM Coordinator role at Rush University Medical Center. Leverages Revit expertise directly. Healthcare institution with great benefits and salary range ($41-67/hr). Institutional stability.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-    {
-      id: 'trimark',
-      company: 'Trimark USA',
-      title: 'Senior Designer',
-      score: 3,
-      salary: '$75K-$90K',
-      location: 'Bedford Park, IL',
-      address: 'Bedford Park, IL',
-      remote: 'No',
-      posted: 'Feb 26, 2026',
-      postedISO: '2026-02-26',
-      source: 'Indeed',
-      deadline: '',
-      howToApply: 'Apply on Indeed',
-      applyLink: 'https://to.indeed.com/aa7xdncqw6ld',
-      postingLink: 'https://to.indeed.com/aa7xdncqw6ld',
-      firmWebsite: '',
-      roleSketch: 'Senior Designer at Trimark USA, a foodservice equipment and design company. Somewhat adjacent to architecture. Bedford Park location near Midway.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-    {
+            {
       id: 'skender-apm',
       company: 'Skender Construction',
       title: 'Assistant Project Manager',
@@ -2516,30 +2445,7 @@ const JOBS = [
       gmailBadge: '',
       cannabis: false
     },
-    {
-      id: 'laurencoburn',
-      company: 'Lauren Coburn LLC',
-      title: 'Senior Interior Designer / Interior Architecture',
-      score: 3,
-      salary: '$73,152-$80,000',
-      location: 'Chicago, IL',
-      address: 'Chicago, IL',
-      remote: 'On-site',
-      posted: 'March 13, 2026',
-      postedISO: '2026-03-13',
-      source: 'Indeed',
-      deadline: '',
-      howToApply: 'Apply via Indeed',
-      applyLink: 'https://to.indeed.com/aadk9ns7h7kw',
-      postingLink: 'https://to.indeed.com/aadk9ns7h7kw',
-      firmWebsite: '',
-      roleSketch: 'Senior Interior Designer / Interior Architecture at Lauren Coburn LLC in Chicago. Interior architecture crossover role. In salary range at $73K-$80K.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-    {
+        {
       id: 'cresco-lincoln',
       company: 'Cresco Labs',
       title: 'Facility Maintenance Technician',
@@ -2611,30 +2517,7 @@ const JOBS = [
       gmailBadge: '',
       cannabis: true
     },
-    {
-      id: 'lggroup',
-      company: 'LG GROUP',
-      title: 'Assistant Project Manager',
-      score: 3,
-      salary: '$85,000-$120,000',
-      location: 'Chicago, IL',
-      address: 'Chicago, IL',
-      remote: 'On-site',
-      posted: 'March 10, 2026',
-      postedISO: '2026-03-10',
-      source: 'Indeed',
-      deadline: '',
-      howToApply: 'Apply via Indeed',
-      applyLink: 'https://to.indeed.com/aagdjhzntks7',
-      postingLink: 'https://to.indeed.com/aagdjhzntks7',
-      firmWebsite: '',
-      roleSketch: 'Assistant Project Manager at LG GROUP in Chicago. Construction PM role with excellent salary range ($85K-$120K). Good match for PM and construction experience.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-    {
+        {
       id: 'mahogany',
       company: 'Mahogany Builders',
       title: 'Residential Project Manager',
@@ -2657,30 +2540,7 @@ const JOBS = [
       gmailDate: '2026-03-26',
       gmailBadge: 'rejected'
     },
-    {
-      id: 'frost-cnc',
-      company: 'Frost',
-      title: 'CNC Router Operator',
-      score: 2,
-      salary: '$30-$38/hr',
-      location: 'Chicago, IL',
-      address: 'Chicago, IL',
-      remote: 'On-site',
-      posted: 'March 18, 2026',
-      postedISO: '2026-03-18',
-      source: 'Indeed',
-      deadline: '',
-      howToApply: 'Apply via Indeed',
-      applyLink: 'https://to.indeed.com/aa87c98gvnh7',
-      postingLink: 'https://to.indeed.com/aa87c98gvnh7',
-      firmWebsite: '',
-      roleSketch: 'CNC Router Operator at Frost in Chicago. Fabrication role aligns with 3D printing/fabrication skills but CNC operator role is below architecture skill level. Backup option.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-      {
+          {
       id: 'farrassoc',
       company: 'Farr Associates',
       title: 'Architectural Designer',
@@ -2842,30 +2702,7 @@ const JOBS = [
       gmailDate: '',
       gmailBadge: ''
     },
-    {
-      id: 'fhpaschen-apm',
-      company: 'F.H. Paschen',
-      title: 'Assistant Project Manager',
-      score: 4,
-      salary: '$85,000-$105,000',
-      location: 'Chicago, IL',
-      address: 'Chicago, IL',
-      remote: 'On-site',
-      posted: 'February 25, 2026',
-      postedISO: '2026-02-25',
-      source: 'Indeed',
-      deadline: '',
-      howToApply: 'Apply via Indeed - https://to.indeed.com/aa6pw6mgmxdw',
-      applyLink: 'https://to.indeed.com/aa6pw6mgmxdw',
-      postingLink: 'https://to.indeed.com/aa6pw6mgmxdw',
-      firmWebsite: 'https://www.fhpaschen.com',
-      roleSketch: 'F.H. Paschen is a 115-year-old Chicago GC with diverse public and private work. APM role supports PMs on scheduling, subcontractor coordination, RFIs, submittals, and cost tracking across multiple project types. Great path from design into construction management. Benefits include health/dental/vision, 401k match, and year-end bonus.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-    
+        
     {
       id: 'rivetna',
       company: 'Rivetna Architects Inc',
@@ -2914,30 +2751,7 @@ const JOBS = [
       gmailBadge: ''
     },
   
-    {
-      id: 'bowa-group-construction-pm',
-      company: 'The Bowa Group',
-      title: 'Construction Project Manager',
-      score: 4,
-      salary: '$90,000 - $120,000',
-      location: 'Chicago, IL',
-      address: 'Chicago, IL',
-      remote: 'On-site',
-      posted: 'April 2, 2026',
-      postedISO: '2026-04-02',
-      source: 'Indeed',
-      deadline: '',
-      howToApply: 'Apply on Indeed',
-      applyLink: 'https://to.indeed.com/aapsmfq8yhhf',
-      postingLink: 'https://to.indeed.com/aapsmfq8yhhf',
-      firmWebsite: 'https://bowaconstruction.com/',
-      roleSketch: 'GC seeking PM for high-rise and ground-up construction in Chicago. 5+ years experience preferred. BS in Construction Management, Architecture, or Engineering. Strong fit for Alex\'s PM and architecture background.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-    {
+        {
       id: 'ameriscan-designs-arch-drafter',
       company: 'Ameriscan Designs',
       title: 'Architectural Drafter/Engineer',
@@ -2983,30 +2797,7 @@ const JOBS = [
       gmailDate: '',
       gmailBadge: ''
     },
-    {
-      id: 'lakeshore-mgmt-construction-pm',
-      company: 'Lakeshore Management, Inc.',
-      title: 'Construction Project Manager',
-      score: 3,
-      salary: '$80,000 - $100,000',
-      location: 'Skokie, IL',
-      address: 'Skokie, IL',
-      remote: 'On-site',
-      posted: 'March 12, 2026',
-      postedISO: '2026-03-12',
-      source: 'Indeed',
-      deadline: '',
-      howToApply: 'Apply on Indeed',
-      applyLink: 'https://to.indeed.com/aalv6wcn9r2k',
-      postingLink: 'https://to.indeed.com/aalv6wcn9r2k',
-      firmWebsite: '',
-      roleSketch: 'Construction PM role in Skokie. Salary in target range. Skokie is a reasonable commute from Roscoe Village/Lakeview.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-    
+        
     {
       id: 'corston-fab',
       company: 'Corston Architectural Detail',
@@ -3123,30 +2914,7 @@ const JOBS = [
       gmailDate: '',
       gmailBadge: '',
     },
-    {
-      id: 'dannys-construction-pm',
-      company: 'Danny\'s Construction Company',
-      title: 'Construction Project Manager',
-      score: 3,
-      salary: '$80,000 - $120,000',
-      location: 'Chicago, IL',
-      address: 'Chicago, IL',
-      remote: 'On-site',
-      posted: 'March 25, 2026',
-      postedISO: '2026-03-25',
-      source: 'Indeed',
-      deadline: '',
-      howToApply: 'Apply via Indeed',
-      applyLink: 'https://to.indeed.com/aa7lfcnkrzry',
-      postingLink: 'https://to.indeed.com/aa7lfcnkrzry',
-      firmWebsite: '',
-      roleSketch: 'Construction PM role at a Chicago-based general contractor. Broad construction management scope. Your Revit documentation and project coordination experience from DxU provides a solid foundation, though this is more field-focused than design-focused.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: '',
-    },
-  
+      
     {
       id: 'jones-cleary-apm',
       company: 'Jones & Cleary Roofing Co., Inc.',
@@ -3171,53 +2939,7 @@ const JOBS = [
       gmailBadge: ''
     },
     
-    {
-      id: 'northwestern-med-pm',
-      company: 'Northwestern Medicine',
-      title: 'Project Manager',
-      score: 3,
-      salary: '$118K-$171K',
-      location: 'Chicago, IL',
-      address: '251 E Huron St, Chicago, IL 60611',
-      remote: 'On-site',
-      posted: 'Feb 14, 2026',
-      postedISO: '2026-02-14',
-      source: 'Indeed',
-      deadline: '',
-      howToApply: 'Apply on Indeed',
-      applyLink: 'https://to.indeed.com/aavwx2gbrx99',
-      postingLink: 'https://to.indeed.com/aavwx2gbrx99',
-      firmWebsite: 'https://www.nm.org',
-      roleSketch: 'Healthcare project manager overseeing construction and renovation projects at Northwestern Medicine. Involves coordinating with architects, contractors, and clinical staff on facility improvement projects. Requires construction/renovation PM experience - Alex\'s architecture background and Revit documentation skills are transferable.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-    {
-      id: 'flowhire-construction-pm',
-      company: 'Flowhire',
-      title: 'Construction Project Manager',
-      score: 3,
-      salary: '$80K-$150K',
-      location: 'Chicago, IL',
-      address: 'Chicago, IL',
-      remote: 'On-site',
-      posted: 'Mar 30, 2026',
-      postedISO: '2026-03-30',
-      source: 'Indeed',
-      deadline: '',
-      howToApply: 'Apply on Indeed',
-      applyLink: 'https://to.indeed.com/aazvgfrqxqxx',
-      postingLink: 'https://to.indeed.com/aazvgfrqxqxx',
-      firmWebsite: '',
-      roleSketch: 'Construction PM role placed through Flowhire staffing agency. Wide salary range ($80K-$150K) suggests flexibility based on experience. Chicago-based commercial construction project management. Alex\'s architecture documentation and project coordination experience at DxU is relevant.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-    
+            
       {
         id: 'fullcircle-designer',
         company: 'Full Circle Architects',
@@ -3611,30 +3333,7 @@ const JOBS = [
       gmailDate: '',
       gmailBadge: ''
     },
-    {
-      id: 'bushman-construction-pm',
-      company: 'Bushman Construction Management',
-      title: 'Construction Management Project Manager',
-      score: 3,
-      salary: '$65,000 - $100,000',
-      location: 'Chicago, IL',
-      address: '',
-      remote: 'On-site',
-      posted: 'April 15, 2026',
-      postedISO: '2026-04-15',
-      source: 'Indeed',
-      deadline: '',
-      howToApply: 'Apply via Indeed',
-      applyLink: 'https://to.indeed.com/aa6r8lky97bm',
-      postingLink: 'https://to.indeed.com/aa6r8lky97bm',
-      firmWebsite: '',
-      roleSketch: 'Construction PM role at Bushman Construction Management in Chicago. Salary range aligns with target ($65K-$100K). Good entry point for construction management. Worth applying - PM skills from DxU and architecture background are relevant.',
-      defaultStatus: 'not-started',
-      gmailStatus: '',
-      gmailDate: '',
-      gmailBadge: ''
-    },
-      {
+          {
     id: 'spaantech-proj-arch',
     company: 'SPAAN Tech',
     title: 'Project Architect',
@@ -3726,30 +3425,7 @@ const JOBS = [
     gmailDate: '',
     gmailBadge: ''
   },
-  {
-    id: 'williamsarch-interiordesigner',
-    company: 'Williams Architects',
-    title: 'Interior Designer',
-    score: 3,
-    salary: '$60,000-$80,000',
-    location: 'Itasca, IL',
-    address: 'Itasca, IL',
-    remote: 'On-site',
-    posted: 'April 8, 2026',
-    postedISO: '2026-04-08',
-    source: 'Indeed',
-    deadline: 'Rolling',
-    howToApply: 'Apply via Indeed',
-    applyLink: 'https://to.indeed.com/aa2ywv6plw96',
-    postingLink: 'https://to.indeed.com/aa2ywv6plw96',
-    firmWebsite: 'https://williams-architects.com',
-    roleSketch: 'Interior Designer at Williams Architects in Itasca (NW Chicago suburb, ~30 min drive). $60-$80K fits Alex\'s lower band. Williams Architects does municipal, education, and recreation work. Interior design lean makes this more specialized, but Alex\'s Revit + documentation chops transfer cleanly.',
-    defaultStatus: 'not-started',
-    gmailStatus: '',
-    gmailDate: '',
-    gmailBadge: ''
-  },
-  {
+    {
     id: 'johnburns-apm',
     company: 'John Burns Construction Company',
     title: 'Assistant Project Manager',
@@ -3796,30 +3472,7 @@ const JOBS = [
     gmailDate: '',
     gmailBadge: ''
   },
-  {
-    id: 'globetrotters-pm-arch',
-    company: 'Globetrotters Engineering',
-    title: 'Project Manager - Architect',
-    score: 3,
-    salary: '$120,000 - $160,000',
-    location: 'Chicago, IL',
-    address: '300 S. Wacker Dr., Suite 400, Chicago, IL 60606',
-    remote: 'On-site',
-    posted: 'April 20, 2026',
-    postedISO: '2026-04-20',
-    source: 'Indeed',
-    deadline: 'Rolling',
-    howToApply: 'Retry via jobs@gec-group.com (per gec-group.com careers page) or apply via Indeed. Alex previously interviewed here (Nick Santana / Ajay Shah) for Project Architect in May-June 2024; the process was ultimately canceled.',
-    applyLink: 'https://to.indeed.com/aah4vgvhqvvr',
-    postingLink: 'https://to.indeed.com/aah4vgvhqvvr',
-    firmWebsite: 'https://www.gec-group.com',
-    roleSketch: 'Downtown engineering-architecture firm in West Loop. Salary band sits above target (Alex at lower end). Prior interview history (May 2024). Previous process stalled - a direct note to Nick Santana could reactivate the relationship.',
-    defaultStatus: 'not-started',
-    gmailStatus: 'Email 4/22 to nick.santana@gec-group.com bounced (address not found). Per gec-group.com careers page, the correct contact is jobs@gec-group.com. Nicks LinkedIn is still the best outreach channel.',
-    gmailDate: 'April 22, 2026',
-    gmailBadge: 'EMAIL BOUNCED'
-  },
-  {
+    {
     id: 'john-keno-constr-pm',
     company: 'John Keno and Company',
     title: 'Construction Project Manager',
@@ -4053,22 +3706,7 @@ const EMAIL_DRAFTS = {
     subject: 'Architectural PM - Healthcare Studio - Alexander Karshis',
     body: 'Howdy,\n\nI came across the Architectural PM - Healthcare Studio opening at Farnsworth Group and wanted to reach out. I have dual master\'s degrees in Architecture and Industrial Design, Revit and BIM documentation leadership on commercial TI and mixed-use projects, and I run my own design consultancy here in Chicago.\n\nI\'d love to learn more about the role and share how my background could be a fit for your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
-  'silhouette': {
-    to: '',
-    subject: 'Architectural PM - Retail and Restaurant - Alexander Karshis',
-    body: 'Howdy,\n\nI came across the Architectural PM - Retail and Restaurant opening at Silhouette Design Architecture and wanted to reach out. I have dual master\'s degrees in Architecture and Industrial Design, Revit and BIM documentation leadership on commercial TI and mixed-use projects, and I run my own design consultancy here in Chicago.\n\nI\'d love to learn more about the role and share how my background could be a fit for your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-  'environs': {
-    to: '',
-    subject: 'Project Architect - Custom Residential - Alexander Karshis',
-    body: 'Howdy,\n\nI came across the Project Architect - Custom Residential opening at Environs Development Inc. and wanted to reach out. I have dual master\'s degrees in Architecture and Industrial Design, Revit and BIM documentation leadership on commercial TI and mixed-use projects, and I run my own design consultancy here in Chicago.\n\nI\'d love to learn more about the role and share how my background could be a fit for your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-  'accel': {
-    to: '',
-    subject: 'Project Manager - Construction - Alexander Karshis',
-    body: 'Howdy,\n\nI\'m reaching out about the Project Manager - Construction role at Accel Construction Services. My background bridges design and construction - I have dual master\'s degrees in Architecture and Industrial Design, Revit documentation leadership on commercial TI and mixed-use projects, and experience coordinating across consultants, contractors, and clients from SD through CA.\n\nI think in terms of buildability, not just design intent, and I\'d love to bring that perspective to your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-  'carlile': {
+        'carlile': {
     to: '',
     subject: 'Architectural Project Manager - Alexander Karshis',
     body: 'Howdy,\n\nI came across the Architectural Project Manager opening at Carlile Architects and wanted to reach out. I have dual master\'s degrees in Architecture and Industrial Design, Revit and BIM documentation leadership on commercial TI and mixed-use projects, and I run my own design consultancy here in Chicago.\n\nI\'d love to learn more about the role and share how my background could be a fit for your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
@@ -4113,27 +3751,12 @@ const EMAIL_DRAFTS = {
     subject: 'Designer - Architecture - Alexander Karshis',
     body: 'Howdy,\n\nI\'m writing about the Designer - Architecture position at Skidmore, Owings & Merrill (SOM)\'s Chicago office. I bring dual master\'s degrees in Architecture and Industrial Design, Revit documentation leadership on commercial projects, and a design consultancy I run on the side - your firm\'s work is the kind of design I got into this field to do.\n\nI\'m looking for a team where I can grow and contribute at scale, and I\'d love to talk about what I can bring to the table.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
-  'corespaces': {
-    to: 'careers@corespaces.com',
-    subject: 'Associate, Project Designer - Alexander Karshis',
-    body: 'Howdy,\n\nI\'m writing about the Associate, Project Designer position at Core Spaces\'s Chicago office. I bring dual master\'s degrees in Architecture and Industrial Design, Revit documentation leadership on commercial projects, and a design consultancy I run on the side - your firm\'s work is the kind of design I got into this field to do.\n\nI\'m looking for a team where I can grow and contribute at scale, and I\'d love to talk about what I can bring to the table.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-  'waremalcomb-jc': {
+    'waremalcomb-jc': {
     to: 'jgolub@waremalcomb.com',
     subject: 'Job Captain - Alexander Karshis',
     body: 'Howdy,\n\nI came across the Job Captain opening at Ware Malcomb and wanted to reach out. I have dual master\'s degrees in Architecture and Industrial Design, Revit and BIM documentation leadership on commercial TI and mixed-use projects, and I run my own design consultancy here in Chicago.\n\nI\'d love to learn more about the role and share how my background could be a fit for your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
-  'waremalcomb-ad': {
-    to: 'careers@waremalcomb.com',
-    subject: 'Architectural Designer II, Site Planning - Alexander Karshis',
-    body: 'Howdy,\n\nI came across the Architectural Designer II, Site Planning opening at Ware Malcomb and wanted to reach out. I have dual master\'s degrees in Architecture and Industrial Design, Revit and BIM documentation leadership on commercial TI and mixed-use projects, and I run my own design consultancy here in Chicago.\n\nI\'d love to learn more about the role and share how my background could be a fit for your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-  'wdpartners': {
-    to: 'careers@wdpartners.com',
-    subject: 'Designer, Architecture - Alexander Karshis',
-    body: 'Howdy,\n\nI\'m writing about the Designer, Architecture position at WD Partners\'s Chicago office. I bring dual master\'s degrees in Architecture and Industrial Design, Revit documentation leadership on commercial projects, and a design consultancy I run on the side - your firm\'s work is the kind of design I got into this field to do.\n\nI\'m looking for a team where I can grow and contribute at scale, and I\'d love to talk about what I can bring to the table.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-  'scb-interiors': {
+      'scb-interiors': {
     to: 'reception@scb.com',
     subject: 'Technical Interior Designer - Alexander Karshis',
     body: 'Howdy,\n\nI came across the Technical Interior Designer opening at SCB and wanted to reach out. I have dual master\'s degrees in Architecture and Industrial Design, Revit and BIM documentation leadership on commercial TI and mixed-use projects, and I run my own design consultancy here in Chicago.\n\nI\'d love to learn more about the role and share how my background could be a fit for your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
@@ -4158,12 +3781,7 @@ const EMAIL_DRAFTS = {
     subject: 'Architectural Designer - Alexander Karshis',
     body: 'Howdy,\n\nI came across the Architectural Designer opening at Widler Architecture and wanted to reach out. I have dual master\'s degrees in Architecture and Industrial Design, Revit and BIM documentation leadership on commercial TI and mixed-use projects, and I run my own design consultancy here in Chicago.\n\nI\'d love to learn more about the role and share how my background could be a fit for your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
-  'rush-bim': {
-    to: '',
-    subject: 'Sr BIM Coordinator - Alexander Karshis',
-    body: 'Howdy,\n\nI\'m writing about the Sr BIM Coordinator position at Rush University Medical Center\'s Chicago office. I bring dual master\'s degrees in Architecture and Industrial Design, Revit documentation leadership on commercial projects, and a design consultancy I run on the side - your firm\'s work is the kind of design I got into this field to do.\n\nI\'m looking for a team where I can grow and contribute at scale, and I\'d love to talk about what I can bring to the table.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-  'skender-apm': {
+    'skender-apm': {
     to: '',
     subject: 'Assistant Project Manager - Alexander Karshis',
     body: 'Howdy,\n\nI\'m reaching out about the Assistant Project Manager role at Skender Construction. My background bridges design and construction - I have dual master\'s degrees in Architecture and Industrial Design, Revit documentation leadership on commercial TI and mixed-use projects, and experience coordinating across consultants, contractors, and clients from SD through CA.\n\nI think in terms of buildability, not just design intent, and I\'d love to bring that perspective to your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
@@ -4188,12 +3806,7 @@ const EMAIL_DRAFTS = {
     subject: 'Architectural Kitchen & Bath Draftsperson - Alexander Karshis',
     body: 'Howdy,\n\nI came across the Architectural Kitchen & Bath Draftsperson opening at Airoom Architects, Builders and Remodelers and wanted to reach out. I have dual master\'s degrees in Architecture and Industrial Design, Revit and BIM documentation leadership on commercial TI and mixed-use projects, and I run my own design consultancy here in Chicago.\n\nI\'d love to learn more about the role and share how my background could be a fit for your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
-  'laurencoburn': {
-    to: '',
-    subject: 'Senior Interior Designer - Alexander Karshis',
-    body: 'Howdy,\n\nI saw the Senior Interior Designer / Interior Architecture opening at Lauren Coburn LLC and wanted to introduce myself. I have 2 years as the primary Revit documentation lead at DxU Architects, working across commercial TI and mixed-use projects, with dual master\'s degrees in Architecture and Industrial Design.\n\nI\'d love to learn more about the role and share how my architectural and design background could contribute to your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-  'cresco-lincoln': {
+    'cresco-lincoln': {
     to: '',
     subject: 'Facility Maintenance Technician - Alexander Karshis',
     body: 'Howdy,\n\nI came across the Facility Maintenance Technician position at Cresco Labs in Lincoln and wanted to reach out. I have 2 years as the primary Revit documentation lead at DxU Architects, with hands-on experience in construction documentation and building systems, plus a background in fabrication and 3D printing.\n\nI\'m very interested in the cannabis industry and would welcome a conversation about how my skills could support your facilities team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
@@ -4203,22 +3816,12 @@ const EMAIL_DRAFTS = {
     subject: 'Senior Art Director - Alexander Karshis',
     body: 'Howdy,\n\nI saw the Senior Art Director position at Curaleaf and wanted to introduce myself. I have 2 years as the primary Revit documentation lead at DxU Architects plus dual master\'s degrees in Architecture and Industrial Design. My design consultancy (Karshis Designs) gives me hands-on experience leading creative direction across branding, spatial design, and visual storytelling.\n\nI\'m passionate about the cannabis industry and would love to discuss how my design background could elevate Curaleaf\'s creative output.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
-  'lggroup': {
-    to: '',
-    subject: 'Assistant Project Manager - Alexander Karshis',
-    body: 'Howdy,\n\nI came across the Assistant Project Manager opening at LG GROUP and wanted to reach out. I have 2 years as the primary Revit documentation lead at DxU Architects, managing commercial TI and mixed-use projects from documentation through construction administration.\n\nI\'d love to learn more about the role and discuss how my project coordination and BIM documentation experience could be an asset to your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-  'mahogany': {
+    'mahogany': {
     to: '',
     subject: 'Residential Project Manager - Alexander Karshis',
     body: 'Howdy,\n\nI saw the Residential Project Manager position at Mahogany Builders and wanted to introduce myself. I have 2 years as the primary Revit documentation lead at DxU Architects, coordinating commercial TI and mixed-use projects through all phases of design and construction.\n\nI\'d welcome the opportunity to discuss how my architectural and project management background could contribute to your residential projects.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
-  'frost-cnc': {
-    to: '',
-    subject: 'CNC Router Operator - Alexander Karshis',
-    body: 'Howdy,\n\nI came across the CNC Router Operator position at Frost and wanted to reach out. I have a background in 3D printing and fabrication from my Industrial Design master\'s program, plus 2 years at DxU Architects as the primary Revit documentation lead where I developed strong spatial and technical skills.\n\nI\'d love to learn more about the role and how my design and fabrication experience could be a fit.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-  farrassoc: {
+    farrassoc: {
     subject: 'Architectural Designer Application - Alexander Karshis',
     body: 'Howdy,\n\nI came across the Architectural Designer opening at Farr Associates on the AIA Chicago job board and wanted to throw my hat in the ring - your focus on decarbonization and high-performance buildings genuinely excites me.\n\nI bring 2 years at DxU Architects, where I served as the primary Revit documentation lead across commercial tenant improvement and mixed-use projects. I managed drawing sets, coordinated with consultants, and learned firsthand how to keep large documentation packages moving efficiently. Revit, SketchUp, and Adobe Creative Suite are daily tools for me, and I am comfortable working from early concept through construction administration.\n\nI would love to contribute to a firm that takes sustainability seriously and does meaningful work in Chicago.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
@@ -4284,12 +3887,7 @@ karshisdesigns.webflow.io`
     subject: 'Residential Architect - Alexander Karshis',
     body: 'Howdy,\n\nI came across the Residential Architect posting on AIA Chicago and wanted to reach out. I have a Master of Architecture and 2 years as the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects - plus I run my own design consultancy, Karshis Designs, here in Chicago.\n\nI appreciate your work on the North Shore and would love to bring my all-phases design experience to your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
-  'fhpaschen-apm': {
-    to: '',
-    subject: 'Assistant Project Manager - Alexander Karshis',
-    body: 'Howdy,\n\nI came across the Assistant Project Manager opening at F.H. Paschen and wanted to reach out. I have a Master of Architecture and 2 years as the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects in Chicago - where I coordinated with GCs, subcontractors, and consultants through construction administration.\n\nI have a strong interest in transitioning my design background into construction project management and believe my hands-on documentation and field coordination experience would be a real asset to your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-      'rivetna': `Howdy,
+        'rivetna': `Howdy,
 
 I came across Rivetna Architects' Project Architect+ posting on AIA Chicago and wanted to reach out. I have spent the last 2 years as the primary Revit documentation lead at DxU Architects, working on commercial tenant improvement and mixed-use projects in Chicago. Rivetna's commitment to design rooted in place, people, and purpose - and your MBE/DBE certification and AIA 2030 work - really resonates with me.
 
@@ -4322,12 +3920,7 @@ Chicago, IL
 karshisdesigns.webflow.io`
     },
 
-      'bowa-group-construction-pm': {
-        to: '',
-        subject: 'Application - Construction Project Manager',
-        body: 'Howdy,\n\nI am writing to express my interest in the Construction Project Manager position at The Bowa Group. With my Master of Architecture and 2 years as the primary Revit documentation lead at DxU Architects - where I managed commercial tenant improvement and mixed-use projects - I bring a strong blend of design expertise and construction coordination experience.\n\nI am particularly drawn to Bowa\'s focus on high-rise and ground-up construction in Chicago, and I believe my architectural background gives me a unique advantage in understanding design intent while managing construction execution.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-      },
-      'ameriscan-designs-arch-drafter': {
+            'ameriscan-designs-arch-drafter': {
         to: '',
         subject: 'Application - Architectural Drafter/Engineer',
         body: 'Howdy,\n\nI am reaching out regarding the Architectural Drafter/Engineer position at Ameriscan Designs. With my Master of Architecture, Master of Industrial Design, and 2 years as the primary Revit documentation lead at DxU Architects, I have strong experience creating detailed construction documents and working with fabrication teams.\n\nMy industrial design background gives me a deep understanding of materials, manufacturing processes, and shop drawing conventions - skills directly applicable to your millwork and custom fabrication work.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
@@ -4337,12 +3930,7 @@ karshisdesigns.webflow.io`
         subject: 'Application - Project Manager, Corporate Interiors',
         body: 'Howdy,\n\nI am writing to express my interest in the Project Manager - Corporate Interiors opportunity. With my Master of Architecture and 2 years as the primary Revit documentation lead at DxU Architects, I have hands-on experience managing commercial tenant improvement projects from schematic design through construction administration.\n\nI thrive in fast-paced environments where design quality and project delivery need to align, and I would welcome the chance to bring that energy to your client\'s team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
       },
-      'lakeshore-mgmt-construction-pm': {
-        to: '',
-        subject: 'Application - Construction Project Manager',
-        body: 'Howdy,\n\nI am interested in the Construction Project Manager role at Lakeshore Management. With my Master of Architecture and 2 years as the primary Revit documentation lead at DxU Architects - managing commercial TI and mixed-use projects - I bring a unique combination of design understanding and project coordination skills.\n\nI am based in Chicago and familiar with the North Shore area, making Skokie a convenient commute.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-      },
-    
+          
     'corston-fab': {
       subject: 'Lead Builder / Construction Manager - Corston Architectural Detail',
       body: "Howdy,\n\nI came across the Lead Builder / Construction Manager position at Corston Architectural Detail on Indeed and wanted to reach out. Your focus on trade show and showroom builds really caught my eye - I have a strong background in design-build work with hands-on fabrication experience.\n\nI spent 2 years at DxU Architects as the primary Revit documentation lead on commercial tenant improvement and mixed-use projects, and I also run my own design consultancy where I take projects from concept through fabrication, including 3D printing and CNC work. The combination of managing builds and bringing a design sensibility to the process is exactly what I love doing.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
@@ -4374,22 +3962,7 @@ Alexander Karshis
 Chicago, IL
 karshisdesigns.webflow.io`
     },
-    'dannys-construction-pm': {
-      subject: 'Construction Project Manager - Alexander Karshis',
-      body: `Howdy,
-
-I saw the Construction Project Manager posting and wanted to reach out. I am an architectural designer looking to bring my documentation and coordination skills to the GC side of the industry.
-
-I have spent the last 2 years as the primary Revit documentation lead at DxU Architects, managing full CD sets for commercial TI and mixed-use projects. I coordinated with consultants, contractors, and clients through every phase from SD to CA - giving me a thorough understanding of what it takes to deliver a project on time and on budget.
-
-My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.
-
-Have a great day,
-Alexander Karshis
-Chicago, IL
-karshisdesigns.webflow.io`
-    },
-  
+      
       'jones-cleary-apm': {
         subject: 'Assistant Project Manager - Jones & Cleary Roofing',
         body: `Howdy,
@@ -4408,15 +3981,7 @@ Chicago, IL
 karshisdesigns.webflow.io`
       },
     
-    'northwestern-med-pm': {
-      subject: 'Project Manager Position - Alexander Karshis',
-      body: 'Howdy,\n\nI am writing to express my interest in the Project Manager position at Northwestern Medicine. With 2 years of experience as the primary Revit documentation lead at DxU Architects, where I managed commercial TI and mixed-use projects from documentation through construction administration, I have developed strong project coordination and stakeholder management skills that translate well to healthcare facility project management.\n\nMy architecture background gives me a unique ability to bridge the gap between design intent and construction execution - I can read and interpret construction documents, coordinate with contractors and consultants, and ensure projects stay on schedule and within budget.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-    },
-    'flowhire-construction-pm': {
-      subject: 'Construction Project Manager Position - Alexander Karshis',
-      body: 'Howdy,\n\nI am reaching out regarding the Construction Project Manager opportunity listed through Flowhire. With 2 years as the primary Revit documentation lead at DxU Architects, I have hands-on experience coordinating commercial tenant improvement and mixed-use construction projects from design through completion. I am skilled in Revit, BIM 360, Bluebeam, and AutoCAD, and I bring a detail-oriented approach to project delivery.\n\nI am eager to transition my architecture and project coordination experience into a dedicated construction PM role where I can leverage my technical knowledge of building systems and construction documentation.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-    },
-  
+          
       'fullcircle-designer': {
         to: 'dan@fullcirclearchitects.com',
         subject: 'Architectural Designer Position - Alexander Karshis',
@@ -4526,11 +4091,7 @@ karshisdesigns.webflow.io`
       subject: 'Construction Project Manager - Evergreen Real Estate Group',
       body: "Howdy,\n\nI am writing to express my interest in the Construction Project Manager position at Evergreen Real Estate Group. With 2 years as the primary Revit documentation lead at DxU Architects, where I managed commercial TI and mixed-use projects from schematic design through construction administration, I have developed a strong foundation in project coordination, documentation, and stakeholder communication that translates directly to construction project management.\n\nMy architecture background gives me a unique advantage in understanding design intent, reading construction documents, and bridging the gap between design teams and field operations. I am excited about Evergreen's focus on affordable housing and community-centered development in Chicago.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
     },
-    'bushman-construction-pm': {
-      subject: 'Construction Management Project Manager - Bushman Construction Management',
-      body: "Howdy,\n\nI am reaching out regarding the Construction Management Project Manager role at Bushman Construction Management. I bring 2 years of experience as the primary Revit documentation lead at DxU Architects, where I coordinated commercial tenant improvement and mixed-use projects through all phases of design and construction administration. My hands-on experience with BIM coordination, consultant management, and construction documentation has prepared me well for a construction PM role.\n\nI hold a Master of Architecture and a Master of Industrial Design, and I am passionate about delivering projects on time and on budget while maintaining design quality.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
-    },
-      'spaantech-proj-arch': {
+          'spaantech-proj-arch': {
     to: '',
     subject: 'Project Architect - Alexander Karshis',
     body: 'Howdy,\n\nI came across the Project Architect opening at SPAAN Tech and wanted to reach out. For the past 2 years I have been the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects, and I run my own design consultancy (Karshis Designs) here in Chicago.\n\nI would love to learn more about the role and share how my CD depth, Revit leadership, and design-build instincts could be a fit for your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
@@ -4550,12 +4111,7 @@ karshisdesigns.webflow.io`
     subject: 'Associate, Capital Projects - Alexander Karshis',
     body: 'Howdy,\n\nI came across the Associate, Capital Projects role at Brookfield Properties and wanted to reach out. For the past 2 years I have been the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects - owning CD sets, contractor coordination, and project-level decision making through permitting and CA.\n\nBrookfield\'s portfolio scale is exactly the kind of environment where I want to apply that experience on the owner side. I would love to connect about the role.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
   },
-  'williamsarch-interiordesigner': {
-    to: '',
-    subject: 'Interior Designer - Alexander Karshis',
-    body: 'Howdy,\n\nI came across the Interior Designer opening at Williams Architects and wanted to reach out. For the past 2 years I have been the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects, and I hold dual master\'s degrees in Architecture and Industrial Design from the University of Houston. I run my own design consultancy (Karshis Designs) here in Chicago.\n\nI would love to learn more about the Itasca studio and how my background could support your interiors work.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
-  },
-  'johnburns-apm': {
+    'johnburns-apm': {
     to: '',
     subject: 'Assistant Project Manager - Alexander Karshis',
     body: "Howdy,\n\nI came across the Assistant Project Manager opening at John Burns Construction on LinkedIn and wanted to reach out. John Burns' 100+ year track record in Chicago infrastructure and commercial work and its repeat Chicago Tribune Top Workplace recognition both caught my attention.\n\nI am currently an architectural designer at DxU Architects in Chicago, where for the past 2 years I have been the primary Revit documentation lead on commercial TI and mixed-use projects. Day-to-day I drive the drawing sets, manage consultant coordination, track RFIs and submittals, and keep our project schedules moving - the same rhythm an APM would own on the GC side. I hold a Master of Architecture and Master of Industrial Design from the University of Houston and run my own design consultancy, Karshis Designs, on the side.\n\nI would love to talk about how my documentation, coordination, and fabrication background could support your PM team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
@@ -4565,12 +4121,7 @@ karshisdesigns.webflow.io`
     subject: 'Chicago Location - Residential Architect Application - Alexander Karshis',
     body: "Howdy dSPACE Studio team,\n\nI am writing to apply for the Residential Architect 1-4 yrs position. Your Lincoln Ave studio is less than a mile from where I live in Lakeview, and your contemporary residential work - especially the biophilic integration - is exactly the kind of design thinking I want to be part of.\n\nI have 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects, and I also run a design consultancy, Karshis Designs. Revit, AutoCAD, SketchUp, and the Adobe suite are daily tools. My background bridges architecture and industrial design (dual Master's from University of Houston), which gives me an unusually deep comfort with detailing and material selection.\n\nI have attached my resume, cover letter, and a tailored work-sample PDF under 15MB.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
   },
-  'globetrotters-pm-arch': {
-    to: 'nick.santana@gec-group.com',
-    subject: 'Project Manager - Architect role - Reconnecting from 2024 - Alexander Karshis',
-    body: "Howdy Nick,\n\nReaching back out about the Project Manager - Architect posting I saw on Indeed. You may remember our conversations in May and June of 2024 when I was interviewing for the Project Architect role - the timing did not line up then, but I have been tracking Globetrotters since and the new PM-Architect scope sounds like a stronger fit for where I am now.\n\nOver the past 2 years at DxU Architects I have been the primary Revit documentation lead on commercial TI and mixed-use projects, running coordination with consultants and supervising junior staff. I also continue to run my design consultancy, Karshis Designs, which keeps me sharp on client-facing project management.\n\nHappy to come to the Wacker office whenever works for Ajay's calendar. Resume attached.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
-  },
-  'john-keno-constr-pm': {
+    'john-keno-constr-pm': {
     to: 'careers@johnkenocompany.com',
     subject: 'Construction Project Manager Application - Alexander Karshis',
     body: "Howdy John Keno team,\n\nI am writing to apply for the Construction Project Manager role. I have 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects, where I routinely work shoulder-to-shoulder with GCs on constructibility, RFIs, and submittals. Pivoting fully to the GC side is exactly the direction I have been pushing for.\n\nI also run my own consultancy, Karshis Designs, which keeps me fluent in budget and schedule management end-to-end. My Revit, Bluebeam, AutoCAD, and BIM 360 proficiency should translate directly to your PM stack.\n\nResume attached and ready to meet whenever is convenient.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
@@ -6182,15 +5733,55 @@ function renderPipeline() {
       if (ci === 0) { labelX = n.x - 22; labelAnchor = 'end'; }
       else { labelX = n.x + nodeW + 22; labelAnchor = 'start'; }
 
-      var labelY = n.cy - 18;
-      svg += drawTextWithBackdrop(labelX, labelY, labelAnchor, n.label, 22, 700, '#1A1A1A', delay + 0.55, 16, 8);
-      var numY = n.cy + 60;
-      svg += '<text class="sk-num" style="animation-delay:' + (delay + 0.65) + 's;paint-order:stroke;stroke:rgba(255,248,240,0.9);stroke-width:5px;" x="' + labelX + '" y="' + numY + '" text-anchor="' + labelAnchor + '" font-size="108" font-weight="900" fill="#1A1A1A" data-target="' + n.value + '">' + n.value + '</text>';
+      var labelY = n.cy - 14;
+      svg += drawTextWithBackdrop(labelX, labelY, labelAnchor, n.label, 18, 700, '#1A1A1A', delay + 0.55, 14, 7);
+      var numY = n.cy + 44;
+      svg += '<text class="sk-num" style="animation-delay:' + (delay + 0.65) + 's;paint-order:stroke;stroke:rgba(255,248,240,0.9);stroke-width:5px;" x="' + labelX + '" y="' + numY + '" text-anchor="' + labelAnchor + '" font-size="80" font-weight="900" fill="#1A1A1A" data-target="' + n.value + '">' + n.value + '</text>';
     });
   });
 
   svg += '</svg>';
   document.getElementById('pipelineSankey').innerHTML = svg;
+
+    // Stash bucket data + outcomes so click popups can find them
+  window.__skBuckets = {
+    interview: outcomeBuckets.interviewing,
+    awaiting:  outcomeBuckets.awaiting,
+    rejected:  outcomeBuckets.rejected,
+    bounced:   outcomeBuckets.bounced,
+    offer:     outcomeBuckets.offer,
+    upcoming:  interviewSub.upcoming,
+    awaitDecide: interviewSub['awaiting-decision'],
+    nextRound: interviewSub.next
+  };
+  window.__skBucketColors = palette;
+  window.__skBucketTitles = {
+    interview: 'Interviewing',
+    awaiting:  'Awaiting Reply',
+    rejected:  'Rejected',
+    bounced:   'Bounced',
+    offer:     'Offer',
+    upcoming:  'Upcoming',
+    awaitDecide: 'Awaiting Decision',
+    nextRound: 'Next Round'
+  };
+  // Attach click handlers — find each clickable node by index
+  var canvas = document.getElementById('pipelineSankey');
+  if (canvas) {
+    var rects = canvas.querySelectorAll('rect.sk-node');
+    var bucketIds = ['interview','awaiting','rejected','bounced','offer','upcoming','awaitDecide','nextRound'];
+    rects.forEach(function(rect) {
+      var titleEl = rect.querySelector('title');
+      if (!titleEl) return;
+      var label = titleEl.textContent.split(':')[0];
+      var key = null;
+      var labelMap = {'INTERVIEWING':'interview','AWAITING REPLY':'awaiting','REJECTED':'rejected','BOUNCED':'bounced','OFFER':'offer','UPCOMING':'upcoming','AWAITING DECISION':'awaitDecide','NEXT ROUND':'nextRound'};
+      key = labelMap[label] || null;
+      if (!key) return;
+      rect.setAttribute('data-bucket', key);
+      rect.addEventListener('click', function() { openSkModal(key); });
+    });
+  }
 
   setTimeout(function() {
     var nums = document.querySelectorAll('#pipelineSankey .sk-num');
@@ -6213,6 +5804,68 @@ function renderPipeline() {
     requestAnimationFrame(step);
   }, 700);
 }
+
+
+// ───────────────────────────────────────────────────────────
+// CHART NODE CLICK POPUP
+// ───────────────────────────────────────────────────────────
+function openSkModal(key) {
+  var jobs = (window.__skBuckets && window.__skBuckets[key]) || [];
+  var color = (window.__skBucketColors && window.__skBucketColors[key]) || '#1A1A1A';
+  var title = (window.__skBucketTitles && window.__skBucketTitles[key]) || 'Bucket';
+  var modal = document.getElementById('skModal');
+  var box = modal && modal.querySelector('.sk-modal-box');
+  var eyebrow = document.getElementById('skModalEyebrow');
+  var titleEl = document.getElementById('skModalTitle');
+  var listEl = document.getElementById('skModalList');
+  if (!modal || !listEl) return;
+  if (eyebrow) eyebrow.textContent = title.toUpperCase();
+  if (titleEl) titleEl.textContent = jobs.length + ' ' + title;
+  if (box) box.style.borderColor = color;
+  function escapeHtml(s) { return (s||'').replace(/[&<>]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
+  function dateInString(s) { var m = (s||'').match(/(\d{4}[-/]\d{1,2}[-/]\d{1,2})/); return m ? m[1].replace(/\//g,'-').slice(0,10) : null; }
+  function whenLabel(j) {
+    var d = dateInString(j.gmailStatus) || dateInString(j.gmailDate);
+    if (!d) return j.gmailDate || '';
+    var today = new Date(); today.setHours(0,0,0,0);
+    var dt = new Date(d + 'T00:00:00');
+    var days = Math.round((dt - today) / 86400000);
+    if (days === 0) return 'TODAY';
+    if (days === 1) return 'TOMORROW';
+    if (days === -1) return 'YESTERDAY';
+    if (days > 0 && days <= 14) return 'IN ' + days + ' DAYS';
+    if (days < 0 && days >= -30) return Math.abs(days) + ' DAYS AGO';
+    return d;
+  }
+  if (!jobs.length) {
+    listEl.innerHTML = '<div class="sk-modal-empty">No companies in this bucket yet.</div>';
+  } else {
+    listEl.innerHTML = jobs.map(function(j) {
+      var status = j.gmailStatus ? escapeHtml(j.gmailStatus) : '';
+      var when = whenLabel(j);
+      return '<div class="sk-modal-item" style="--bucket-color:' + color + ';">' +
+             '<div class="sk-modal-item-main">' +
+             '<div class="sk-modal-item-co">' + escapeHtml(j.company) + '</div>' +
+             '<div class="sk-modal-item-role">' + escapeHtml(j.title) + '</div>' +
+             (status ? '<div class="sk-modal-item-status">' + status + '</div>' : '') +
+             '</div>' +
+             (when ? '<div class="sk-modal-item-date">' + escapeHtml(when) + '</div>' : '') +
+             '</div>';
+    }).join('');
+  }
+  modal.classList.add('sk-modal-open');
+}
+function closeSkModal(e) {
+  if (e && e.target && !e.target.classList.contains('sk-modal') && e.type !== undefined) {
+    // Only close on backdrop or X; the X has no event type? actually it does. Allow both.
+  }
+  var modal = document.getElementById('skModal');
+  if (modal) modal.classList.remove('sk-modal-open');
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeSkModal();
+});
+
 </script>
 </body>
 </html>
