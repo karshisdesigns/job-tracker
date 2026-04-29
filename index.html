@@ -5510,6 +5510,10 @@ function isApplied(j) {
 function renderPipeline() {
   var loader = document.getElementById('sankeyLoader');
   if (loader) {
+    loader.style.display = '';
+    loader.style.opacity = '';
+    loader.style.visibility = '';
+    loader.style.pointerEvents = '';
     loader.classList.add('sk-loader-replay');
     void loader.offsetWidth;
     loader.classList.remove('sk-loader-replay');
