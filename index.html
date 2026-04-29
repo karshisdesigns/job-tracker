@@ -1152,8 +1152,11 @@ body::before {
   border: 0;
   box-shadow: none;
   padding: 0;
-  margin: 0;
-  min-height: 90vh;
+  /* Break out of .main's 900px max-width so the chart spans the full viewport */
+  margin-left: calc(50% - 50vw + 12px);
+  margin-right: calc(50% - 50vw + 12px);
+  width: calc(100vw - 24px);
+  min-height: 92vh;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -1171,7 +1174,6 @@ body::before {
 .sankey-canvas svg {
   width: 100%;
   height: auto;
-  max-height: 92vh;
   display: block;
   overflow: visible;
 }
@@ -6024,10 +6026,10 @@ function renderPipeline() {
   var nNextRound = interviewSub.next.length;
 
   // GEOMETRY
-  var W = 2400, H = 1000;
-  var marginTop = 70, marginBottom = 70, marginLeft = 200, marginRight = 200;
-  var nodeW = 72;
-  var nodeGap = 32;
+  var W = 2600, H = 1100;
+  var marginTop = 50, marginBottom = 50, marginLeft = 160, marginRight = 160;
+  var nodeW = 100;
+  var nodeGap = 36;
   var availH = H - marginTop - marginBottom;
 
   var palette = {
@@ -6180,10 +6182,10 @@ function renderPipeline() {
       if (ci === 0) { labelX = n.x - 22; labelAnchor = 'end'; }
       else { labelX = n.x + nodeW + 22; labelAnchor = 'start'; }
 
-      var labelY = n.cy - 8;
-      svg += drawTextWithBackdrop(labelX, labelY, labelAnchor, n.label, 16, 700, '#1A1A1A', delay + 0.55, 12, 6);
-      var numY = n.cy + 42;
-      svg += '<text class="sk-num" style="animation-delay:' + (delay + 0.65) + 's;paint-order:stroke;stroke:rgba(255,248,240,0.9);stroke-width:5px;" x="' + labelX + '" y="' + numY + '" text-anchor="' + labelAnchor + '" font-size="76" font-weight="900" fill="#1A1A1A" data-target="' + n.value + '">' + n.value + '</text>';
+      var labelY = n.cy - 18;
+      svg += drawTextWithBackdrop(labelX, labelY, labelAnchor, n.label, 22, 700, '#1A1A1A', delay + 0.55, 16, 8);
+      var numY = n.cy + 60;
+      svg += '<text class="sk-num" style="animation-delay:' + (delay + 0.65) + 's;paint-order:stroke;stroke:rgba(255,248,240,0.9);stroke-width:5px;" x="' + labelX + '" y="' + numY + '" text-anchor="' + labelAnchor + '" font-size="108" font-weight="900" fill="#1A1A1A" data-target="' + n.value + '">' + n.value + '</text>';
     });
   });
 
