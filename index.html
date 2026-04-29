@@ -1145,92 +1145,68 @@ body::before {
   font-family: monospace;
 }
 
-/* ===== CHART TAB (minimal, numbers-only, animated) ===== */
-.chart-only {
+/* ===== CHART TAB (Sankey, dark + neon) ===== */
+.sankey-stage {
   position: relative;
-  background: var(--eames-cream);
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(228,49,43,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,208,0,0.16) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 90%, rgba(0,166,81,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 15% 85%, rgba(0,114,206,0.20) 0%, transparent 55%),
+    linear-gradient(135deg, #0E0F12 0%, #1A1B22 50%, #0B0C10 100%);
   border: var(--border-thick);
   box-shadow: var(--shadow-brutal);
-  padding: 28px;
+  padding: 32px;
   overflow: hidden;
-  min-height: 560px;
+  min-height: 600px;
 }
-.chart-only::before {
+.sankey-stage::before {
   content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 14% 18%, rgba(228,49,43,0.10) 0 22px, transparent 23px),
-    radial-gradient(circle at 88% 24%, rgba(255,208,0,0.12) 0 18px, transparent 19px),
-    radial-gradient(circle at 22% 78%, rgba(0,114,206,0.10) 0 28px, transparent 29px),
-    radial-gradient(circle at 78% 82%, rgba(0,166,81,0.10) 0 24px, transparent 25px),
-    radial-gradient(circle at 50% 50%, rgba(255,107,43,0.06) 0 60px, transparent 61px);
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 1.5px);
+  background-size: 24px 24px;
   pointer-events: none;
   z-index: 0;
 }
-.chart-canvas-only { position: relative; z-index: 1; }
-.chart-canvas-only svg { width: 100%; height: auto; display: block; }
+.sankey-canvas { position: relative; z-index: 2; }
+.sankey-canvas svg { width: 100%; height: auto; display: block; overflow: visible; }
 
-/* Floating ambient dots */
-.chart-orb {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.6;
-  filter: blur(0.5px);
-  animation: chartOrbFloat 12s ease-in-out infinite;
+/* Floating colored orbs (subtle motion behind chart) */
+.sk-orb {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  z-index: 1; opacity: 0.55; filter: blur(40px);
+  animation: skOrbFloat 14s ease-in-out infinite;
 }
-@keyframes chartOrbFloat {
-  0%   { transform: translate(0, 0) scale(1); }
-  25%  { transform: translate(18px, -12px) scale(1.08); }
-  50%  { transform: translate(-10px, 14px) scale(0.95); }
-  75%  { transform: translate(12px, 8px) scale(1.05); }
-  100% { transform: translate(0, 0) scale(1); }
+@keyframes skOrbFloat {
+  0%   { transform: translate(0,0) scale(1); }
+  33%  { transform: translate(30px,-20px) scale(1.18); }
+  66%  { transform: translate(-22px,28px) scale(0.9); }
+  100% { transform: translate(0,0) scale(1); }
 }
 
-/* Bar grow */
-@keyframes chartBarGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-.chart-bar { transform-origin: bottom center; animation: chartBarGrow 0.85s cubic-bezier(.22,1,.36,1) both; }
+/* Node bar grow */
+@keyframes skNodeGrow { from { transform: scaleY(0); opacity: 0; } to { transform: scaleY(1); opacity: 1; } }
+.sk-node { transform-origin: center center; animation: skNodeGrow 0.85s cubic-bezier(.22,1,.36,1) both; }
 
-/* Flow line draw using stroke-dashoffset */
-@keyframes chartFlowDraw {
-  from { stroke-dashoffset: var(--flow-len, 800); opacity: 0; }
-  20%  { opacity: var(--flow-opacity, 0.55); }
-  to   { stroke-dashoffset: 0; opacity: var(--flow-opacity, 0.55); }
-}
-.chart-flow {
-  stroke-dasharray: var(--flow-len, 800);
-  stroke-dashoffset: var(--flow-len, 800);
-  animation: chartFlowDraw 1.4s cubic-bezier(.22,1,.36,1) both;
-}
+/* Ribbon draw using stroke-dashoffset (tracing the centerline so the FILL appears) */
+@keyframes skRibbonFade { from { opacity: 0; } to { opacity: var(--ribbon-op, 0.55); } }
+.sk-ribbon { animation: skRibbonFade 1.4s ease-out both; }
 
-/* Number count-in */
-@keyframes chartNumIn {
-  from { opacity: 0; transform: scale(0.6); }
-  60%  { opacity: 1; transform: scale(1.15); }
-  to   { opacity: 1; transform: scale(1); }
-}
-.chart-num {
-  transform-origin: center center;
-  transform-box: fill-box;
-  animation: chartNumIn 0.8s cubic-bezier(.22,1,.36,1) both;
-}
+/* Number count animation */
+@keyframes skNumIn { from { opacity: 0; transform: translateY(8px) scale(0.85); } to { opacity: 1; transform: none; } }
+.sk-num   { transform-origin: center center; transform-box: fill-box; animation: skNumIn 0.7s cubic-bezier(.22,1,.36,1) both; }
+.sk-label { animation: skNumIn 0.7s cubic-bezier(.22,1,.36,1) both; }
 
-/* Pulse on the highlight (interviewing) bar */
-@keyframes chartPulse {
-  0%, 100% { filter: drop-shadow(4px 4px 0 #1A1A1A) drop-shadow(0 0 0 rgba(0,166,81,0)); }
-  50%      { filter: drop-shadow(4px 4px 0 #1A1A1A) drop-shadow(0 0 18px rgba(0,166,81,0.85)); }
+/* Pulse on the highlight node */
+@keyframes skPulseGlow {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(0,166,81,0)); }
+  50%      { filter: drop-shadow(0 0 22px rgba(0,166,81,0.95)); }
 }
-.chart-pulse { animation: chartBarGrow 0.85s cubic-bezier(.22,1,.36,1) both, chartPulse 2.4s ease-in-out 1.4s infinite; }
+.sk-pulse { animation: skNodeGrow 0.85s cubic-bezier(.22,1,.36,1) both, skPulseGlow 2.6s ease-in-out 1.4s infinite; }
 
-/* Connector dot animation (traveling along path) */
-@keyframes chartDotTravel {
-  0%   { offset-distance: 0%; opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { offset-distance: 100%; opacity: 0; }
-}
+/* Hover highlight on ribbons */
+.sk-ribbon { transition: opacity 0.2s ease; }
+.sk-ribbon:hover { opacity: 0.95 !important; }
 
 </style>
 </head>
@@ -1400,8 +1376,8 @@ body::before {
     </div>
     <!-- Chart Tab -->
     <div id="tab-pipeline" style="display:none;">
-        <div class="chart-only" id="chartOnly">
-            <div id="pipelineSankey" class="chart-canvas-only"></div>
+        <div class="sankey-stage" id="sankeyStage">
+            <div id="pipelineSankey" class="sankey-canvas"></div>
         </div>
     </div>
 <div class="chart-grid">
@@ -6214,156 +6190,321 @@ function isApplied(j) {
 function renderPipeline() {
   var jobs = (typeof JOBS !== 'undefined') ? JOBS : [];
 
-  // Use Active Postings 'Application Pipeline' semantics so numbers match what Alex sees elsewhere
-  var total = 0, applied = 0, interviewing = 0, offers = 0, rejected = 0;
+  // ── Counts via getJobState (matches Active Postings KPIs)
+  var total = 0, applied = 0, interviewingState = 0, offers = 0, rejected = 0;
   jobs.forEach(function(job) {
     var s = (typeof getJobState === 'function') ? (getJobState(job.id).status || 'not-started') : (job.defaultStatus || 'not-started');
     if (s === 'not-interested') return;
     total++;
     if (s === 'applied' || s === 'in-progress') applied++;
-    if (s === 'interviewing') interviewing++;
+    if (s === 'interviewing') interviewingState++;
     if (s === 'offer') offers++;
     if (s === 'rejected') rejected++;
   });
-  var awaiting = Math.max(0, applied - interviewing - offers - rejected);
 
-  // Clear ambient orbs and re-spawn (so the animation restarts on each tab open)
-  var stage = document.getElementById('chartOnly');
+  // ── Broader interview / outcome detection from gmailStatus + gmailBadge so the
+  //    Sankey shows the real downstream story even where status hasn't been set.
+  function isAppliedJob(j) {
+    var s = (typeof getJobState === 'function') ? (getJobState(j.id).status || 'not-started') : (j.defaultStatus || 'not-started');
+    if (s === 'not-interested' || s === 'not-started') return false;
+    return true;
+  }
+  function classifyOutcome(j) {
+    var gs = (j.gmailStatus || '').toLowerCase();
+    var gb = (j.gmailBadge || '').toLowerCase();
+    var st = (typeof getJobState === 'function') ? (getJobState(j.id).status || 'not-started') : (j.defaultStatus || 'not-started');
+    if (st === 'rejected' || gs.indexOf('reject') !== -1 || gs.indexOf('declined') !== -1 || gs.indexOf('passed') !== -1 || gs.indexOf('not selected') !== -1) return 'rejected';
+    if (st === 'offer' || gs.indexOf('offer') !== -1 || gb.indexOf('offer') !== -1) return 'offer';
+    if (gs.indexOf('bounce') !== -1 || gs.indexOf('bad email') !== -1) return 'bounced';
+    if (st === 'interviewing' || gs.indexOf('interview') !== -1 || gs.indexOf('shortlist') !== -1 || gs.indexOf('homework') !== -1 || gs.indexOf('reference') !== -1 || gs.indexOf('next-round') !== -1 || gs.indexOf('next round') !== -1 || gb.indexOf('interview') !== -1) return 'interviewing';
+    return 'awaiting';
+  }
+  var appliedJobs = jobs.filter(isAppliedJob);
+  var outcomeBuckets = { interviewing: [], rejected: [], bounced: [], awaiting: [], offer: [] };
+  appliedJobs.forEach(function(j) {
+    var k = classifyOutcome(j);
+    if (!outcomeBuckets[k]) outcomeBuckets[k] = [];
+    outcomeBuckets[k].push(j);
+  });
+  // Recount with consistent semantics so flows balance
+  var nApplied   = appliedJobs.length;
+  var nNotApplied = total - nApplied;
+  var nInterview = outcomeBuckets.interviewing.length;
+  var nRejected  = outcomeBuckets.rejected.length;
+  var nBounced   = outcomeBuckets.bounced.length;
+  var nAwaiting  = outcomeBuckets.awaiting.length;
+  var nOffer     = outcomeBuckets.offer.length;
+
+  // From Interviewing → sub-stages
+  function dateInString(s) {
+    var m = (s || '').match(/(\d{4}[-/]\d{1,2}[-/]\d{1,2})/);
+    if (!m) return null;
+    return m[1].replace(/\//g, '-').slice(0, 10);
+  }
+  var todayISO = new Date().toISOString().slice(0, 10);
+  function classifyInterview(j) {
+    var s = (j.gmailStatus || '').toLowerCase();
+    if (s.indexOf('next-round') !== -1 || s.indexOf('next round') !== -1 || s.indexOf('final round') !== -1) return 'next';
+    var d = dateInString(j.gmailStatus);
+    if (s.indexOf('reschedul') !== -1 || s.indexOf('scheduled') !== -1 || s.indexOf('confirmed') !== -1 || s.indexOf('shortlist') !== -1) {
+      return (d && d >= todayISO) ? 'upcoming' : 'awaiting-decision';
+    }
+    return 'awaiting-decision';
+  }
+  var interviewSub = { upcoming: [], 'awaiting-decision': [], next: [] };
+  outcomeBuckets.interviewing.forEach(function(j) {
+    var k = classifyInterview(j);
+    if (!interviewSub[k]) interviewSub[k] = [];
+    interviewSub[k].push(j);
+  });
+  var nUpcoming = interviewSub.upcoming.length;
+  var nAwaitDecide = interviewSub['awaiting-decision'].length;
+  var nNextRound = interviewSub.next.length;
+
+  // ── Spawn ambient orbs
+  var stage = document.getElementById('sankeyStage');
   if (stage) {
-    stage.querySelectorAll('.chart-orb').forEach(function(o){ o.remove(); });
+    stage.querySelectorAll('.sk-orb').forEach(function(o){ o.remove(); });
     var orbColors = ['#E4312B','#FFD000','#00A651','#0072CE','#F472B6','#FF6B2B'];
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < 7; i++) {
       var o = document.createElement('div');
-      o.className = 'chart-orb';
-      var size = 24 + Math.random() * 60;
+      o.className = 'sk-orb';
+      var size = 80 + Math.random() * 180;
       o.style.width = size + 'px';
       o.style.height = size + 'px';
       o.style.background = orbColors[i % orbColors.length];
-      o.style.left = (5 + Math.random() * 88) + '%';
-      o.style.top = (5 + Math.random() * 85) + '%';
-      o.style.animationDelay = (-Math.random() * 12) + 's';
-      o.style.animationDuration = (10 + Math.random() * 8) + 's';
+      o.style.left = (Math.random() * 92) + '%';
+      o.style.top = (Math.random() * 80) + '%';
+      o.style.animationDelay = (-Math.random() * 14) + 's';
+      o.style.animationDuration = (12 + Math.random() * 10) + 's';
       stage.appendChild(o);
     }
   }
 
-  // ── SVG funnel (numbers only, no labels)
-  var W = 1080, H = 560, pad = 24;
-  var stageX = [pad + 4, 280, 540, 820];
-  var stageW = 200;
-  var fullH = 420;
-  var topPad = 70;
+  // ─────────────────────────────────────────────────────────────────
+  // SANKEY GEOMETRY
+  // ─────────────────────────────────────────────────────────────────
+  var W = 1200, H = 640;
+  var marginTop = 50, marginBottom = 50, marginLeft = 60, marginRight = 60;
+  var nodeW = 28;
+  var nodeGap = 14;
+  var availH = H - marginTop - marginBottom;
+
+  // Define columns and nodes
   var palette = {
-    found: '#0072CE', applied: '#FF6B2B', interviewing: '#00A651',
-    offer: '#FFD000', rejected: '#E4312B', awaiting: '#5C6B3C'
+    total:       '#0072CE',
+    applied:     '#FF6B2B',
+    notApplied:  '#777777',
+    interview:   '#00A651',
+    rejected:    '#E4312B',
+    bounced:     '#6B4226',
+    awaiting:    '#F472B6',
+    offer:       '#FFD000',
+    upcoming:    '#FF6B2B',
+    awaitDecide: '#0072CE',
+    nextRound:   '#00A651'
   };
-  function barH(c) { return total > 0 ? Math.max(8, fullH * (c / total)) : 8; }
-  function barTopY(c) { return topPad + (fullH - barH(c)); }
-  function barMidY(c) { return barTopY(c) + barH(c) / 2; }
 
-  var outcomes = [
-    { key: 'interviewing', count: interviewing, color: palette.interviewing },
-    { key: 'offer',        count: offers,       color: palette.offer },
-    { key: 'rejected',     count: rejected,     color: palette.rejected },
-    { key: 'awaiting',     count: awaiting,     color: palette.awaiting }
+  var columns = [
+    [
+      { id: 'total', label: 'TOTAL', value: total, color: palette.total }
+    ],
+    [
+      { id: 'applied',    label: 'APPLIED',     value: nApplied,    color: palette.applied },
+      { id: 'notApplied', label: 'NOT STARTED', value: nNotApplied, color: palette.notApplied }
+    ],
+    [
+      { id: 'interview', label: 'INTERVIEWING',   value: nInterview, color: palette.interview, pulse: true },
+      { id: 'awaiting',  label: 'AWAITING REPLY', value: nAwaiting,  color: palette.awaiting },
+      { id: 'rejected',  label: 'REJECTED',       value: nRejected,  color: palette.rejected },
+      { id: 'bounced',   label: 'BOUNCED',        value: nBounced,   color: palette.bounced },
+      { id: 'offer',     label: 'OFFER',          value: nOffer,     color: palette.offer }
+    ],
+    [
+      { id: 'upcoming',    label: 'UPCOMING',          value: nUpcoming,    color: palette.upcoming },
+      { id: 'awaitDecide', label: 'AWAITING DECISION', value: nAwaitDecide, color: palette.awaitDecide },
+      { id: 'nextRound',   label: 'NEXT ROUND',        value: nNextRound,   color: palette.nextRound }
+    ]
   ];
-  var slotPad = 8;
-  var raw = outcomes.map(function(o) {
-    var ratio = applied > 0 ? o.count / Math.max(applied, 1) : 0;
-    var h = o.count > 0 ? Math.max(40, ratio * (fullH - slotPad * (outcomes.length - 1))) : 30;
-    return Object.assign({}, o, { h: h });
-  });
-  var sumH = raw.reduce(function(s, o) { return s + o.h; }, 0);
-  var spaceForBars = fullH - slotPad * (outcomes.length - 1);
-  var scale = sumH > spaceForBars ? spaceForBars / sumH : 1;
-  var cy = topPad;
-  raw.forEach(function(o) { o.y = cy; o.h = o.h * scale; cy += o.h + slotPad; });
 
-  function pathLen(x1, y1, x2, y2) {
-    // Approx length of cubic — distance between endpoints * 1.2 for the curve
-    var dx = x2 - x1, dy = y2 - y1;
-    return Math.sqrt(dx * dx + dy * dy) * 1.2 + 60;
+  // Filter zero-value nodes from cols 2+ to keep the chart clean
+  columns[2] = columns[2].filter(function(n) { return n.value > 0; });
+  columns[3] = columns[3].filter(function(n) { return n.value > 0; });
+
+  // Compute scale: max column total height -> fits availH
+  var colTotals = columns.map(function(col) { return col.reduce(function(s,n){ return s + n.value; }, 0); });
+  var maxColTotal = Math.max.apply(null, colTotals);
+  // value -> pixel height
+  function vToPx(v) {
+    var totalGapPx = (Math.max(1, columns[0].length) - 1) * nodeGap; // not really used per-col, just ensure >0
+    return v * (availH - 60) / Math.max(maxColTotal, 1);
   }
 
+  // X positions (4 columns)
+  var nCols = columns.length;
+  var colXStep = (W - marginLeft - marginRight - nodeW) / (nCols - 1);
+  var colX = columns.map(function(_, i) { return marginLeft + i * colXStep; });
+
+  // Layout: stack nodes top-down, vertically centered
+  columns.forEach(function(col, ci) {
+    var colTotal = col.reduce(function(s,n){ return s + vToPx(n.value); }, 0);
+    var totalGap = (col.length - 1) * nodeGap;
+    var colHeight = colTotal + totalGap;
+    var y = marginTop + (availH - colHeight) / 2;
+    col.forEach(function(n) {
+      n.h = Math.max(8, vToPx(n.value));
+      n.x = colX[ci];
+      n.y = y;
+      n.cx = n.x + nodeW / 2;
+      n.cy = n.y + n.h / 2;
+      // For ribbon source/dest tracking, maintain a "consumed" pointer per node side
+      n.outConsumed = 0; // pixels consumed on right side
+      n.inConsumed = 0;  // pixels consumed on left side
+      y += n.h + nodeGap;
+    });
+  });
+
+  // Build flows (source col idx, source id, dest col idx, dest id, value)
+  var flows = [];
+
+  // Col 0 -> Col 1
+  flows.push({ s: ['total'],      t: 'applied',    v: nApplied,    color: palette.applied });
+  flows.push({ s: ['total'],      t: 'notApplied', v: nNotApplied, color: palette.notApplied });
+
+  // Col 1 -> Col 2 (only from APPLIED; NOT STARTED terminates)
+  ['interview', 'awaiting', 'rejected', 'bounced', 'offer'].forEach(function(tid) {
+    var node = columns[2].find(function(n) { return n.id === tid; });
+    if (node) flows.push({ s: ['applied'], t: tid, v: node.value, color: node.color });
+  });
+
+  // Col 2 -> Col 3 (only from INTERVIEWING)
+  ['upcoming', 'awaitDecide', 'nextRound'].forEach(function(tid) {
+    var node = columns[3].find(function(n) { return n.id === tid; });
+    if (node) flows.push({ s: ['interview'], t: tid, v: node.value, color: node.color });
+  });
+
+  // Helper: find node by id across all columns
+  function findNode(id) {
+    for (var ci = 0; ci < columns.length; ci++) {
+      var n = columns[ci].find(function(n) { return n.id === id; });
+      if (n) return { col: ci, node: n };
+    }
+    return null;
+  }
+
+  // Now compute ribbon paths. For each flow:
+  //   src: the rightmost col where s[0] lives (we use s[0])
+  //   dst: t
+  //   sy0..sy1: vertical extent on src right edge
+  //   dy0..dy1: vertical extent on dst left edge
+  function buildRibbonPath(src, srcY0, srcY1, dst, dstY0, dstY1) {
+    var x1 = src.x + nodeW;
+    var x2 = dst.x;
+    var midX = (x1 + x2) / 2;
+    var p = '';
+    p += 'M ' + x1 + ',' + srcY0;
+    p += ' C ' + midX + ',' + srcY0 + ' ' + midX + ',' + dstY0 + ' ' + x2 + ',' + dstY0;
+    p += ' L ' + x2 + ',' + dstY1;
+    p += ' C ' + midX + ',' + dstY1 + ' ' + midX + ',' + srcY1 + ' ' + x1 + ',' + srcY1;
+    p += ' Z';
+    return p;
+  }
+
+  // Render SVG
   var svg = '';
   svg += '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="font-family:\'DM Sans\',sans-serif;">';
-  svg += '<defs>';
-  svg += '<filter id="brutalShadow2" x="-10%" y="-10%" width="125%" height="125%">';
-  svg += '<feOffset in="SourceAlpha" dx="4" dy="4"/><feFlood flood-color="#1A1A1A"/><feComposite in2="SourceAlpha" operator="in"/>';
-  svg += '<feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>';
-  svg += '</filter>';
-  svg += '<pattern id="dots2" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#1A1A1A" opacity="0.16"/></pattern>';
-  svg += '</defs>';
-  svg += '<rect x="0" y="' + (topPad - 12) + '" width="' + W + '" height="' + (fullH + 24) + '" fill="url(#dots2)" opacity="0.55"/>';
 
-  // Flow lines
-  function drawFlow(x1, y1c, x2, y2c, color, opacity, thickness, delay) {
-    var x1r = x1 + stageW;
-    var x2l = x2;
-    var midX = (x1r + x2l) / 2;
-    var p = 'M ' + x1r + ',' + y1c + ' C ' + midX + ',' + y1c + ' ' + midX + ',' + y2c + ' ' + x2l + ',' + y2c;
-    var len = pathLen(x1r, y1c, x2l, y2c);
-    return '<path class="chart-flow" style="--flow-opacity:' + opacity + ';--flow-len:' + len + ';animation-delay:' + delay + 's;" d="' + p + '" stroke="' + color + '" stroke-width="' + thickness + '" fill="none" stroke-linecap="round"/>';
-  }
-  svg += drawFlow(stageX[0], barMidY(total), stageX[1], barMidY(applied), palette.applied, 0.55, Math.max(10, barH(applied) * 0.7), 0.35);
-  svg += drawFlow(stageX[1], barMidY(applied), stageX[2], barMidY(interviewing), palette.interviewing, 0.55, Math.max(10, barH(interviewing) * 0.85), 0.55);
-  raw.forEach(function(o, i) {
-    svg += drawFlow(stageX[2], barMidY(interviewing), stageX[3], o.y + o.h / 2, o.color, o.count > 0 ? 0.6 : 0.18, Math.max(6, o.h * 0.6), 0.75 + i * 0.07);
+  // Defs: gradients per ribbon (source -> dest color)
+  svg += '<defs>';
+  var gradId = 0;
+  var ribbonDefs = [];
+  flows.forEach(function(flow) {
+    var src = findNode(flow.s[0]).node;
+    var dst = findNode(flow.t).node;
+    var id = 'rgrad' + (gradId++);
+    flow.gradId = id;
+    ribbonDefs.push(
+      '<linearGradient id="' + id + '" x1="0" x2="1" y1="0" y2="0" gradientUnits="objectBoundingBox">' +
+      '<stop offset="0%" stop-color="' + src.color + '" stop-opacity="0.78"/>' +
+      '<stop offset="100%" stop-color="' + dst.color + '" stop-opacity="0.78"/>' +
+      '</linearGradient>'
+    );
+  });
+  svg += ribbonDefs.join('');
+  // Glow filter for nodes
+  svg += '<filter id="skGlow" x="-30%" y="-30%" width="160%" height="160%">' +
+         '<feGaussianBlur stdDeviation="3" result="b"/>' +
+         '<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>' +
+         '</filter>';
+  svg += '</defs>';
+
+  // Render ribbons (under nodes). Track consumed positions on each side.
+  flows.forEach(function(flow, idx) {
+    var srcInfo = findNode(flow.s[0]);
+    var dstInfo = findNode(flow.t);
+    if (!srcInfo || !dstInfo) return;
+    var src = srcInfo.node;
+    var dst = dstInfo.node;
+    var thickness = vToPx(flow.v);
+    var srcY0 = src.y + src.outConsumed;
+    var srcY1 = srcY0 + thickness;
+    src.outConsumed += thickness;
+    var dstY0 = dst.y + dst.inConsumed;
+    var dstY1 = dstY0 + thickness;
+    dst.inConsumed += thickness;
+    var path = buildRibbonPath(src, srcY0, srcY1, dst, dstY0, dstY1);
+    var op = 0.62;
+    svg += '<path class="sk-ribbon" style="--ribbon-op:' + op + ';animation-delay:' + (0.35 + idx * 0.07) + 's;" d="' + path + '" fill="url(#' + flow.gradId + ')" stroke="' + flow.color + '" stroke-width="0.5" stroke-opacity="0.4"/>';
   });
 
-  // Big bars (numbers only inside)
-  function bigBar(x, count, color, delay, isPulse) {
-    var h = barH(count);
-    var y = barTopY(count);
-    var fontSize = Math.min(96, Math.max(36, h * 0.55));
-    var cls = isPulse ? 'chart-bar chart-pulse' : 'chart-bar';
-    return [
-      '<rect class="' + cls + '" style="animation-delay:' + delay + 's;" filter="url(#brutalShadow2)" x="' + x + '" y="' + y + '" width="' + stageW + '" height="' + h + '" fill="' + color + '" stroke="#1A1A1A" stroke-width="2.5"/>',
-      '<text class="chart-num" style="animation-delay:' + (delay + 0.45) + 's;" x="' + (x + stageW / 2) + '" y="' + (y + h / 2 + fontSize * 0.35) + '" text-anchor="middle" font-size="' + fontSize + '" font-weight="900" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,0.45);stroke-width:2px;">' + count + '</text>'
-    ].join('');
-  }
-  svg += bigBar(stageX[0], total, palette.found, 0.05, false);
-  svg += bigBar(stageX[1], applied, palette.applied, 0.20, false);
-  svg += bigBar(stageX[2], interviewing, palette.interviewing, 0.38, true);
+  // Render nodes (over ribbons). Big colored bricks with shadow.
+  columns.forEach(function(col, ci) {
+    col.forEach(function(n, ni) {
+      var delay = 0.05 + ci * 0.12 + ni * 0.04;
+      var pulseClass = n.pulse ? ' sk-pulse' : '';
+      svg += '<rect class="sk-node' + pulseClass + '" style="animation-delay:' + delay + 's;" x="' + n.x + '" y="' + n.y + '" width="' + nodeW + '" height="' + n.h + '" fill="' + n.color + '" stroke="#1A1A1A" stroke-width="2" filter="url(#skGlow)"><title>' + n.label + ': ' + n.value + '</title></rect>';
 
-  // Outcome stack (numbers only)
-  raw.forEach(function(o, i) {
-    var h = Math.max(o.h, 30);
-    var d = 0.55 + i * 0.08;
-    var fs = Math.min(48, Math.max(20, h * 0.55));
-    svg += '<rect class="chart-bar" style="animation-delay:' + d + 's;transform-origin:left center;" filter="url(#brutalShadow2)" x="' + stageX[3] + '" y="' + o.y + '" width="' + stageW + '" height="' + h + '" fill="' + o.color + '" stroke="#1A1A1A" stroke-width="2.5"/>';
-    svg += '<text class="chart-num" style="animation-delay:' + (d + 0.45) + 's;" x="' + (stageX[3] + stageW / 2) + '" y="' + (o.y + h / 2 + fs * 0.35) + '" text-anchor="middle" font-size="' + fs + '" font-weight="900" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,0.45);stroke-width:2px;">' + o.count + '</text>';
+      // Number inside the node (if tall enough) or to the side
+      var fs = Math.min(28, Math.max(14, n.h * 0.55));
+      var labelX, labelAnchor;
+      if (ci === columns.length - 1) {
+        labelX = n.x - 10;
+        labelAnchor = 'end';
+      } else {
+        labelX = n.x + nodeW + 10;
+        labelAnchor = 'start';
+      }
+      // Number (bold, large)
+      svg += '<text class="sk-num" style="animation-delay:' + (delay + 0.55) + 's;" x="' + labelX + '" y="' + (n.cy + 8) + '" text-anchor="' + labelAnchor + '" font-size="26" font-weight="900" fill="#fff" data-target="' + n.value + '">' + n.value + '</text>';
+      // Label (small, uppercase, below the number)
+      svg += '<text class="sk-label" style="animation-delay:' + (delay + 0.65) + 's;" x="' + labelX + '" y="' + (n.cy - 16) + '" text-anchor="' + labelAnchor + '" font-size="10" font-weight="700" letter-spacing="2.4" fill="#A8B0BC">' + n.label + '</text>';
+    });
   });
 
   svg += '</svg>';
   document.getElementById('pipelineSankey').innerHTML = svg;
 
-  // Number count-up overlay (animate the numbers from 0 to target)
-  function animateText(elsAndTargets) {
-    var t0 = performance.now();
-    var dur = 1100;
-    function step(t) {
-      var p = Math.min(1, (t - t0) / dur);
-      var eased = 1 - Math.pow(1 - p, 3);
-      elsAndTargets.forEach(function(et) {
-        et.el.textContent = Math.round(et.target * eased);
-      });
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
+  // ── Number count-up
   setTimeout(function() {
-    var nums = document.querySelectorAll('#pipelineSankey .chart-num');
+    var nums = document.querySelectorAll('#pipelineSankey .sk-num');
     var pairs = [];
     nums.forEach(function(el) {
-      var t = parseInt(el.textContent, 10);
+      var t = parseInt(el.getAttribute('data-target'), 10);
       if (!isNaN(t)) {
         el.textContent = '0';
         pairs.push({ el: el, target: t });
       }
     });
-    animateText(pairs);
-  }, 500);
+    var t0 = performance.now();
+    var dur = 1200;
+    function step(t) {
+      var p = Math.min(1, (t - t0) / dur);
+      var eased = 1 - Math.pow(1 - p, 3);
+      pairs.forEach(function(p2) { p2.el.textContent = Math.round(p2.target * eased); });
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }, 600);
 }
 </script>
 </body>
