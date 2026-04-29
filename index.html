@@ -1146,6 +1146,65 @@ body::before {
 }
 
 /* ===== CHART TAB (redesigned) ===== */
+
+.interview-stage-section {
+  position: relative; z-index: 1;
+  margin-top: 28px;
+  border-top: var(--border-thin);
+  padding-top: 22px;
+}
+.interview-stage-headline {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800;
+  font-size: clamp(18px, 2.2vw, 26px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 4px 0 18px;
+  color: var(--ink);
+}
+.interview-stage-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+@media (max-width: 980px) { .interview-stage-grid { grid-template-columns: 1fr; } }
+.istage-card {
+  background: white;
+  border: var(--border-thin);
+  box-shadow: var(--shadow-brutal-sm);
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.istage-card:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--ink); }
+.istage-card[data-stage="upcoming"] { border-top: 8px solid var(--haring-orange); background: linear-gradient(180deg, #FFF1E5 0%, white 60%); }
+.istage-card[data-stage="awaiting"] { border-top: 8px solid var(--haring-blue); background: linear-gradient(180deg, #E5EFFB 0%, white 60%); }
+.istage-card[data-stage="next"]     { border-top: 8px solid var(--haring-green); background: linear-gradient(180deg, #DFF4E5 0%, white 60%); }
+.istage-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+}
+.istage-title {
+  font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 13px;
+  letter-spacing: 0.16em; text-transform: uppercase;
+}
+.istage-count {
+  font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 32px;
+  font-variant-numeric: tabular-nums; line-height: 1;
+}
+.istage-sub { font-size: 11px; color: var(--ink-light); margin-top: -8px; letter-spacing: 0.04em; }
+.istage-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.istage-item {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 8px 10px; border-left: 4px solid; background: rgba(255,255,255,0.65);
+}
+.istage-item-name { font-weight: 800; font-size: 13.5px; }
+.istage-item-role { font-size: 12px; color: var(--ink-light); }
+.istage-item-when { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px; }
+.istage-empty { font-size: 12.5px; color: var(--ink-light); font-style: italic; padding: 8px 10px; }
+
+
 .chart-stage {
   background: var(--eames-cream);
   padding: 28px 24px 36px;
@@ -1472,16 +1531,27 @@ body::before {
     <div id="tab-pipeline" style="display:none;">
         <div class="chart-stage" id="chartStage">
             <div class="chart-header">
-                <div class="chart-eyebrow">Application Funnel · 2026</div>
-                <h2 class="chart-headline">From <span id="chartHeroFound" class="chart-hero-num">0</span> roles to <span id="chartHeroInterviews" class="chart-hero-num chart-hero-num-accent">0</span> live conversations</h2>
+                <div class="chart-eyebrow">Application Pipeline · live state</div>
+                <h2 class="chart-headline">From <span id="chartHeroFound" class="chart-hero-num">0</span> roles to <span id="chartHeroInterviews" class="chart-hero-num chart-hero-num-accent">0</span> interviews in progress</h2>
             </div>
             <div class="chart-kpi-row">
-                <div class="chart-kpi" data-kind="found"><div class="chart-kpi-num" data-target="0">0</div><div class="chart-kpi-label">Roles Found</div></div>
-                <div class="chart-kpi" data-kind="fit"><div class="chart-kpi-num" data-target="0">0</div><div class="chart-kpi-label">Roles That Fit</div></div>
+                <div class="chart-kpi" data-kind="found"><div class="chart-kpi-num" data-target="0">0</div><div class="chart-kpi-label">Total</div></div>
                 <div class="chart-kpi" data-kind="applied"><div class="chart-kpi-num" data-target="0">0</div><div class="chart-kpi-label">Applied</div></div>
                 <div class="chart-kpi chart-kpi-bright" data-kind="interviewing"><div class="chart-kpi-num" data-target="0">0</div><div class="chart-kpi-label">Interviewing</div></div>
+                <div class="chart-kpi" data-kind="offer"><div class="chart-kpi-num" data-target="0">0</div><div class="chart-kpi-label">Offers</div></div>
             </div>
             <div class="chart-grid">
+                <div class="chart-canvas" id="pipelineSankey"></div>
+                <div class="chart-side" id="pipelineLists"></div>
+            </div>
+            <div class="interview-stage-section">
+                <div class="chart-eyebrow">Interview Stages</div>
+                <h3 class="interview-stage-headline">Where each conversation stands right now</h3>
+                <div class="interview-stage-grid" id="interviewStageGrid"></div>
+            </div>
+        </div>
+    </div>
+<div class="chart-grid">
                 <div class="chart-canvas" id="pipelineSankey"></div>
                 <div class="chart-side" id="pipelineLists"></div>
             </div>
@@ -6279,18 +6349,19 @@ function isApplied(j) {
 
 function renderPipeline() {
   var jobs = (typeof JOBS !== 'undefined') ? JOBS : [];
-  var found = jobs.length;
-  var fit = jobs.filter(function(j) { return (j.score || 0) >= 4; });
-  var applied = jobs.filter(isApplied);
-
-  var buckets = { interviewing: [], offer: [], rejected: [], bounced: [], awaiting: [] };
-  applied.forEach(function(j) {
-    var k = classifyJob(j);
-    if (!buckets[k]) buckets[k] = [];
-    buckets[k].push(j);
+  // ── Mirror Active Postings Application Pipeline numbers (uses getJobState localStorage)
+  var total = 0, applied = 0, interviewing = 0, offers = 0, rejected = 0, hidden = 0;
+  jobs.forEach(function(job) {
+    var s = (typeof getJobState === 'function') ? (getJobState(job.id).status || 'not-started') : (job.defaultStatus || 'not-started');
+    if (s === 'not-interested') { hidden++; return; }
+    total++;
+    if (s === 'applied' || s === 'in-progress') applied++;
+    if (s === 'interviewing') interviewing++;
+    if (s === 'offer') offers++;
+    if (s === 'rejected') rejected++;
   });
 
-  // ── Animate KPI numbers
+  // Animate KPI numbers
   function animateNum(el, target) {
     var start = 0, dur = 900, t0 = performance.now();
     function step(t) {
@@ -6301,75 +6372,54 @@ function renderPipeline() {
     }
     requestAnimationFrame(step);
   }
-  var kpiVals = { found: found, fit: fit.length, applied: applied.length, interviewing: buckets.interviewing.length };
+  var kpiVals = { found: total, applied: applied, interviewing: interviewing, offer: offers };
   document.querySelectorAll('#tab-pipeline .chart-kpi').forEach(function(el) {
     var kind = el.getAttribute('data-kind');
     var num = el.querySelector('.chart-kpi-num');
+    if (kpiVals[kind] === undefined) return;
     num.setAttribute('data-target', kpiVals[kind]);
     animateNum(num, kpiVals[kind]);
   });
   var heroFound = document.getElementById('chartHeroFound');
   var heroInt = document.getElementById('chartHeroInterviews');
-  if (heroFound) animateNum(heroFound, found);
-  if (heroInt) animateNum(heroInt, buckets.interviewing.length);
+  if (heroFound) animateNum(heroFound, total);
+  if (heroInt) animateNum(heroInt, interviewing);
 
-  // ── SVG funnel
+  // ── SVG funnel using the same status semantics
+  var awaiting = Math.max(0, applied - interviewing - offers - rejected);
   var W = 940, H = 460, pad = 18;
   var stageX = [pad, 230, 460, 700];
   var stageW = 168;
   var fullH = 320;
   var topPad = 92;
-
   var palette = {
-    found:        '#0072CE',
-    fit:          '#F472B6',
-    applied:      '#FF6B2B',
-    interviewing: '#00A651',
-    offer:        '#FFD000',
-    rejected:     '#E4312B',
-    bounced:      '#6B4226',
-    awaiting:     '#5C6B3C'
+    found: '#0072CE', applied: '#FF6B2B', interviewing: '#00A651',
+    offer: '#FFD000', rejected: '#E4312B', awaiting: '#5C6B3C', hidden: '#999999'
   };
-  var stageMeta = {
-    found:   { label: 'ROLES FOUND',  sub: 'Every job tracked',   count: found },
-    fit:     { label: 'ROLES FIT',    sub: 'Score ≥ 4',           count: fit.length },
-    applied: { label: 'APPLIED',      sub: 'Sent or in convo',    count: applied.length }
-  };
-  function barH(count) { return found > 0 ? Math.max(6, fullH * (count / found)) : 6; }
-  function barTopY(count) { return topPad + (fullH - barH(count)); }
-  function barMidY(count) { return barTopY(count) + barH(count) / 2; }
+  function barH(c) { return total > 0 ? Math.max(6, fullH * (c / total)) : 6; }
+  function barTopY(c) { return topPad + (fullH - barH(c)); }
+  function barMidY(c) { return barTopY(c) + barH(c) / 2; }
 
-  // Outcome stack (column 4)
   var outcomes = [
-    { key: 'interviewing', label: 'INTERVIEWING', count: buckets.interviewing.length, color: palette.interviewing },
-    { key: 'offer',        label: 'OFFER',        count: buckets.offer.length,        color: palette.offer },
-    { key: 'rejected',     label: 'REJECTED',     count: buckets.rejected.length,     color: palette.rejected },
-    { key: 'bounced',      label: 'BOUNCED',      count: buckets.bounced.length,      color: palette.bounced },
-    { key: 'awaiting',     label: 'AWAITING',     count: buckets.awaiting.length,     color: palette.awaiting }
+    { key: 'interviewing', label: 'INTERVIEWING', count: interviewing, color: palette.interviewing },
+    { key: 'offer',        label: 'OFFER',        count: offers,       color: palette.offer },
+    { key: 'rejected',     label: 'REJECTED',     count: rejected,     color: palette.rejected },
+    { key: 'awaiting',     label: 'AWAITING REPLY', count: awaiting,   color: palette.awaiting }
   ];
-  var stackTop = topPad;
   var slotPad = 6;
-  var totalApplied = Math.max(applied.length, 1);
-  var availH = fullH;
   var raw = outcomes.map(function(o) {
-    var ratio = applied.length > 0 ? o.count / totalApplied : 0;
-    var h = o.count > 0 ? Math.max(28, ratio * (availH - slotPad * (outcomes.length - 1))) : 22;
+    var ratio = applied > 0 ? o.count / Math.max(applied, 1) : 0;
+    var h = o.count > 0 ? Math.max(28, ratio * (fullH - slotPad * (outcomes.length - 1))) : 22;
     return Object.assign({}, o, { h: h });
   });
   var sumH = raw.reduce(function(s, o) { return s + o.h; }, 0);
-  var spaceForBars = availH - slotPad * (outcomes.length - 1);
+  var spaceForBars = fullH - slotPad * (outcomes.length - 1);
   var scale = sumH > spaceForBars ? spaceForBars / sumH : 1;
-  var cursorY = stackTop;
-  raw.forEach(function(o) {
-    o.y = cursorY;
-    o.h = o.h * scale;
-    cursorY += o.h + slotPad;
-  });
+  var cy = topPad;
+  raw.forEach(function(o) { o.y = cy; o.h = o.h * scale; cy += o.h + slotPad; });
 
   var svg = '';
   svg += '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:\'DM Sans\',sans-serif;">';
-
-  // Filter: hard offset shadow (Haring/Eames brutal)
   svg += '<defs>';
   svg += '<filter id="brutalShadow" x="-5%" y="-5%" width="115%" height="115%">';
   svg += '<feOffset in="SourceAlpha" dx="4" dy="4"/><feFlood flood-color="#1A1A1A"/><feComposite in2="SourceAlpha" operator="in"/>';
@@ -6377,65 +6427,48 @@ function renderPipeline() {
   svg += '</filter>';
   svg += '<pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#1A1A1A" opacity="0.18"/></pattern>';
   svg += '</defs>';
-
-  // Subtle dot grid backdrop in the chart area
   svg += '<rect x="0" y="' + (topPad - 12) + '" width="' + W + '" height="' + (fullH + 24) + '" fill="url(#dots)" opacity="0.6"/>';
 
-  // ── Flow lines first (under bars)
-  function flow(x1, y1, x2, y2, color, opacity, key, idx) {
+  function flow(x1, y1, x2, y2, color, opacity, thickness, delay) {
     var x1r = x1 + stageW;
     var x2l = x2;
     var midX = (x1r + x2l) / 2;
     var p = 'M ' + x1r + ',' + y1 + ' C ' + midX + ',' + y1 + ' ' + midX + ',' + y2 + ' ' + x2l + ',' + y2;
-    return '<path class="chart-flow" style="--flow-opacity:' + opacity + ';animation-delay:' + (0.25 + idx * 0.06) + 's;" d="' + p + '" stroke="' + color + '" stroke-width="' + Math.max(3, Math.abs(y2 - y1) > 0 ? barH(found) * 0.6 : 6) + '" fill="none" stroke-linecap="round"/>';
+    return '<path class="chart-flow" style="--flow-opacity:' + opacity + ';animation-delay:' + delay + 's;" d="' + p + '" stroke="' + color + '" stroke-width="' + thickness + '" fill="none" stroke-linecap="round"/>';
   }
-
-  // Found -> Fit
-  svg += flow(stageX[0], barMidY(found), stageX[1], barMidY(fit.length), palette.fit, 0.45, 'fit', 0);
-  // Fit -> Applied
-  svg += flow(stageX[1], barMidY(fit.length), stageX[2], barMidY(applied.length), palette.applied, 0.45, 'applied', 1);
-  // Applied -> each outcome
+  // Found -> Applied
+  svg += flow(stageX[0], barMidY(total), stageX[1], barMidY(applied), palette.applied, 0.5, Math.max(8, barH(applied) * 0.7), 0.25);
+  // Applied -> Outcomes (single Interviewing flow on stage 2->3, then split into outcomes on stage 3->4)
+  svg += flow(stageX[1], barMidY(applied), stageX[2], barMidY(applied), palette.applied, 0.35, Math.max(8, barH(applied) * 0.7), 0.32);
   raw.forEach(function(o, i) {
-    var x1r = stageX[2] + stageW;
-    var x2l = stageX[3];
-    var y1c = barMidY(applied.length);
-    var y2c = o.y + o.h / 2;
-    var midX = (x1r + x2l) / 2;
-    var thickness = Math.max(4, o.h * 0.7);
-    var path = 'M ' + x1r + ',' + y1c + ' C ' + midX + ',' + y1c + ' ' + midX + ',' + y2c + ' ' + x2l + ',' + y2c;
-    svg += '<path class="chart-flow" style="--flow-opacity:' + (o.count > 0 ? 0.55 : 0.18) + ';animation-delay:' + (0.4 + i * 0.06) + 's;" d="' + path + '" stroke="' + o.color + '" stroke-width="' + thickness + '" fill="none" stroke-linecap="round"/>';
+    svg += flow(stageX[2], barMidY(applied), stageX[3], o.y + o.h / 2, o.color, o.count > 0 ? 0.55 : 0.18, Math.max(4, o.h * 0.7), 0.4 + i * 0.06);
   });
 
-  // ── Stage 1-3 bars
   function bigBar(x, count, color, label, sub, delay) {
     var h = barH(count);
     var y = barTopY(count);
-    var labelY = topPad - 30;
-    var subY = topPad - 14;
     return [
       '<rect class="chart-bar" style="animation-delay:' + delay + 's;" filter="url(#brutalShadow)" x="' + x + '" y="' + y + '" width="' + stageW + '" height="' + h + '" fill="' + color + '" stroke="#1A1A1A" stroke-width="2"><title>' + label + ': ' + count + '</title></rect>',
-      '<text class="chart-label-top" style="animation-delay:' + (delay + 0.15) + 's;" x="' + (x + stageW / 2) + '" y="' + labelY + '" text-anchor="middle" font-size="13" font-weight="800" letter-spacing="2.6" fill="#1A1A1A">' + label + '</text>',
-      '<text class="chart-label-top" style="animation-delay:' + (delay + 0.18) + 's;" x="' + (x + stageW / 2) + '" y="' + subY + '" text-anchor="middle" font-size="11" font-weight="600" fill="#555">' + sub + '</text>',
+      '<text class="chart-label-top" style="animation-delay:' + (delay + 0.15) + 's;" x="' + (x + stageW / 2) + '" y="' + (topPad - 30) + '" text-anchor="middle" font-size="13" font-weight="800" letter-spacing="2.6" fill="#1A1A1A">' + label + '</text>',
+      '<text class="chart-label-top" style="animation-delay:' + (delay + 0.18) + 's;" x="' + (x + stageW / 2) + '" y="' + (topPad - 14) + '" text-anchor="middle" font-size="11" font-weight="600" fill="#555">' + sub + '</text>',
       '<text class="chart-label-num" style="animation-delay:' + (delay + 0.25) + 's;" x="' + (x + stageW / 2) + '" y="' + (y + h / 2 + 14) + '" text-anchor="middle" font-size="42" font-weight="800" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,0.45);stroke-width:1.5px;">' + count + '</text>'
     ].join('');
   }
-  svg += bigBar(stageX[0], found, palette.found, stageMeta.found.label, stageMeta.found.sub, 0.05);
-  svg += bigBar(stageX[1], fit.length, palette.fit, stageMeta.fit.label, stageMeta.fit.sub, 0.18);
-  svg += bigBar(stageX[2], applied.length, palette.applied, stageMeta.applied.label, stageMeta.applied.sub, 0.30);
+  svg += bigBar(stageX[0], total, palette.found, 'TOTAL', 'On the tracker', 0.05);
+  svg += bigBar(stageX[1], applied, palette.applied, 'APPLIED', 'Sent or in convo', 0.18);
+  // Stage 3 = the Interviewing pillar (subset of Applied)
+  svg += bigBar(stageX[2], interviewing, palette.interviewing, 'INTERVIEWING', 'Active conversations', 0.32);
 
-  // ── Stage 4 outcome stack
   // Stage 4 column header
   svg += '<text class="chart-label-top" style="animation-delay:0.42s;" x="' + (stageX[3] + stageW / 2) + '" y="' + (topPad - 30) + '" text-anchor="middle" font-size="13" font-weight="800" letter-spacing="2.6" fill="#1A1A1A">OUTCOMES</text>';
-  svg += '<text class="chart-label-top" style="animation-delay:0.45s;" x="' + (stageX[3] + stageW / 2) + '" y="' + (topPad - 14) + '" text-anchor="middle" font-size="11" font-weight="600" fill="#555">By stage / status</text>';
-
+  svg += '<text class="chart-label-top" style="animation-delay:0.45s;" x="' + (stageX[3] + stageW / 2) + '" y="' + (topPad - 14) + '" text-anchor="middle" font-size="11" font-weight="600" fill="#555">By status</text>';
   raw.forEach(function(o, i) {
-    var minH = 22;
-    var h = Math.max(o.h, minH);
-    var showLabelInside = h >= 30;
+    var h = Math.max(o.h, 22);
     var d = 0.45 + i * 0.07;
+    var inside = h >= 30;
     svg += '<rect class="chart-bar" style="animation-delay:' + d + 's;transform-origin:left center;" filter="url(#brutalShadow)" x="' + stageX[3] + '" y="' + o.y + '" width="' + stageW + '" height="' + h + '" fill="' + o.color + '" stroke="#1A1A1A" stroke-width="2"><title>' + o.label + ': ' + o.count + '</title></rect>';
-    if (showLabelInside) {
-      svg += '<text class="chart-label-top" style="animation-delay:' + (d + 0.1) + 's;" x="' + (stageX[3] + 12) + '" y="' + (o.y + h / 2 + 5) + '" text-anchor="start" font-size="13" font-weight="800" letter-spacing="1.6" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,0.4);stroke-width:1px;">' + o.label + '</text>';
+    if (inside) {
+      svg += '<text class="chart-label-top" style="animation-delay:' + (d + 0.1) + 's;" x="' + (stageX[3] + 12) + '" y="' + (o.y + h / 2 + 5) + '" text-anchor="start" font-size="12" font-weight="800" letter-spacing="1.4" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,0.4);stroke-width:1px;">' + o.label + '</text>';
       svg += '<text class="chart-label-num" style="animation-delay:' + (d + 0.15) + 's;" x="' + (stageX[3] + stageW - 12) + '" y="' + (o.y + h / 2 + 8) + '" text-anchor="end" font-size="22" font-weight="800" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,0.4);stroke-width:1px;">' + o.count + '</text>';
     } else {
       svg += '<text class="chart-label-top" style="animation-delay:' + (d + 0.1) + 's;" x="' + (stageX[3] + stageW + 8) + '" y="' + (o.y + h / 2 + 4) + '" text-anchor="start" font-size="12" font-weight="800" letter-spacing="1.4" fill="#1A1A1A">' + o.label + ' · ' + o.count + '</text>';
@@ -6445,29 +6478,119 @@ function renderPipeline() {
   svg += '</svg>';
   document.getElementById('pipelineSankey').innerHTML = svg;
 
-  // ── Sidebar: outcome cards
+  // ── Sidebar: outcome cards (also using local-state buckets so numbers match)
+  function bucketByState(stateName) {
+    return jobs.filter(function(j) {
+      var s = (typeof getJobState === 'function') ? (getJobState(j.id).status || 'not-started') : (j.defaultStatus || 'not-started');
+      if (stateName === 'awaiting') {
+        return (s === 'applied' || s === 'in-progress');
+      }
+      return s === stateName;
+    });
+  }
+  var sideBuckets = {
+    interviewing: bucketByState('interviewing'),
+    offer:        bucketByState('offer'),
+    rejected:     bucketByState('rejected'),
+    awaiting:     bucketByState('awaiting')
+  };
+  function escapeHtml(s) { return (s || '').replace(/[&<>]/g, function(c) { return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
   function card(o, jobsArr) {
-    var inner = '';
+    var inner;
     if (!jobsArr.length) {
       inner = '<div class="outcome-card-empty">none yet</div>';
     } else {
       inner = '<ul>' + jobsArr.map(function(j) {
-        var note = j.gmailStatus ? '<span> &middot; ' + j.gmailStatus.replace(/</g,'&lt;').slice(0, 80) + '</span>' : '';
-        return '<li><strong>' + j.company + '</strong> <span>· ' + j.title + '</span>' + note + '</li>';
+        var note = j.gmailStatus ? '<span> &middot; ' + escapeHtml(j.gmailStatus.slice(0, 60)) + '</span>' : '';
+        return '<li><strong>' + escapeHtml(j.company) + '</strong> <span>· ' + escapeHtml(j.title) + '</span>' + note + '</li>';
       }).join('') + '</ul>';
     }
     return '<div class="outcome-card" style="border-left-color:' + o.color + ';">' +
-           '<div class="outcome-card-head"><div class="outcome-card-title" style="color:' + o.color + ';">' + o.label.replace('AWAITING','AWAITING REPLY') + '</div>' +
-           '<div class="outcome-card-count">' + o.count + '</div></div>' +
-           inner +
-           '</div>';
+           '<div class="outcome-card-head"><div class="outcome-card-title" style="color:' + o.color + ';">' + o.label + '</div>' +
+           '<div class="outcome-card-count">' + jobsArr.length + '</div></div>' + inner + '</div>';
   }
-  var html = '';
-  outcomes.forEach(function(o) {
-    var arr = (buckets[o.key] || []);
-    html += card(o, arr);
+  var sideHtml = '';
+  sideHtml += card({ label: 'INTERVIEWING',    color: palette.interviewing }, sideBuckets.interviewing);
+  sideHtml += card({ label: 'OFFER',           color: palette.offer        }, sideBuckets.offer);
+  sideHtml += card({ label: 'REJECTED',        color: palette.rejected     }, sideBuckets.rejected);
+  sideHtml += card({ label: 'AWAITING REPLY',  color: palette.awaiting     }, sideBuckets.awaiting);
+  document.getElementById('pipelineLists').innerHTML = sideHtml;
+
+  // ── Interview Stages (gmailStatus-based, catches everything Gmail captured)
+  var todayISO = new Date().toISOString().slice(0, 10);
+  function dateInString(s) {
+    var m = (s || '').match(/(\d{4}[-/]\d{1,2}[-/]\d{1,2})|(\d{1,2}\/\d{1,2}(?:\/\d{2,4})?)/);
+    if (!m) return null;
+    var raw = m[0];
+    if (raw.indexOf('-') !== -1) return raw.slice(0, 10);
+    var parts = raw.split('/');
+    var year = parts.length === 3 && parts[2].length === 4 ? parts[2] : (parts.length === 3 ? '20' + parts[2] : '2026');
+    return year + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0');
+  }
+  function classifyInterview(j) {
+    var s = (j.gmailStatus || '').toLowerCase();
+    var b = (j.gmailBadge || '').toLowerCase();
+    if (!(s || b)) return null;
+    if (s.indexOf('reject') !== -1 || s.indexOf('declined') !== -1 || s.indexOf('passed') !== -1 || s.indexOf('not selected') !== -1) return null;
+    if (s.indexOf('bounce') !== -1 || s.indexOf('bad email') !== -1) return null;
+    if (s.indexOf('next-round') !== -1 || s.indexOf('next round') !== -1 || s.indexOf('final round') !== -1 || s.indexOf('round 2') !== -1) return 'next';
+    if (s.indexOf('reschedul') !== -1 || s.indexOf('scheduled') !== -1 || s.indexOf('confirmed') !== -1 || s.indexOf('shortlist') !== -1) {
+      // Use date if present to decide upcoming vs past
+      var d = dateInString(j.gmailStatus);
+      if (d && d >= todayISO) return 'upcoming';
+      return 'awaiting';
+    }
+    if (s.indexOf('interview') !== -1 || s.indexOf('homework') !== -1 || s.indexOf('reference') !== -1 || s.indexOf('awaiting') !== -1 || b === 'interview' || b.indexOf('interview') !== -1) {
+      var d2 = dateInString(j.gmailStatus);
+      if (d2 && d2 >= todayISO) return 'upcoming';
+      return 'awaiting';
+    }
+    return null;
+  }
+
+  var iStages = { upcoming: [], awaiting: [], next: [] };
+  jobs.forEach(function(j) {
+    var k = classifyInterview(j);
+    if (k && iStages[k]) iStages[k].push(j);
   });
-  document.getElementById('pipelineLists').innerHTML = html;
+
+  function whenFromStatus(j) {
+    var d = dateInString(j.gmailStatus);
+    if (d) {
+      var today = new Date(); today.setHours(0,0,0,0);
+      var dt = new Date(d + 'T00:00:00');
+      var days = Math.round((dt - today) / 86400000);
+      if (days === 0) return 'TODAY';
+      if (days === 1) return 'TOMORROW';
+      if (days > 1 && days <= 14) return 'IN ' + days + ' DAYS';
+      if (days < 0 && days >= -14) return Math.abs(days) + ' DAY' + (days === -1 ? '' : 'S') + ' AGO';
+      return d;
+    }
+    if (j.gmailDate) return j.gmailDate;
+    return '';
+  }
+
+  function stageItem(j, color) {
+    return '<li class="istage-item" style="border-left-color:' + color + ';">' +
+           '<div class="istage-item-name">' + escapeHtml(j.company) + '</div>' +
+           '<div class="istage-item-role">' + escapeHtml(j.title) + '</div>' +
+           '<div class="istage-item-when" style="color:' + color + ';">' + escapeHtml(whenFromStatus(j)) + '</div>' +
+           '</li>';
+  }
+  function stageCard(stage, title, sub, color, list) {
+    var body = list.length
+      ? '<ul class="istage-list">' + list.map(function(j) { return stageItem(j, color); }).join('') + '</ul>'
+      : '<div class="istage-empty">none right now</div>';
+    return '<div class="istage-card" data-stage="' + stage + '">' +
+           '<div class="istage-head"><div class="istage-title" style="color:' + color + ';">' + title + '</div>' +
+           '<div class="istage-count" style="color:' + color + ';">' + list.length + '</div></div>' +
+           '<div class="istage-sub">' + sub + '</div>' + body + '</div>';
+  }
+  var interviewHtml = '';
+  interviewHtml += stageCard('upcoming', 'UPCOMING', 'Interview already on the calendar', '#FF6B2B', iStages.upcoming);
+  interviewHtml += stageCard('awaiting', 'AWAITING REPLY', 'Interview done · waiting on the firm', '#0072CE', iStages.awaiting);
+  interviewHtml += stageCard('next',     'NEXT ROUND',     'Advanced past the first round',          '#00A651', iStages.next);
+  document.getElementById('interviewStageGrid').innerHTML = interviewHtml;
 }
 </script>
 </body>
