@@ -1145,41 +1145,20 @@ body::before {
   font-family: monospace;
 }
 
-/* ===== CHART TAB (Sankey: bigger + intro loader + polish) ===== */
+/* ===== CHART TAB (stripped: no background, max size) ===== */
 .sankey-stage {
   position: relative;
-  background:
-    radial-gradient(ellipse at 18% 12%, rgba(228,49,43,0.20) 0%, transparent 55%),
-    radial-gradient(ellipse at 82% 18%, rgba(255,208,0,0.18) 0%, transparent 55%),
-    radial-gradient(ellipse at 78% 88%, rgba(0,166,81,0.20) 0%, transparent 55%),
-    radial-gradient(ellipse at 14% 86%, rgba(0,114,206,0.22) 0%, transparent 55%),
-    linear-gradient(135deg, #0A0B0F 0%, #15171F 50%, #08090C 100%);
-  border: var(--border-thick);
-  box-shadow: var(--shadow-brutal);
-  padding: 28px;
-  overflow: hidden;
-  min-height: 84vh;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  min-height: 90vh;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
 }
-.sankey-stage::before {
-  content: "";
-  position: absolute; inset: 0;
-  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 1.5px);
-  background-size: 28px 28px;
-  pointer-events: none;
-  z-index: 0;
-}
-/* Hard-edged corner brackets */
-.sankey-stage::after {
-  content: "";
-  position: absolute;
-  top: 14px; left: 14px; right: 14px; bottom: 14px;
-  border: 1px dashed rgba(255,255,255,0.08);
-  pointer-events: none;
-  z-index: 1;
-}
-
 .sankey-canvas {
   position: relative;
   z-index: 2;
@@ -1187,23 +1166,17 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
-.sankey-canvas svg { width: 100%; height: 100%; max-height: calc(84vh - 80px); display: block; overflow: visible; }
-
-/* Floating colored orbs */
-.sk-orb {
-  position: absolute; border-radius: 50%; pointer-events: none;
-  z-index: 1; opacity: 0.55; filter: blur(48px);
-  animation: skOrbFloat 14s ease-in-out infinite;
-}
-@keyframes skOrbFloat {
-  0%   { transform: translate(0,0) scale(1); }
-  33%  { transform: translate(40px,-26px) scale(1.18); }
-  66%  { transform: translate(-28px,34px) scale(0.9); }
-  100% { transform: translate(0,0) scale(1); }
+.sankey-canvas svg {
+  width: 100%;
+  height: auto;
+  max-height: 92vh;
+  display: block;
+  overflow: visible;
 }
 
-/* ── Intro loader ── */
+/* ── Intro loader (light theme) ── */
 .sk-loader {
   position: absolute;
   inset: 0;
@@ -1212,10 +1185,8 @@ body::before {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background:
-    radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.04) 0%, transparent 70%),
-    linear-gradient(135deg, #0A0B0F 0%, #15171F 60%, #08090C 100%);
-  animation: skLoaderFade 0.6s cubic-bezier(.22,1,.36,1) 1.6s forwards;
+  background: var(--eames-cream, #FFF8F0);
+  animation: skLoaderFade 0.6s cubic-bezier(.22,1,.36,1) 1.4s forwards;
 }
 .sk-loader-ring {
   width: 160px;
@@ -1225,7 +1196,7 @@ body::before {
     #E4312B 0%, #FF6B2B 16%, #FFD000 32%, #00A651 48%,
     #0072CE 64%, #F472B6 82%, #E4312B 100%);
   position: relative;
-  filter: drop-shadow(0 0 24px rgba(255,255,255,0.10));
+  filter: drop-shadow(0 0 24px rgba(0,0,0,0.10));
   animation: skSpin 1.6s linear infinite;
 }
 .sk-loader-ring::before {
@@ -1233,24 +1204,14 @@ body::before {
   position: absolute;
   inset: 18px;
   border-radius: 50%;
-  background: #0E0F12;
+  background: var(--eames-cream, #FFF8F0);
 }
-.sk-loader-ring::after {
-  content: "";
-  position: absolute;
-  inset: 30px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 50% 35%, rgba(255,255,255,0.25), transparent 60%);
-}
-.sk-loader-text {
-  margin-top: 36px;
-  text-align: center;
-}
+.sk-loader-text { margin-top: 36px; text-align: center; }
 .sk-loader-word {
   font-family: 'DM Sans', sans-serif;
   font-weight: 800;
   letter-spacing: 0.32em;
-  color: #F2F4F8;
+  color: var(--ink, #1A1A1A);
   font-size: 13px;
   animation: skTextPulse 1.6s ease-in-out infinite;
 }
@@ -1263,73 +1224,39 @@ body::before {
 .sk-loader-dot {
   width: 10px; height: 10px;
   border-radius: 50%;
-  background: #FFD000;
   animation: skDot 1.2s ease-in-out infinite;
 }
 .sk-loader-dot:nth-child(1) { background: #E4312B; animation-delay: 0s; }
 .sk-loader-dot:nth-child(2) { background: #00A651; animation-delay: 0.18s; }
 .sk-loader-dot:nth-child(3) { background: #0072CE; animation-delay: 0.36s; }
-
 @keyframes skSpin { to { transform: rotate(360deg); } }
-@keyframes skTextPulse { 0%, 100% { opacity: 0.65; } 50% { opacity: 1; } }
+@keyframes skTextPulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
 @keyframes skDot { 0%, 100% { transform: translateY(0); opacity: 0.45; } 50% { transform: translateY(-6px); opacity: 1; } }
 @keyframes skLoaderFade {
   to { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(1.05); }
 }
 .sk-loader.sk-loader-replay { animation: none; opacity: 1; visibility: visible; transform: none; }
 
-/* ── LIVE indicator ── */
-.sk-live {
-  position: absolute;
-  top: 22px;
-  right: 26px;
-  z-index: 5;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  background: rgba(11,12,16,0.7);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 999px;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 800;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  color: #fff;
-}
-.sk-live-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: #00A651;
-  box-shadow: 0 0 0 0 rgba(0,166,81,0.7);
-  animation: skLivePulse 1.6s ease-in-out infinite;
-}
-@keyframes skLivePulse {
-  0%   { box-shadow: 0 0 0 0 rgba(0,166,81,0.85); }
-  70%  { box-shadow: 0 0 0 12px rgba(0,166,81,0); }
-  100% { box-shadow: 0 0 0 0 rgba(0,166,81,0); }
-}
-
 /* ── Node bar grow ── */
 @keyframes skNodeGrow { from { transform: scaleY(0); opacity: 0; } to { transform: scaleY(1); opacity: 1; } }
 .sk-node { transform-origin: center center; animation: skNodeGrow 0.85s cubic-bezier(.22,1,.36,1) both; transition: filter 0.2s ease; }
-.sk-node:hover { filter: drop-shadow(0 0 22px rgba(255,255,255,0.55)) brightness(1.12); cursor: pointer; }
+.sk-node:hover { filter: drop-shadow(0 0 14px rgba(0,0,0,0.4)) brightness(1.08); cursor: pointer; }
 
 /* ── Ribbon fade-in ── */
-@keyframes skRibbonFade { from { opacity: 0; } to { opacity: var(--ribbon-op, 0.72); } }
+@keyframes skRibbonFade { from { opacity: 0; } to { opacity: var(--ribbon-op, 0.78); } }
 .sk-ribbon { animation: skRibbonFade 1.4s ease-out both; transition: opacity 0.2s ease, filter 0.2s ease; }
-.sk-ribbon:hover { opacity: 1 !important; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); }
+.sk-ribbon:hover { opacity: 1 !important; filter: drop-shadow(0 0 6px rgba(0,0,0,0.3)); }
 
 /* ── Shimmer that travels across ribbons after they settle ── */
 @keyframes skShimmer {
   0%   { stroke-dashoffset: 200; opacity: 0; }
-  10%  { opacity: 0.95; }
-  60%  { opacity: 0.95; }
+  10%  { opacity: 0.85; }
+  60%  { opacity: 0.85; }
   100% { stroke-dashoffset: -200; opacity: 0; }
 }
 .sk-shimmer {
   fill: none;
-  stroke: rgba(255,255,255,0.85);
+  stroke: rgba(255,255,255,0.95);
   stroke-width: 2;
   stroke-dasharray: 22 200;
   animation: skShimmer 4s ease-in-out 2.6s infinite;
@@ -1343,7 +1270,7 @@ body::before {
 /* Pulse on highlight node */
 @keyframes skPulseGlow {
   0%, 100% { filter: drop-shadow(0 0 0 rgba(0,166,81,0)); }
-  50%      { filter: drop-shadow(0 0 24px rgba(0,166,81,0.95)); }
+  50%      { filter: drop-shadow(0 0 24px rgba(0,166,81,0.85)); }
 }
 .sk-pulse { animation: skNodeGrow 0.85s cubic-bezier(.22,1,.36,1) both, skPulseGlow 2.6s ease-in-out 1.4s infinite; }
 
@@ -1523,25 +1450,7 @@ body::before {
                     <div class="sk-loader-dots"><span class="sk-loader-dot"></span><span class="sk-loader-dot"></span><span class="sk-loader-dot"></span></div>
                 </div>
             </div>
-            <div class="sk-live"><span class="sk-live-dot"></span>LIVE</div>
             <div id="pipelineSankey" class="sankey-canvas"></div>
-        </div>
-    </div>
-<div class="chart-grid">
-                <div class="chart-canvas" id="pipelineSankey"></div>
-                <div class="chart-side" id="pipelineLists"></div>
-            </div>
-            <div class="interview-stage-section">
-                <div class="chart-eyebrow">Interview Stages</div>
-                <h3 class="interview-stage-headline">Where each conversation stands right now</h3>
-                <div class="interview-stage-grid" id="interviewStageGrid"></div>
-            </div>
-        </div>
-    </div>
-<div class="chart-grid">
-                <div class="chart-canvas" id="pipelineSankey"></div>
-                <div class="chart-side" id="pipelineLists"></div>
-            </div>
         </div>
     </div>
 </div>
@@ -6335,24 +6244,19 @@ function isApplied(j) {
 }
 
 function renderPipeline() {
-  // ── Replay loader animation
   var loader = document.getElementById('sankeyLoader');
   if (loader) {
     loader.classList.add('sk-loader-replay');
-    void loader.offsetWidth; // force reflow
+    void loader.offsetWidth;
     loader.classList.remove('sk-loader-replay');
   }
 
   var jobs = (typeof JOBS !== 'undefined') ? JOBS : [];
-  var total = 0, applied = 0, interviewingState = 0, offers = 0, rejected = 0;
+  var total = 0, applied = 0;
   jobs.forEach(function(job) {
     var s = (typeof getJobState === 'function') ? (getJobState(job.id).status || 'not-started') : (job.defaultStatus || 'not-started');
     if (s === 'not-interested') return;
     total++;
-    if (s === 'applied' || s === 'in-progress') applied++;
-    if (s === 'interviewing') interviewingState++;
-    if (s === 'offer') offers++;
-    if (s === 'rejected') rejected++;
   });
   function isAppliedJob(j) {
     var s = (typeof getJobState === 'function') ? (getJobState(j.id).status || 'not-started') : (j.defaultStatus || 'not-started');
@@ -6408,35 +6312,15 @@ function renderPipeline() {
   var nAwaitDecide = interviewSub['awaiting-decision'].length;
   var nNextRound = interviewSub.next.length;
 
-  // Spawn ambient orbs
-  var stage = document.getElementById('sankeyStage');
-  if (stage) {
-    stage.querySelectorAll('.sk-orb').forEach(function(o){ o.remove(); });
-    var orbColors = ['#E4312B','#FFD000','#00A651','#0072CE','#F472B6','#FF6B2B'];
-    for (var i = 0; i < 9; i++) {
-      var o = document.createElement('div');
-      o.className = 'sk-orb';
-      var size = 120 + Math.random() * 240;
-      o.style.width = size + 'px';
-      o.style.height = size + 'px';
-      o.style.background = orbColors[i % orbColors.length];
-      o.style.left = (Math.random() * 92) + '%';
-      o.style.top = (Math.random() * 80) + '%';
-      o.style.animationDelay = (-Math.random() * 14) + 's';
-      o.style.animationDuration = (12 + Math.random() * 12) + 's';
-      stage.appendChild(o);
-    }
-  }
-
-  // ─── BIGGER GEOMETRY ────────────────────────────────────────────
-  var W = 1700, H = 1020;
-  var marginTop = 80, marginBottom = 80, marginLeft = 230, marginRight = 230;
-  var nodeW = 56;
-  var nodeGap = 28;
+  // GEOMETRY
+  var W = 1700, H = 980;
+  var marginTop = 70, marginBottom = 70, marginLeft = 220, marginRight = 220;
+  var nodeW = 60;
+  var nodeGap = 30;
   var availH = H - marginTop - marginBottom;
 
   var palette = {
-    total: '#0072CE', applied: '#FF6B2B', notApplied: '#777',
+    total: '#0072CE', applied: '#FF6B2B', notApplied: '#9CA3AF',
     interview: '#00A651', rejected: '#E4312B', bounced: '#6B4226',
     awaiting: '#F472B6', offer: '#FFD000',
     upcoming: '#FF6B2B', awaitDecide: '#0072CE', nextRound: '#00A651'
@@ -6465,7 +6349,7 @@ function renderPipeline() {
 
   var colTotals = columns.map(function(col) { return col.reduce(function(s,n){ return s + n.value; }, 0); });
   var maxColTotal = Math.max.apply(null, colTotals);
-  function vToPx(v) { return v * (availH - 120) / Math.max(maxColTotal, 1); }
+  function vToPx(v) { return v * (availH - 100) / Math.max(maxColTotal, 1); }
   var nCols = columns.length;
   var colXStep = (W - marginLeft - marginRight - nodeW) / (nCols - 1);
   var colX = columns.map(function(_, i) { return marginLeft + i * colXStep; });
@@ -6476,7 +6360,7 @@ function renderPipeline() {
     var colHeight = colTotal + totalGap;
     var y = marginTop + (availH - colHeight) / 2;
     col.forEach(function(n) {
-      n.h = Math.max(20, vToPx(n.value));
+      n.h = Math.max(22, vToPx(n.value));
       n.x = colX[ci];
       n.y = y;
       n.cx = n.x + nodeW / 2;
@@ -6542,10 +6426,6 @@ function renderPipeline() {
     );
   });
   svg += ribbonDefs.join('');
-  svg += '<filter id="skGlow" x="-30%" y="-30%" width="160%" height="160%">' +
-         '<feGaussianBlur stdDeviation="5" result="b"/>' +
-         '<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>' +
-         '</filter>';
   svg += '</defs>';
 
   // Ribbons
@@ -6560,13 +6440,13 @@ function renderPipeline() {
     var dstY1 = dstY0 + thickness;
     dst.inConsumed += thickness;
     var path = buildRibbonPath(src, srcY0, srcY1, dst, dstY0, dstY1);
-    svg += '<path class="sk-ribbon" style="--ribbon-op:0.78;animation-delay:' + (0.35 + idx * 0.07) + 's;" d="' + path + '" fill="url(#' + flow.gradId + ')" stroke="' + flow.color + '" stroke-width="0.6" stroke-opacity="0.55"/>';
-    // Shimmer along the centerline
+    svg += '<path class="sk-ribbon" style="--ribbon-op:0.78;animation-delay:' + (0.35 + idx * 0.07) + 's;" d="' + path + '" fill="url(#' + flow.gradId + ')" stroke="' + flow.color + '" stroke-width="0.8" stroke-opacity="0.45"/>';
     var shimmerPath = buildShimmerPath(src, (srcY0 + srcY1) / 2, dst, (dstY0 + dstY1) / 2);
     svg += '<path class="sk-shimmer" style="animation-delay:' + (2.6 + idx * 0.4) + 's;" d="' + shimmerPath + '"/>';
   });
 
-  function drawTextWithBackdrop(x, y, anchor, text, fontSize, fontWeight, fillColor, delay, padX, padY, opacity) {
+  // Light-theme label drawer (cream pill, dark text)
+  function drawTextWithBackdrop(x, y, anchor, text, fontSize, fontWeight, fillColor, delay, padX, padY) {
     var charW = fontSize * 0.55;
     var w = Math.max(charW * (text.length || 1), 18);
     var bgX = anchor === 'end' ? (x - w - padX) : (x - padX);
@@ -6574,7 +6454,7 @@ function renderPipeline() {
     var bgW = w + padX * 2;
     var bgH = fontSize + padY * 1.2;
     return [
-      '<rect class="sk-label" style="animation-delay:' + delay + 's;opacity:' + (opacity || 0.85) + ';" x="' + bgX + '" y="' + bgY + '" width="' + bgW + '" height="' + bgH + '" rx="5" fill="rgba(8,9,12,0.78)" stroke="rgba(255,255,255,0.08)"/>',
+      '<rect class="sk-label" style="animation-delay:' + delay + 's;" x="' + bgX + '" y="' + bgY + '" width="' + bgW + '" height="' + bgH + '" rx="5" fill="rgba(255,248,240,0.96)" stroke="rgba(26,26,26,0.18)" stroke-width="1"/>',
       '<text class="sk-label" style="animation-delay:' + (delay + 0.05) + 's;" x="' + x + '" y="' + y + '" text-anchor="' + anchor + '" font-size="' + fontSize + '" font-weight="' + fontWeight + '" fill="' + fillColor + '">' + text + '</text>'
     ].join('');
   }
@@ -6583,23 +6463,22 @@ function renderPipeline() {
     col.forEach(function(n, ni) {
       var delay = 0.05 + ci * 0.14 + ni * 0.05;
       var pulseClass = n.pulse ? ' sk-pulse' : '';
-      svg += '<rect class="sk-node' + pulseClass + '" style="animation-delay:' + delay + 's;" x="' + n.x + '" y="' + n.y + '" width="' + nodeW + '" height="' + n.h + '" fill="' + n.color + '" stroke="#1A1A1A" stroke-width="3" filter="url(#skGlow)"><title>' + n.label + ': ' + n.value + '</title></rect>';
+      svg += '<rect class="sk-node' + pulseClass + '" style="animation-delay:' + delay + 's;" x="' + n.x + '" y="' + n.y + '" width="' + nodeW + '" height="' + n.h + '" fill="' + n.color + '" stroke="#1A1A1A" stroke-width="3"><title>' + n.label + ': ' + n.value + '</title></rect>';
 
       var labelX, labelAnchor;
       if (ci === 0) { labelX = n.x - 22; labelAnchor = 'end'; }
       else { labelX = n.x + nodeW + 22; labelAnchor = 'start'; }
 
       var labelY = n.cy - 8;
-      svg += drawTextWithBackdrop(labelX, labelY, labelAnchor, n.label, 16, 700, '#C7CDD8', delay + 0.55, 12, 6, 0.85);
-      var numY = n.cy + 38;
-      svg += '<text class="sk-num" style="animation-delay:' + (delay + 0.65) + 's;paint-order:stroke;stroke:rgba(0,0,0,0.85);stroke-width:4px;" x="' + labelX + '" y="' + numY + '" text-anchor="' + labelAnchor + '" font-size="56" font-weight="900" fill="#fff" data-target="' + n.value + '">' + n.value + '</text>';
+      svg += drawTextWithBackdrop(labelX, labelY, labelAnchor, n.label, 16, 700, '#1A1A1A', delay + 0.55, 12, 6);
+      var numY = n.cy + 42;
+      svg += '<text class="sk-num" style="animation-delay:' + (delay + 0.65) + 's;paint-order:stroke;stroke:rgba(255,248,240,0.9);stroke-width:5px;" x="' + labelX + '" y="' + numY + '" text-anchor="' + labelAnchor + '" font-size="60" font-weight="900" fill="#1A1A1A" data-target="' + n.value + '">' + n.value + '</text>';
     });
   });
 
   svg += '</svg>';
   document.getElementById('pipelineSankey').innerHTML = svg;
 
-  // Number count-up
   setTimeout(function() {
     var nums = document.querySelectorAll('#pipelineSankey .sk-num');
     var pairs = [];
@@ -6611,7 +6490,7 @@ function renderPipeline() {
       }
     });
     var t0 = performance.now();
-    var dur = 1400;
+    var dur = 1300;
     function step(t) {
       var p = Math.min(1, (t - t0) / dur);
       var eased = 1 - Math.pow(1 - p, 3);
@@ -6619,7 +6498,7 @@ function renderPipeline() {
       if (p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
-  }, 800);
+  }, 700);
 }
 </script>
 </body>
