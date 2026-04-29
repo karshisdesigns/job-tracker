@@ -1167,6 +1167,7 @@ body::before {
     <div class="tabs">
         <button class="tab-btn active" onclick="showTab('active')">Active Postings</button>
         <button class="tab-btn" onclick="showTab('outreach')">Cold Outreach</button>
+        <button class="tab-btn" onclick="showTab('pipeline')">Pipeline</button>
     </div>
 </header>
 <div class="main">
@@ -1309,6 +1310,20 @@ body::before {
         </div>
         <div id="outreachCards" class="timeline"></div>
     </div>
+    <!-- Pipeline Tab -->
+    <div id="tab-pipeline" style="display:none;">
+        <div class="progress-section" style="display:block;">
+            <div class="progress-title">Application Funnel</div>
+            <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;">
+                <div id="pipelineSankey" style="flex:1 1 720px;min-width:480px;"></div>
+                <div id="pipelineLists" style="flex:1 1 360px;min-width:300px;font-size:13px;color:var(--ink,#222);"></div>
+            </div>
+            <div id="pipelineLegend" style="margin-top:14px;font-size:12px;color:var(--ink-muted,#666);line-height:1.5;">
+                Stages are derived from <code>defaultStatus</code>, <code>gmailStatus</code>, and <code>gmailBadge</code> on each job. Hover bars to see counts. The funnel narrows from <strong>Roles Found</strong> (every job in the tracker) to <strong>Roles That Fit</strong> (score &ge; 4) to <strong>Applied</strong> and the outcome buckets.
+            </div>
+        </div>
+    </div>
+
 </div>
 <!-- Apply / Email Modal -->
 <div class="modal-overlay" id="emailModal" onclick="handleModalOverlayClick(event)">
@@ -1986,7 +2001,7 @@ const JOBS = [
     firmWebsite: 'https://verano.com',
     roleSketch: 'Manage construction and renovation projects for cannabis dispensary buildouts and cultivation facilities across Verano\'s national portfolio. Oversee contractor coordination, permitting, budgets, and timelines for retail TI and industrial grow facility projects. Your commercial TI and construction documentation experience is a direct fit.',
     defaultStatus: 'applied',
-    gmailStatus: 'Phone interview 4/14 with Justin Lee completed - Virtual Teams interview TODAY 4/16 at 11:00 AM CDT with Alcides/Eddie Leon (Construction PM)',
+    gmailStatus: 'Interviewed',
     gmailDate: '2026-04-16',
     gmailBadge: 'interview',
     cannabis: true,
@@ -3207,9 +3222,9 @@ const JOBS = [
         firmWebsite: 'https://www.fullcirclearchitects.com/',
         roleSketch: 'Small firm seeking designer for all project phases. Requires AutoCAD, SketchUp, Enscape, Adobe Suite. 3-8 years experience. Good benefits including paid ARE prep and licensing bonus. Strong fit for Alex\'s skill set.',
         defaultStatus: 'interviewing',
-        gmailStatus: 'Zoom interview with Daniel Baigelman completed 4/14 - awaiting next steps',
-        gmailDate: 'April 13, 2026',
-        gmailBadge: 'interview'
+        gmailStatus: 'SHORTLIST - In-office interview confirmed 4/28 at 2pm with Dan Baigelman',
+        gmailDate: 'April 21, 2026',
+        gmailBadge: 'INTERVIEW 4/28'
       },
       {
         id: 'okellykasprak-designer',
@@ -3230,9 +3245,9 @@ const JOBS = [
         firmWebsite: 'https://www.okellykasprak.com/',
         roleSketch: 'Hospitality design firm (hotels, restaurants, aviation, entertainment). Revit and AutoCAD required. 3-10 years experience. Great fit for Alex\'s interest in experiential and entertainment design.',
         defaultStatus: 'applied',
-        gmailStatus: 'Phone call completed 4/15 with Belinda O\'Kelly - awaiting next steps',
-        gmailDate: 'April 15, 2026',
-        gmailBadge: 'interview'
+        gmailStatus: 'Zoom interview completed 4/21. References sent 4/22 (Meza, Singh, + one). Belinda replied same day \'Great - thank you!\' - now awaiting decision.',
+        gmailDate: 'April 22, 2026',
+        gmailBadge: 'REFS SENT - AWAITING'
       },
       {
         id: 'lbba-architect',
@@ -3253,9 +3268,7 @@ const JOBS = [
         firmWebsite: 'https://www.lbba.com/',
         roleSketch: 'Socially-minded firm focused on affordable housing and community spaces. Multi-unit housing projects. Requires 5-10 years experience and deep Chicago code knowledge. Good benefits including 401k and paid OT. May be slightly senior for Alex\'s level but worth applying.',
         defaultStatus: 'applied',
-        gmailStatus: 'Applied Apr 9 - emailed lbbahiring@lbba.com',
-        gmailDate: 'April 9, 2026',
-        gmailBadge: 'applied'
+        gmailStatus: 'Applied Apr 9 - emailed lbbahiring@lbba.com', gmailDate: 'April 9, 2026', gmailBadge: 'applied'
       },
       {
         id: 'struxc-construction-mgr',
@@ -3415,9 +3428,9 @@ const JOBS = [
       firmWebsite: 'https://www.wightco.com',
       roleSketch: '6 to 8 month contract/temp support role at Wight & Company, an architecture and engineering firm serving civic, education, and commercial markets in the Chicago metro area. Introduced by Actalent recruiter Kacy Furjanic on April 7; Caitlin Furmanek submitted Alex\'s resume to the hiring manager on April 8. Feedback expected end of week of April 7. Could convert to full-time.',
       defaultStatus: 'applied',
-      gmailStatus: 'Submitted by Actalent (Caitlin Furmanek) Apr 8 - awaiting hiring manager feedback',
-      gmailDate: 'April 8, 2026',
-      gmailBadge: 'applied'
+      gmailStatus: 'Interview Rescheduled - Thu 4/30 9:00 AM (was 4/28, Alex at funeral)',
+      gmailDate: '2026-04-30',
+      gmailBadge: 'interview'
     },
 
     {
@@ -3608,7 +3621,6 @@ const JOBS = [
     },
     {
       id: 'evergreen-construction-pm',
-      isNew: true,
       company: 'Evergreen Real Estate Group',
       title: 'Construction Project Manager',
       score: 4,
@@ -3632,7 +3644,6 @@ const JOBS = [
     },
     {
       id: 'bushman-construction-pm',
-      isNew: true,
       company: 'Bushman Construction Management',
       title: 'Construction Management Project Manager',
       score: 3,
@@ -3654,7 +3665,451 @@ const JOBS = [
       gmailDate: '',
       gmailBadge: ''
     },
-    ];
+      {
+    id: 'spaantech-proj-arch',
+    company: 'SPAAN Tech',
+    title: 'Project Architect',
+    score: 4,
+    salary: '$75,000',
+    location: 'Chicago, IL',
+    address: 'Chicago, IL',
+    remote: 'On-site',
+    posted: 'April 10, 2026',
+    postedISO: '2026-04-10',
+    source: 'Indeed',
+    deadline: 'Rolling',
+    howToApply: 'Apply via Indeed',
+    applyLink: 'https://to.indeed.com/aag7dsrn67wm',
+    postingLink: 'https://to.indeed.com/aag7dsrn67wm',
+    firmWebsite: '',
+    roleSketch: 'Project Architect role at a Chicago firm. Salary listed at $75,000 (fits the low-mid range). Posted April 10, 2026. Solid fit for Project Architect target track - need to dig into specifics and portfolio alignment during application.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+  {
+    id: 'pathconstruction-architect',
+    company: 'Path Construction',
+    title: 'Architect - Construction',
+    score: 4,
+    salary: '$80,000-$120,000',
+    location: 'Arlington Heights, IL',
+    address: 'Arlington Heights, IL',
+    remote: 'On-site',
+    posted: 'December 16, 2025',
+    postedISO: '2025-12-16',
+    source: 'Indeed',
+    deadline: 'Rolling',
+    howToApply: 'Apply via Indeed',
+    applyLink: 'https://to.indeed.com/aazfylz6lfx6',
+    postingLink: 'https://to.indeed.com/aazfylz6lfx6',
+    firmWebsite: 'https://www.pathcon.com',
+    roleSketch: 'In-house architect role at Path Construction (a GC). Revit + AutoCAD required, Navisworks a plus. Arlington Heights is a commutable NW Chicago suburb. Salary range $80K-$120K fits Alex\'s target. Still listed on Indeed despite Dec post date - good design-build opportunity.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+  {
+    id: 'hoatalent-senior-pm',
+    company: 'HOATalent',
+    title: 'Senior Project Manager',
+    score: 3,
+    salary: '$95,000-$105,000',
+    location: 'Chicago, IL',
+    address: 'Chicago, IL',
+    remote: 'Unknown',
+    posted: 'April 17, 2026',
+    postedISO: '2026-04-17',
+    source: 'Indeed',
+    deadline: 'Rolling',
+    howToApply: 'Apply via Indeed',
+    applyLink: 'https://to.indeed.com/aaz8vhr27qt7',
+    postingLink: 'https://to.indeed.com/aaz8vhr27qt7',
+    firmWebsite: '',
+    roleSketch: 'Senior PM role at HOATalent (likely HOA/community management staffing). Salary band $95-$105K fits target. Posted yesterday so fresh. Review the role carefully - may be property management PM vs construction/design PM. Apply if scope matches capital projects.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+  {
+    id: 'brookfield-cap-projects',
+    company: 'Brookfield Properties',
+    title: 'Associate, Capital Projects',
+    score: 4,
+    salary: '$130,000-$140,000',
+    location: 'Chicago, IL',
+    address: 'Chicago, IL',
+    remote: 'Hybrid',
+    posted: 'March 23, 2026',
+    postedISO: '2026-03-23',
+    source: 'Indeed',
+    deadline: 'Rolling',
+    howToApply: 'Apply via Indeed',
+    applyLink: 'https://to.indeed.com/aap6lk689dwb',
+    postingLink: 'https://to.indeed.com/aap6lk689dwb',
+    firmWebsite: 'https://www.brookfieldproperties.com',
+    roleSketch: 'Associate, Capital Projects at Brookfield Properties - a major national real estate owner/operator. Role likely covers capex and TI project management across their commercial portfolio. Salary $130-$140K is above Alex\'s floor but title is "Associate" so may be achievable. Strong brand for resume.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+  {
+    id: 'williamsarch-interiordesigner',
+    company: 'Williams Architects',
+    title: 'Interior Designer',
+    score: 3,
+    salary: '$60,000-$80,000',
+    location: 'Itasca, IL',
+    address: 'Itasca, IL',
+    remote: 'On-site',
+    posted: 'April 8, 2026',
+    postedISO: '2026-04-08',
+    source: 'Indeed',
+    deadline: 'Rolling',
+    howToApply: 'Apply via Indeed',
+    applyLink: 'https://to.indeed.com/aa2ywv6plw96',
+    postingLink: 'https://to.indeed.com/aa2ywv6plw96',
+    firmWebsite: 'https://williams-architects.com',
+    roleSketch: 'Interior Designer at Williams Architects in Itasca (NW Chicago suburb, ~30 min drive). $60-$80K fits Alex\'s lower band. Williams Architects does municipal, education, and recreation work. Interior design lean makes this more specialized, but Alex\'s Revit + documentation chops transfer cleanly.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+  {
+    id: 'johnburns-apm',
+    company: 'John Burns Construction Company',
+    title: 'Assistant Project Manager',
+    score: 4,
+    salary: '$70,000-$90,000',
+    location: 'Chicago, IL',
+    address: 'Chicago, IL',
+    remote: 'On-site',
+    posted: 'April 2026',
+    postedISO: '2026-04-17',
+    source: 'LinkedIn Jobs (from email digest 4/20)',
+    deadline: '',
+    howToApply: 'Apply with LinkedIn resume and profile',
+    applyLink: 'https://www.linkedin.com/jobs/view/4393826053/',
+    postingLink: 'https://www.linkedin.com/jobs/view/4393826053/',
+    firmWebsite: 'https://jbconstructionco.com/',
+    roleSketch: 'Chicago-based GC (since 1906) specializing in heavy civil, utility, and commercial construction. Ranked in Chicago Tribune Top Workplaces 8 years running. Assistant PM role supports senior PMs with scheduling, submittals, subcontractor coordination, and field documentation - good ramp into PM side for someone with Alex\'s 2 years of documentation and coordination experience.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+  {
+    id: 'dicosola-apm',
+    company: 'DiCosola Group',
+    title: 'Assistant Project Manager',
+    score: 3,
+    salary: 'Not listed',
+    location: 'Hinsdale, IL',
+    address: '637 W 58th, Hinsdale, IL 60521',
+    remote: 'On-site',
+    posted: 'April 2026',
+    postedISO: '2026-04-17',
+    source: 'LinkedIn Jobs (from email digest 4/20)',
+    deadline: '',
+    howToApply: 'Apply with LinkedIn resume and profile',
+    applyLink: 'https://www.linkedin.com/jobs/view/4403067806/',
+    postingLink: 'https://www.linkedin.com/jobs/view/4403067806/',
+    firmWebsite: 'https://dicosolagroup.com/',
+    roleSketch: 'Full-service real estate construction, development, and consulting firm serving Chicago metro and western suburbs. Commercial and residential work. Hinsdale office is a ~30 min commute. Assistant PM role suits Alex\'s documentation and coordination background.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+
+  {
+    id: 'dspace-residential',
+    company: 'dSPACE Studio Architecture',
+    title: 'Residential Architect 1-4 yrs',
+    score: 4,
+    salary: 'Based on experience',
+    location: 'Chicago, IL (Lincoln Ave / Lakeview)',
+    address: 'Chicago, IL',
+    remote: 'On-site',
+    posted: 'April 21, 2026',
+    postedISO: '2026-04-21',
+    source: 'AIA Chicago Job Board',
+    deadline: 'Rolling',
+    howToApply: 'Email cover letter, resume, and work samples (under 15MB) to jobs@dspacestudio.com with "Chicago Location" in the subject line.',
+    applyLink: 'mailto:jobs@dspacestudio.com',
+    postingLink: 'https://aiachicago.org/job_posting/dspace-studio-architecture-residential-architect-1-4-yrs/',
+    firmWebsite: 'https://www.dspacestudio.com',
+    roleSketch: 'Award-winning residential firm on Lincoln Ave. within 1 mile of home. 1-4 yrs experience range fits 2 yrs at DxU exactly. Revit required; Adobe Creative Suite and 3D software. dSPACE was already on the cold outreach list - this public posting is the perfect trigger to formally apply.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+  {
+    id: 'globetrotters-pm-arch',
+    company: 'Globetrotters Engineering',
+    title: 'Project Manager - Architect',
+    score: 3,
+    salary: '$120,000 - $160,000',
+    location: 'Chicago, IL',
+    address: '300 S. Wacker Dr., Suite 400, Chicago, IL 60606',
+    remote: 'On-site',
+    posted: 'April 20, 2026',
+    postedISO: '2026-04-20',
+    source: 'Indeed',
+    deadline: 'Rolling',
+    howToApply: 'Retry via jobs@gec-group.com (per gec-group.com careers page) or apply via Indeed. Alex previously interviewed here (Nick Santana / Ajay Shah) for Project Architect in May-June 2024; the process was ultimately canceled.',
+    applyLink: 'https://to.indeed.com/aah4vgvhqvvr',
+    postingLink: 'https://to.indeed.com/aah4vgvhqvvr',
+    firmWebsite: 'https://www.gec-group.com',
+    roleSketch: 'Downtown engineering-architecture firm in West Loop. Salary band sits above target (Alex at lower end). Prior interview history (May 2024). Previous process stalled - a direct note to Nick Santana could reactivate the relationship.',
+    defaultStatus: 'not-started',
+    gmailStatus: 'Email 4/22 to nick.santana@gec-group.com bounced (address not found). Per gec-group.com careers page, the correct contact is jobs@gec-group.com. Nicks LinkedIn is still the best outreach channel.',
+    gmailDate: 'April 22, 2026',
+    gmailBadge: 'EMAIL BOUNCED'
+  },
+  {
+    id: 'john-keno-constr-pm',
+    company: 'John Keno and Company',
+    title: 'Construction Project Manager',
+    score: 3,
+    salary: '$95,000 - $130,000',
+    location: 'Chicago, IL',
+    address: 'Chicago, IL',
+    remote: 'On-site',
+    posted: 'April 14, 2026',
+    postedISO: '2026-04-14',
+    source: 'Indeed',
+    deadline: 'Rolling',
+    howToApply: 'Apply via Indeed posting. NOTE: careers@johnkenocompany.com bounces - domain is wrong. Correct contact: estimating@johnkeno.com (or phone 773-380-0700).',
+    applyLink: 'https://to.indeed.com/aakjjc7lg2tw',
+    postingLink: 'https://to.indeed.com/aakjjc7lg2tw',
+    firmWebsite: 'https://www.johnkeno.com',
+    roleSketch: 'Chicago excavation / site prep GC since 1946 (not a general commercial builder as originally framed). Salary band is in target. Construction PM role. NOTE: Initial email 4/22 to careers@johnkenocompany.com bounced.',
+    defaultStatus: 'not-started',
+    gmailStatus: 'Bounced - Bad Email',
+    gmailDate: '2026-04-22',
+    gmailBadge: 'bounced'
+  },
+  {
+    id: 'hartshorne-plunkard-pa',
+    company: 'Hartshorne Plunkard Architecture',
+    title: 'Project Architect (4+ YOE)',
+    score: 3,
+    salary: '$80,000 - $95,000',
+    location: 'Chicago, IL (Near North Side)',
+    address: 'Chicago, IL',
+    remote: 'Hybrid',
+    posted: 'April 21, 2026',
+    postedISO: '2026-04-21',
+    source: 'AIA Chicago Job Board',
+    deadline: 'Rolling',
+    howToApply: 'Email cover letter, resume, and portfolio to careers@hparchitecture.com. No phone calls.',
+    applyLink: 'mailto:careers@hparchitecture.com',
+    postingLink: 'https://aiachicago.org/job_posting/hartshorne-plunkard-architecture-project-architect-4-yoe/',
+    firmWebsite: 'https://hparchitecture.com/',
+    roleSketch: 'Top Chicago firm - mixed-use, hospitality, multifamily. Revit 3+ yrs required (Alex has 2 yrs at DxU as primary Revit documentation lead). Listing states Architect license is mandatory - Alex is unlicensed, which is the key blocker. Worth applying with transparency on license status.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+  {
+    id: 'mth-industries-arch-drafter',
+    company: 'MTH Industries',
+    title: 'Architectural Drafter',
+    score: 3,
+    salary: 'Not listed',
+    location: 'Hillside, IL',
+    address: 'Hillside, IL',
+    remote: 'On-site',
+    posted: 'April 21, 2026',
+    postedISO: '2026-04-21',
+    source: 'LinkedIn',
+    deadline: 'Rolling',
+    howToApply: 'Apply via LinkedIn.',
+    applyLink: 'https://www.linkedin.com/jobs/search/?keywords=MTH%20Industries%20Architectural%20Drafter&location=Hillside%2C%20IL',
+    postingLink: 'https://www.linkedin.com/jobs/search/?keywords=MTH%20Industries%20Architectural%20Drafter&location=Hillside%2C%20IL',
+    firmWebsite: 'https://www.mth-industries.com',
+    roleSketch: 'Architectural metal/glass/facade fabrication firm in Hillside (~30 min commute). Drafter role is a step down from designer but Alex\'s Revit-heavy DxU experience plus industrial design background make this a plausible crossover into specialty fabrication.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+  {
+    id: 'mortenson-vdc-coord',
+    company: 'Mortenson Construction',
+    title: 'Senior Integrated Construction Coordinator (VDC)',
+    score: 4,
+    salary: '$98,800 - $133,300',
+    location: 'Itasca, IL (Chicago Office)',
+    address: 'Itasca, IL',
+    remote: 'Hybrid',
+    posted: 'April 22, 2026',
+    postedISO: '2026-04-22',
+    source: 'Indeed',
+    deadline: 'Rolling (avg 44 days open)',
+    howToApply: 'Apply via Indeed posting. Role sits under Mortensons Chicago Office and calls for 2+ years experience plus Revit, Navisworks, AutoCAD, Bluebeam Revu, BIM 360 - a near-perfect overlap with Alexs DxU toolchain.',
+    applyLink: 'https://to.indeed.com/aasny2x89lq9',
+    postingLink: 'https://to.indeed.com/aasny2x89lq9',
+    firmWebsite: 'https://www.mortenson.com/',
+    roleSketch: 'Senior VDC/BIM coordinator role for a top national builder (sports, renewable energy, data centers, healthcare). Minimum 2 years experience (Alex has 2 at DxU). Tech stack matches Alexs background exactly: Revit, Navisworks, AutoCAD, Synchro 4D, SketchUp, Bluebeam Revu, BIM 360 Field/Glue, Adobe Suite. Title says Senior but stated min experience is 2 years so worth applying.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+    {
+      id: 'wjw-arch-designer',
+      company: 'WJW Architects',
+      title: 'Architectural Designer',
+      score: 4,
+      salary: '$64,000 - $69,000',
+      location: 'Chicago, IL',
+      address: 'Chicago, IL',
+      remote: 'On-site',
+      posted: '2026-04-23',
+      postedISO: '2026-04-23',
+      source: 'AIA Chicago Job Board',
+      deadline: 'Open until filled',
+      howToApply: 'Apply via AIA Chicago link or email careers',
+      applyLink: 'https://aiachicago.org/job_posting/wjw-architects-architectural-designer-5/',
+      postingLink: 'https://aiachicago.org/job_posting/wjw-architects-architectural-designer-5/',
+      firmWebsite: 'https://wjwarchitects.com',
+      roleSketch: 'Entry-level Architectural Designer (0-2 yrs) at mission-driven firm focused on affordable housing, community redevelopment, senior living, residential healthcare. Salary $64-69k, 100% paid medical, transit benefits, AXP/ARE support. Revit/Archicad. Chicago, IL.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+  
+  {
+    id: 'hdr-apm',
+    isNew: true,
+    company: 'HDR',
+    title: 'Assistant Project Manager',
+    score: 4,
+    salary: '$100,870 - $144,100',
+    location: 'Chicago, IL (downtown)',
+    address: 'Chicago, IL',
+    remote: 'On-site (extended site stays)',
+    posted: 'April 22, 2026',
+    postedISO: '2026-04-22',
+    source: 'Indeed',
+    deadline: 'Rolling',
+    howToApply: 'Apply via Indeed link',
+    applyLink: 'https://to.indeed.com/aak9yzh7gyct',
+    postingLink: 'https://to.indeed.com/aak9yzh7gyct',
+    firmWebsite: 'https://www.hdrinc.com',
+    roleSketch: 'Assistant Project Manager in HDR\'s Building Engineering Services group, downtown Chicago. Mission Critical, Healthcare, Science and Technology, Justice, Power Distribution, and Transportation projects. Coordinate single or multidiscipline teams under PM supervision. Track project financials, work site stays. Bachelor\'s + 5 years preferred; PMP a plus. Employee-owned firm.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+  {
+    id: 'kennedy-mann-arch-assoc',
+    isNew: true,
+    company: 'Kennedy Mann Architecture LLC',
+    title: 'Architectural Associates (Mid-Sr Project Architect)',
+    score: 4,
+    salary: 'Industry standard, commensurate with experience',
+    location: 'Chicago, IL',
+    address: 'Chicago, IL',
+    remote: 'On-site',
+    posted: 'April 27, 2026',
+    postedISO: '2026-04-27',
+    source: 'AIA Chicago Job Board',
+    deadline: 'Rolling',
+    howToApply: 'Apply via AIA Chicago listing',
+    applyLink: 'https://aiachicago.org/job_posting/kennedy-mann-architecture-llc-architectural-associates/',
+    postingLink: 'https://aiachicago.org/job_posting/kennedy-mann-architecture-llc-architectural-associates/',
+    firmWebsite: 'https://www.kennedymannarchitecture.com/',
+    roleSketch: 'Kennedy Mann Architecture (KMA) is a collaborative Chicago commercial architecture firm seeking Mid-Level Architectural Associates with experience leading projects from concept through construction. Strong fit for Alex - they want BArch or MArch, Revit/AutoCAD/Adobe Creative Suite. Role includes documentation, budgets, schedules, construction administration, and mentoring.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+  {
+    id: 'eckenhoff-saunders-designer',
+    isNew: true,
+    company: 'Eckenhoff Saunders',
+    title: 'Architectural Designer (Entry)',
+    score: 4,
+    salary: 'Market est. $60,000-$78,000',
+    location: 'Chicago, IL',
+    address: 'Chicago, IL',
+    remote: 'Hybrid (typical for ESA)',
+    posted: 'April 23, 2026',
+    postedISO: '2026-04-23',
+    source: 'AIA Chicago Job Board',
+    deadline: 'Rolling',
+    howToApply: 'Apply via AIA Chicago listing or ESA careers page',
+    applyLink: 'https://www.esadesign.com/contact/',
+    postingLink: 'https://aiachicago.org/job_posting/eckenhoff-saunders-architectural-designer/',
+    firmWebsite: 'https://www.esadesign.com',
+    roleSketch: 'Eckenhoff Saunders Architects (ESA) is an AIA 2030 Commitment Signatory firm in Chicago. Entry-level Architectural Designer role - good fit for Alex\'s 2 years YOE. ESA has a separate Senior Level Architect posting (12+ yrs) that Alex does not qualify for - this Entry posting is the right fit.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+  {
+    id: 'nurture-residential-1-4',
+    isNew: true,
+    company: 'Nurture Architects',
+    title: 'Residential Architect 1-4 yrs',
+    score: 4,
+    salary: 'Market est. $60,000-$80,000',
+    location: 'Chicago, IL',
+    address: 'Chicago, IL',
+    remote: 'Hybrid',
+    posted: 'April 21, 2026',
+    postedISO: '2026-04-21',
+    source: 'AIA Chicago Job Board',
+    deadline: 'Rolling',
+    howToApply: 'Apply via AIA Chicago listing',
+    applyLink: 'https://aiachicago.org/job_posting/nurture-architects-residential-architect-1-4-yrs/',
+    postingLink: 'https://aiachicago.org/job_posting/nurture-architects-residential-architect-1-4-yrs/',
+    firmWebsite: 'https://www.nurturearchitects.com/',
+    roleSketch: 'Nurture Architects is an AIA 2030 Commitment Signatory firm in Chicago focused on sustainable residential projects. The 1-4 yrs YOE band fits Alex perfectly (he has 2 years at DxU). Different posting than the Mid-Level Sustainable Design role they listed (which required 12+ yrs).',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  },
+  {
+    id: 'knockout-pm-cpg',
+    isNew: true,
+    company: 'Knockout Design Group',
+    title: 'Project Manager - CPG Agency',
+    score: 3,
+    salary: 'From $80,000',
+    location: 'Chicago, IL (Lincoln Square)',
+    address: 'Chicago, IL 60625',
+    remote: 'Hybrid',
+    posted: 'April 23, 2026',
+    postedISO: '2026-04-23',
+    source: 'Indeed',
+    deadline: 'Rolling',
+    howToApply: 'Apply via Indeed link',
+    applyLink: 'https://to.indeed.com/aapkjnxd6zzl',
+    postingLink: 'https://to.indeed.com/aapkjnxd6zzl',
+    firmWebsite: 'https://www.knockoutdesigngroup.com/',
+    roleSketch: 'Knockout is a boutique brand and packaging design agency just north of Lincoln Square. Studio Ops PM serving as primary client contact. Less aligned with architecture, but Alex\'s design+PM hybrid background and Adobe Suite proficiency are relevant. CPG/creative agency experience preferred. Fast-paced, hybrid in-office.',
+    defaultStatus: 'not-started',
+    gmailStatus: '',
+    gmailDate: '',
+    gmailBadge: ''
+  }
+];
 const OUTREACH = [
   { id: 'dspace', company: 'dSPACE Studio', location: 'Lincoln Ave / Lakeview (~1 mi)', type: 'Architecture', contact: 'careers@dspacestudio.com', website: 'https://www.dspacestudio.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Award-winning residential firm within 1 mile of home. Recent AIA Chicago posting signals active hiring. Local proximity makes this a natural cold outreach target.', angle: 'Lead with design-forward work and adaptive reuse experience; emphasize Revit CD documentation depth.' },
   { id: 'moss', company: 'moss design', location: 'Logan Square (~2 mi)', type: 'Architecture', contact: 'laura@moss-design.com', website: 'https://moss-design.com', date: 'March 5, 2026', dateISO: '2026-03-05', source: 'AIA Chicago Job Board', why: 'Adaptive reuse, hospitality (breweries), and commercial work. Past job posting for Project Architect/Designer (5-8 yrs) suggests cyclical hiring. Laura is direct contact.', angle: 'Lead with hospitality TI and adaptive reuse work; showcase Revit CD documentation.' },
@@ -4220,7 +4675,115 @@ karshisdesigns.webflow.io`
       subject: 'Construction Management Project Manager - Bushman Construction Management',
       body: "Howdy,\n\nI am reaching out regarding the Construction Management Project Manager role at Bushman Construction Management. I bring 2 years of experience as the primary Revit documentation lead at DxU Architects, where I coordinated commercial tenant improvement and mixed-use projects through all phases of design and construction administration. My hands-on experience with BIM coordination, consultant management, and construction documentation has prepared me well for a construction PM role.\n\nI hold a Master of Architecture and a Master of Industrial Design, and I am passionate about delivering projects on time and on budget while maintaining design quality.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
     },
-    };
+      'spaantech-proj-arch': {
+    to: '',
+    subject: 'Project Architect - Alexander Karshis',
+    body: 'Howdy,\n\nI came across the Project Architect opening at SPAAN Tech and wanted to reach out. For the past 2 years I have been the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects, and I run my own design consultancy (Karshis Designs) here in Chicago.\n\nI would love to learn more about the role and share how my CD depth, Revit leadership, and design-build instincts could be a fit for your team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+  },
+  'pathconstruction-architect': {
+    to: '',
+    subject: 'Architect - Construction - Alexander Karshis',
+    body: 'Howdy,\n\nI came across the Architect - Construction role at Path Construction and wanted to reach out. For the past 2 years I have been the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects, and I run my own design consultancy (Karshis Designs) here in Chicago. I am fluent in Revit, AutoCAD, Bluebeam, and BIM 360, with strong contractor coordination instincts from the architect-of-record side.\n\nThe in-house architect seat inside a GC is exactly the kind of design-build role I am targeting. I would love to learn more about what you are building.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+  },
+  'hoatalent-senior-pm': {
+    to: '',
+    subject: 'Senior Project Manager - Alexander Karshis',
+    body: 'Howdy,\n\nI came across the Senior Project Manager opening at HOATalent and wanted to reach out. For the past 2 years I have been the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects, coordinating across consultants, contractors, and clients. I run my own design consultancy (Karshis Designs) here in Chicago and hold dual master\'s degrees in Architecture and Industrial Design.\n\nI would love to learn more about the role - happy to tailor my background to however the scope is structured.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+  },
+  'brookfield-cap-projects': {
+    to: '',
+    subject: 'Associate, Capital Projects - Alexander Karshis',
+    body: 'Howdy,\n\nI came across the Associate, Capital Projects role at Brookfield Properties and wanted to reach out. For the past 2 years I have been the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects - owning CD sets, contractor coordination, and project-level decision making through permitting and CA.\n\nBrookfield\'s portfolio scale is exactly the kind of environment where I want to apply that experience on the owner side. I would love to connect about the role.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+  },
+  'williamsarch-interiordesigner': {
+    to: '',
+    subject: 'Interior Designer - Alexander Karshis',
+    body: 'Howdy,\n\nI came across the Interior Designer opening at Williams Architects and wanted to reach out. For the past 2 years I have been the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects, and I hold dual master\'s degrees in Architecture and Industrial Design from the University of Houston. I run my own design consultancy (Karshis Designs) here in Chicago.\n\nI would love to learn more about the Itasca studio and how my background could support your interiors work.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+  },
+  'johnburns-apm': {
+    to: '',
+    subject: 'Assistant Project Manager - Alexander Karshis',
+    body: "Howdy,\n\nI came across the Assistant Project Manager opening at John Burns Construction on LinkedIn and wanted to reach out. John Burns' 100+ year track record in Chicago infrastructure and commercial work and its repeat Chicago Tribune Top Workplace recognition both caught my attention.\n\nI am currently an architectural designer at DxU Architects in Chicago, where for the past 2 years I have been the primary Revit documentation lead on commercial TI and mixed-use projects. Day-to-day I drive the drawing sets, manage consultant coordination, track RFIs and submittals, and keep our project schedules moving - the same rhythm an APM would own on the GC side. I hold a Master of Architecture and Master of Industrial Design from the University of Houston and run my own design consultancy, Karshis Designs, on the side.\n\nI would love to talk about how my documentation, coordination, and fabrication background could support your PM team.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+  },
+  'dicosola-apm': {
+    to: '',
+    subject: 'Assistant Project Manager - Alexander Karshis',
+    body: "Howdy,\n\nI saw DiCosola Group's Assistant Project Manager posting in Hinsdale and wanted to introduce myself. Your mix of commercial and residential real estate work across the Chicago metro lines up well with the kind of documentation-forward, full-lifecycle project experience I have been building.\n\nI have spent the last 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects, where I own the CD sets, consultant coordination, and submittal/RFI flow from SD through CA. I hold a Master of Architecture and Master of Industrial Design from the University of Houston and also run my own design consultancy, Karshis Designs.\n\nI would welcome a conversation about how my background could translate to the APM seat at DiCosola.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+  },
+  'dspace-residential': {
+    to: 'jobs@dspacestudio.com',
+    subject: 'Chicago Location - Residential Architect Application - Alexander Karshis',
+    body: "Howdy dSPACE Studio team,\n\nI am writing to apply for the Residential Architect 1-4 yrs position. Your Lincoln Ave studio is less than a mile from where I live in Lakeview, and your contemporary residential work - especially the biophilic integration - is exactly the kind of design thinking I want to be part of.\n\nI have 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects, and I also run a design consultancy, Karshis Designs. Revit, AutoCAD, SketchUp, and the Adobe suite are daily tools. My background bridges architecture and industrial design (dual Master's from University of Houston), which gives me an unusually deep comfort with detailing and material selection.\n\nI have attached my resume, cover letter, and a tailored work-sample PDF under 15MB.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+  },
+  'globetrotters-pm-arch': {
+    to: 'nick.santana@gec-group.com',
+    subject: 'Project Manager - Architect role - Reconnecting from 2024 - Alexander Karshis',
+    body: "Howdy Nick,\n\nReaching back out about the Project Manager - Architect posting I saw on Indeed. You may remember our conversations in May and June of 2024 when I was interviewing for the Project Architect role - the timing did not line up then, but I have been tracking Globetrotters since and the new PM-Architect scope sounds like a stronger fit for where I am now.\n\nOver the past 2 years at DxU Architects I have been the primary Revit documentation lead on commercial TI and mixed-use projects, running coordination with consultants and supervising junior staff. I also continue to run my design consultancy, Karshis Designs, which keeps me sharp on client-facing project management.\n\nHappy to come to the Wacker office whenever works for Ajay's calendar. Resume attached.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+  },
+  'john-keno-constr-pm': {
+    to: 'careers@johnkenocompany.com',
+    subject: 'Construction Project Manager Application - Alexander Karshis',
+    body: "Howdy John Keno team,\n\nI am writing to apply for the Construction Project Manager role. I have 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects, where I routinely work shoulder-to-shoulder with GCs on constructibility, RFIs, and submittals. Pivoting fully to the GC side is exactly the direction I have been pushing for.\n\nI also run my own consultancy, Karshis Designs, which keeps me fluent in budget and schedule management end-to-end. My Revit, Bluebeam, AutoCAD, and BIM 360 proficiency should translate directly to your PM stack.\n\nResume attached and ready to meet whenever is convenient.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+  },
+  'hartshorne-plunkard-pa': {
+    to: 'careers@hparchitecture.com',
+    subject: 'Project Architect (4+ YOE) Application - Alexander Karshis',
+    body: "Howdy HPA hiring team,\n\nI am writing to apply for the Project Architect (4+ YOE) position. A note up front so we do not waste each other's time: I am not yet licensed. I have 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects, and I understand the posting specifies a license requirement - if the role has any flexibility for a strong documentation-forward designer to come in and finish the licensure path with HPA's support, I would love the conversation.\n\nDay-to-day I live in Revit, AutoCAD, Bluebeam, and the Adobe suite. I also run my own consultancy, Karshis Designs, which keeps me sharp on client management and deliverables.\n\nCover letter, resume, and portfolio attached.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+  },
+  'mth-industries-arch-drafter': {
+    to: 'careers@mth-industries.com',
+    subject: 'Architectural Drafter Application - Alexander Karshis',
+    body: "Howdy MTH Industries team,\n\nI am writing to apply for the Architectural Drafter position in Hillside. I have 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects, which is drafter-adjacent work done at a high volume - coordination drawings, shop-drawing review, detail packages.\n\nWhat sets me up well for a fabrication-forward shop like MTH is my dual background - I hold Master's degrees in both Architecture and Industrial Design from the University of Houston, and I run a design consultancy, Karshis Designs, where I do 3D printing, CNC, and hands-on fabrication.\n\nResume attached.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io"
+  },
+  'mortenson-vdc-coord': {
+    to: 'careers@mortenson.com',
+    subject: 'Senior Integrated Construction Coordinator - Alexander Karshis',
+    body: `Howdy Mortenson team,
+
+I am writing to apply for the Senior Integrated Construction Coordinator role posted out of your Chicago Office / Itasca location.
+
+I have 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects. My day-to-day toolchain maps directly to the posting: Revit, Navisworks, AutoCAD, Bluebeam Revu, BIM 360 Field and Glue, and the Adobe Suite. I also bring 3D visualization and fabrication experience from my industrial design background and my own consultancy, Karshis Designs.
+
+Mortensons integrated builder approach and the breadth of your project portfolio (sports, renewable energy, data centers, healthcare) are exactly the environment I want to grow a VDC career in.
+
+My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.
+
+Have a great day,
+Alexander Karshis
+Chicago, IL
+karshisdesigns.webflow.io`
+  },
+  'wjw-arch-designer': {
+    to: 'careers@wjwarchitects.com',
+    subject: 'Architectural Designer Application - Alexander Karshis',
+    body: 'Howdy WJW team,\n\nI am writing to apply for the Architectural Designer position. I have 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects, and I am drawn to WJW for the focus on affordable housing, community redevelopment, and senior living - mission-driven work I would be proud to support.\n\nMy background includes an M.Arch and M.ID from the University of Houston, daily Revit and BIM 360 production, Adobe Suite presentation work, and digital fabrication experience that translates well into evidence-informed, sustainable design. I am also AIA 2030 sympathetic and have been tracking equitable development practices in my own consultancy work.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io'
+  },
+  'hdr-apm': {
+    to: 'careers@hdrinc.com',
+    subject: 'Application for Assistant Project Manager - Building Engineering Services',
+    body: `Howdy HDR Recruiting Team,\n\nI am applying for the Assistant Project Manager opening in HDR's Building Engineering Services group in downtown Chicago. With 2 years at DxU Architects as primary Revit documentation lead on commercial TI and mixed-use projects, plus my Master of Architecture and Master of Industrial Design from the University of Houston, I bring construction documentation rigor, project coordination experience, and client communication skills that map directly to the APM responsibilities you describe.\n\nThe mission-critical, healthcare, and commercial real estate sectors HDR serves are ones I am eager to contribute to. I have worked alongside MEP engineers, structural consultants, and contractors on TI projects, and I am comfortable tracking financials, deliverable schedules, and site coordination. I am also open to extended site stays.\n\nResume attached. My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`
+  },
+  'kennedy-mann-arch-assoc': {
+    to: 'info@kennedymannarchitecture.com',
+    subject: 'Application for Architectural Associates - Kennedy Mann',
+    body: `Howdy Kennedy Mann Team,\n\nI am writing to apply for your Architectural Associates opening in Chicago. With 2 years at DxU Architects as primary Revit documentation lead on commercial TI and mixed-use projects, plus a Master of Architecture and Master of Industrial Design from the University of Houston, I am ready to lead projects from concept through construction within a collaborative commercial practice.\n\nMy daily toolkit is Revit, AutoCAD, and Adobe Creative Suite, with strong 3D modeling and visualization. I have experience with documentation, budgets, schedules, and construction administration. The KMA culture you describe - mentorship, design excellence, and impactful projects - is exactly the environment I am looking for.\n\nResume attached. My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`
+  },
+  'eckenhoff-saunders-designer': {
+    to: 'careers@esadesign.com',
+    subject: 'Application for Architectural Designer - Eckenhoff Saunders',
+    body: `Howdy Eckenhoff Saunders Hiring Team,\n\nI am writing to apply for the Architectural Designer (Entry) opening at ESA. With 2 years at DxU Architects as primary Revit documentation lead on commercial TI and mixed-use projects, plus a Master of Architecture and Master of Industrial Design from the University of Houston, my work to date has built the documentation, coordination, and design execution skills your team relies on for high-quality delivery.\n\nESA's standing as an AIA 2030 Commitment Signatory and your portfolio of civic, commercial, and adaptive reuse work are exactly the kind of practice I want to grow within. I would welcome the chance to contribute Revit, AutoCAD, Adobe, and Bluebeam fluency, and to learn from the senior staff at ESA.\n\nResume attached. My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`
+  },
+  'nurture-residential-1-4': {
+    to: 'careers@nurturearchitects.com',
+    subject: 'Application for Residential Architect 1-4 yrs - Nurture Architects',
+    body: `Howdy Nurture Architects Team,\n\nI am applying for the Residential Architect 1-4 yrs opening posted on the AIA Chicago Job Board. I am 2 years into my career at DxU Architects, where I serve as primary Revit documentation lead on commercial TI and mixed-use projects. I hold a Master of Architecture and Master of Industrial Design from the University of Houston. The 1-4 yrs YOE band fits where I am.\n\nI value Nurture's AIA 2030 Commitment and your sustainable, community-rooted design work. While my recent project list is commercial, I run a small residential and product design consultancy on the side (Karshis Designs), so I am comfortable in residential phases from schematic through CA. I am Revit/AutoCAD/Adobe-fluent and a hands-on fabricator with 3D printing experience.\n\nResume attached. My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`
+  },
+  'knockout-pm-cpg': {
+    to: 'careers@knockoutdesigngroup.com',
+    subject: 'Application for Project Manager - CPG Agency at Knockout',
+    body: `Howdy Knockout Team,\n\nI am writing to apply for the Project Manager (CPG Agency) role posted on Indeed. With 2 years at DxU Architects as primary Revit documentation lead on commercial TI and mixed-use projects, plus a Master of Architecture and Master of Industrial Design from the University of Houston, I have a track record of keeping concurrent creative-technical projects on schedule across stakeholders.\n\nMy industrial design background and ongoing Karshis Designs consultancy give me a packaging and brand sensibility that complements architecture. I am Adobe Creative Suite-fluent (every day in Bluebeam, InDesign, and Illustrator), and I am a strong written and verbal communicator who builds trust with clients quickly. The Studio Ops PM role you describe - traffic, QC, deliverables, automation - is one I would step into smoothly.\n\nResume attached. My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`
+  },
+};
 const OUTREACH_DRAFTS = {
   'dspace': {
     to: 'careers@dspacestudio.com',
@@ -4560,7 +5123,6 @@ const SOCIAL_LEADS = [
     
     {
       id: 'sl-cl-retail-super-041726',
-      isNew: true,
       source: 'craigslist',
       poster: 'Anonymous Poster',
       posterTitle: 'Unknown',
@@ -4573,7 +5135,108 @@ const SOCIAL_LEADS = [
       score: 2,
       cannabis: false
     },
-    ];
+        {
+      id: 'sl-li-soirse-precon',
+      source: 'linkedin',
+      poster: 'Soirse Wiley',
+      posterTitle: 'Recruiter',
+      company: 'Undisclosed ESCO/Design-Build Firm (Illinois)',
+      role: 'Preconstruction Manager / Construction Developer',
+      snippet: 'Follow-up LinkedIn InMail (4/21) - a well-established ESCO/design-build firm in Illinois hiring a Preconstruction Manager/Construction Developer leading the front end of all incoming projects. Highly visible role with strong compensation and commission tied to project completion.',
+      link: 'https://www.linkedin.com/messaging/thread/2-ZjBmYWEzYTQtMWQzOS00N2JiLTgyMjUtYjMzZDFhNTJiYTI3XzEwMA==/',
+      postedTime: 'April 21, 2026',
+      postedISO: '2026-04-21',
+      score: 4,
+      cannabis: false
+    },
+    {
+      id: 'sl-li-united-cre-pm',
+      source: 'linkedin',
+      poster: 'United Airlines (via LinkedIn job digest)',
+      posterTitle: 'Corporate Recruiter',
+      company: 'United Airlines',
+      role: 'Project Manager I - CRE - Planning and Development',
+      snippet: 'LinkedIn job digest (4/20). Corporate Real Estate team at UA headquartered in Chicago, managing facility and infrastructure construction projects across airports, stations, and city locations worldwide. 1 mutual connection. Salary $82K-$107K. Posting shows closed on career portal - may still be worth a LinkedIn InMail or networking push via the mutual connection.',
+      link: 'https://www.linkedin.com/jobs/view/4403540686/',
+      postedTime: 'April 17, 2026',
+      postedISO: '2026-04-17',
+      score: 4,
+      cannabis: false
+    },
+    {
+      id: 'sl-li-hays-pm',
+      source: 'linkedin',
+      poster: 'Hays (via LinkedIn job alert)',
+      posterTitle: 'Recruiter',
+      company: 'Hays',
+      role: 'Project Manager',
+      snippet: 'LinkedIn job alert (4/21) - Hays recruiter-posted Project Manager role, $110K-$130K/year. No Chicago vs remote detail in the email. Hays is a staffing firm; role is at an undisclosed client.',
+      link: 'https://www.linkedin.com/jobs/search/?keywords=hays%20project%20manager',
+      postedTime: 'April 21, 2026',
+      postedISO: '2026-04-21',
+      score: 3,
+      cannabis: false
+    },
+    {
+      id: 'sl-cl-mdcommercial-pm-041926',
+      source: 'craigslist',
+      poster: 'MD Commercial Services',
+      posterTitle: 'Commercial GC / TI contractor',
+      company: 'MD Commercial Services',
+      role: 'Commercial Construction Project Manager (Project Executive)',
+      snippet: 'West Loop firm needs a PM/Project Executive for interior tenant improvements and structural projects. Minimum 5+ yrs. Cites "seasoned professionals" - not handymen. Principals only.',
+      link: 'https://chicago.craigslist.org/chc/trd/d/chicago-commercial-construction-project/7928883201.html',
+      postedTime: 'April 19, 2026 at 10:09 PM',
+      postedISO: '2026-04-19',
+      score: 2,
+      cannabis: false
+    },
+    {
+      id: 'sl-li-fitzgerald-hiring-042026',
+      source: 'linkedin',
+      poster: 'Michael De Rouin, AIA, CSI, CCCA',
+      posterTitle: 'Architect at FitzGerald',
+      company: 'FitzGerald Associates Architects',
+      role: 'Unspecified (firm growth signal)',
+      snippet: 'FitzGerald is #hiring - LinkedIn company hiring post amplified by Michael De Rouin and other team members. Well-known Chicago multifamily/mixed-use firm. Not role-specific but signals open headcount.',
+      link: 'https://www.linkedin.com/company/fitzgerald-associates-architects/',
+      postedTime: 'April 20, 2026',
+      postedISO: '2026-04-20',
+      score: 4,
+      cannabis: false
+    },
+
+  {
+    id: 'linkedin-nicolas-anderson-latent',
+    isNew: true,
+    source: 'linkedin',
+    poster: 'Nicolas Anderson, AIA',
+    posterTitle: 'Design Principal / Technical Director',
+    company: 'Latent Design Corporation',
+    role: 'Career update - Design Principal / Technical Director',
+    snippet: 'LinkedIn flagged Nicolas Anderson AIA\'s post as relevant to Alex - he is now Design Principal / Technical Director at Latent Design. Latent already has a Project Manager opening on Alex\'s tracker. Worth a connect/comment touchpoint - Latent is in growth/expansion mode and Nicolas may have hiring discretion.',
+    link: 'https://www.linkedin.com/in/nicolas-anderson-aia/',
+    postedTime: 'April 26, 2026',
+    postedISO: '2026-04-26',
+    score: 3,
+    cannabis: false
+  },
+  {
+    id: 'linkedin-nelly-augustyn-chipman',
+    isNew: true,
+    source: 'linkedin',
+    poster: 'Nelly Augustyn',
+    posterTitle: 'Principal',
+    company: 'Chipman Design Architecture',
+    role: 'Principal post (potential team announcement)',
+    snippet: 'LinkedIn surfaced Nelly Augustyn\'s post from Chipman Design Architecture - she is a Principal there. Alex previously interviewed at Chipman (March 24). Worth viewing the post and considering a comment or DM to keep that relationship warm, especially if Chipman is announcing growth or open roles.',
+    link: 'https://www.linkedin.com/in/nelly-augustyn/',
+    postedTime: 'April 24, 2026',
+    postedISO: '2026-04-24',
+    score: 3,
+    cannabis: false
+  }
+];
 // ─────────────────────────────────────────────────────────
 
     // ── Self-check: verify data loaded correctly ──
@@ -5197,9 +5860,14 @@ function updateInterviewBox() {
 function showTab(tab) {
   document.getElementById('tab-active').style.display = tab === 'active' ? '' : 'none';
   document.getElementById('tab-outreach').style.display = tab === 'outreach' ? '' : 'none';
-  document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    b.classList.toggle('active', (i === 0 && tab === 'active') || (i === 1 && tab === 'outreach'));
+  var pipeNode = document.getElementById('tab-pipeline');
+  if (pipeNode) pipeNode.style.display = tab === 'pipeline' ? '' : 'none';
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) {
+    b.classList.toggle('active', (i === 0 && tab === 'active') || (i === 1 && tab === 'outreach') || (i === 2 && tab === 'pipeline'));
   });
+  if (tab === 'pipeline' && typeof renderPipeline === 'function') {
+    renderPipeline();
+  }
 }
 // ─────────────────────────────────────────────────────────
 // EMAIL MODAL
@@ -5421,6 +6089,173 @@ renderOutreach();
 updateStats();
 updateOutreachStats();
 updateInterviewBox();
+
+
+// ─────────────────────────────────────────────────────────
+// PIPELINE — application funnel visualization
+// ─────────────────────────────────────────────────────────
+function classifyJob(j) {
+  // Returns one of: 'awaiting','interviewing','offer','rejected','bounced','ghosted','applied-only'
+  // Only called for jobs already classified as "applied".
+  var gs = (j.gmailStatus || '').toLowerCase();
+  var gb = (j.gmailBadge || '').toLowerCase();
+  if (gs.indexOf('offer') !== -1 || gb.indexOf('offer') !== -1) return 'offer';
+  if (gs.indexOf('reject') !== -1 || gs.indexOf('declined') !== -1 || gs.indexOf('passed') !== -1 || gs.indexOf('not selected') !== -1 || gb === 'rejected') return 'rejected';
+  if (gs.indexOf('bounce') !== -1 || gs.indexOf('bad email') !== -1 || gb === 'bounced') return 'bounced';
+  if (gs.indexOf('interview') !== -1 || gs.indexOf('shortlist') !== -1 || gb === 'interview' || (gb && gb.indexOf('interview') !== -1)) return 'interviewing';
+  if (j.defaultStatus === 'interviewing') return 'interviewing';
+  return 'awaiting';
+}
+
+function isApplied(j) {
+  if (j.defaultStatus === 'applied' || j.defaultStatus === 'interviewing' || j.defaultStatus === 'offer') return true;
+  if ((j.gmailStatus || '').trim()) return true;
+  if ((j.gmailBadge || '').trim()) return true;
+  return false;
+}
+
+function renderPipeline() {
+  var jobs = (typeof JOBS !== 'undefined') ? JOBS : [];
+  var found = jobs.length;
+  var fit = jobs.filter(function(j) { return (j.score || 0) >= 4; });
+  var applied = jobs.filter(isApplied);
+
+  var buckets = { interviewing: [], offer: [], rejected: [], bounced: [], awaiting: [] };
+  applied.forEach(function(j) {
+    var k = classifyJob(j);
+    if (!buckets[k]) buckets[k] = [];
+    buckets[k].push(j);
+  });
+
+  var W = 920, H = 460, leftPad = 18, rightPad = 18;
+  var stageX = [leftPad, 240, 460, 700];
+  var stageW = 150;
+  var palette = {
+    found:        '#1f4e79',
+    fit:          '#2e75b6',
+    applied:      '#5b9bd5',
+    interviewing: '#7fb069',
+    offer:        '#f4a300',
+    rejected:     '#c0504d',
+    bounced:      '#9c6ade',
+    awaiting:     '#9ca3af'
+  };
+
+  function bar(x, total, count, color, label, sublabel) {
+    var fullH = 360;
+    var barH = total > 0 ? Math.max(4, fullH * (count / Math.max(found, 1))) : 4;
+    var y = 70 + (fullH - barH);
+    var labelY = y - 8;
+    return [
+      '<rect x="' + x + '" y="' + y + '" width="' + stageW + '" height="' + barH + '" fill="' + color + '" rx="8" ry="8" opacity="0.92"><title>' + label + ': ' + count + '</title></rect>',
+      '<text x="' + (x + stageW / 2) + '" y="' + labelY + '" text-anchor="middle" font-size="13" font-weight="700" fill="#222">' + label + '</text>',
+      '<text x="' + (x + stageW / 2) + '" y="' + (labelY - 16) + '" text-anchor="middle" font-size="11" fill="#666">' + sublabel + '</text>',
+      '<text x="' + (x + stageW / 2) + '" y="' + (y + barH / 2 + 5) + '" text-anchor="middle" font-size="22" font-weight="800" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,0.35);stroke-width:1px;">' + count + '</text>'
+    ].join('');
+  }
+
+  function flow(x1, y1c, h1, x2, y2c, h2, color) {
+    var x1r = x1 + stageW;
+    var x2l = x2;
+    var midX = (x1r + x2l) / 2;
+    var p = 'M ' + x1r + ',' + y1c +
+            ' C ' + midX + ',' + y1c + ' ' + midX + ',' + y2c + ' ' + x2l + ',' + y2c;
+    var thickness = Math.max(2, h2);
+    return '<path d="' + p + '" stroke="' + color + '" stroke-width="' + thickness + '" fill="none" opacity="0.18" stroke-linecap="round"/>';
+  }
+
+  // Coordinates for stage centers (for flow lines)
+  var fullH = 360;
+  function topY(count) { return 70 + (fullH - (count > 0 ? Math.max(4, fullH * (count / Math.max(found, 1))) : 4)); }
+  function midY(count) { return topY(count) + (count > 0 ? Math.max(4, fullH * (count / Math.max(found, 1))) : 4) / 2; }
+  function barH(count) { return count > 0 ? Math.max(4, fullH * (count / Math.max(found, 1))) : 4; }
+
+  var svg = '';
+  svg += '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:inherit;">';
+  svg += '<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="transparent"/>';
+
+  // Flow lines first (so bars overlay them)
+  svg += flow(stageX[0], midY(found), barH(found), stageX[1], midY(fit.length), barH(fit.length), palette.fit);
+  svg += flow(stageX[1], midY(fit.length), barH(fit.length), stageX[2], midY(applied.length), barH(applied.length), palette.applied);
+
+  // Split flow from Applied into the outcome buckets, vertically stacked at stage 4
+  var outcomes = [
+    { key: 'interviewing', label: 'Interviewing', count: buckets.interviewing.length, color: palette.interviewing },
+    { key: 'offer',        label: 'Offer',        count: buckets.offer.length,        color: palette.offer },
+    { key: 'rejected',     label: 'Rejected',     count: buckets.rejected.length,     color: palette.rejected },
+    { key: 'bounced',      label: 'Bounced',      count: buckets.bounced.length,      color: palette.bounced },
+    { key: 'awaiting',     label: 'Awaiting Reply', count: buckets.awaiting.length,   color: palette.awaiting }
+  ];
+  // Stack outcomes vertically inside stage 4 column
+  var stackTop = 70;
+  var totalApplied = Math.max(applied.length, 1);
+  var slotPad = 8;
+  var availH = fullH;
+  // Compute per-outcome heights proportional to applied count
+  var outcomesWithGeom = outcomes.map(function(o) {
+    var ratio = applied.length > 0 ? o.count / totalApplied : 0;
+    var h = o.count > 0 ? Math.max(20, ratio * (availH - slotPad * (outcomes.length - 1))) : 20;
+    return Object.assign({}, o, { h: h });
+  });
+  var totalH = outcomesWithGeom.reduce(function(s, o) { return s + o.h; }, 0) + slotPad * (outcomes.length - 1);
+  var scale = totalH > availH ? (availH - slotPad * (outcomes.length - 1)) / outcomesWithGeom.reduce(function(s, o) { return s + o.h; }, 0) : 1;
+  var cursorY = stackTop;
+  outcomesWithGeom.forEach(function(o) {
+    o.y = cursorY;
+    o.h = o.h * scale;
+    cursorY += o.h + slotPad;
+  });
+
+  // Flow lines from Applied to each outcome
+  outcomesWithGeom.forEach(function(o) {
+    var x1r = stageX[2] + stageW;
+    var x2l = stageX[3];
+    var y1c = midY(applied.length);
+    var y2c = o.y + o.h / 2;
+    var midX = (x1r + x2l) / 2;
+    var p = 'M ' + x1r + ',' + y1c + ' C ' + midX + ',' + y1c + ' ' + midX + ',' + y2c + ' ' + x2l + ',' + y2c;
+    svg += '<path d="' + p + '" stroke="' + o.color + '" stroke-width="' + Math.max(2, o.h * 0.85) + '" fill="none" opacity="0.18" stroke-linecap="round"/>';
+  });
+
+  // Stage 1: Roles Found
+  svg += bar(stageX[0], found, found, palette.found, 'Roles Found', 'every job on the tracker');
+  // Stage 2: Roles That Fit
+  svg += bar(stageX[1], found, fit.length, palette.fit, 'Roles That Fit', 'score ≥ 4');
+  // Stage 3: Applied
+  svg += bar(stageX[2], found, applied.length, palette.applied, 'Applied', 'sent or in convo');
+  // Stage 4: Outcome bars (stacked)
+  outcomesWithGeom.forEach(function(o) {
+    svg += '<rect x="' + stageX[3] + '" y="' + o.y + '" width="' + stageW + '" height="' + o.h + '" fill="' + o.color + '" rx="6" ry="6" opacity="0.92"><title>' + o.label + ': ' + o.count + '</title></rect>';
+    svg += '<text x="' + (stageX[3] + stageW / 2) + '" y="' + (o.y + o.h / 2 - 4) + '" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,0.35);stroke-width:1px;">' + o.label + '</text>';
+    svg += '<text x="' + (stageX[3] + stageW / 2) + '" y="' + (o.y + o.h / 2 + 12) + '" text-anchor="middle" font-size="13" font-weight="800" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,0.35);stroke-width:1px;">' + o.count + '</text>';
+  });
+
+  svg += '</svg>';
+
+  document.getElementById('pipelineSankey').innerHTML = svg;
+
+  // Sidebar lists
+  function listBlock(title, color, jobsArr) {
+    if (!jobsArr.length) {
+      return '<div style="margin-bottom:14px;"><div style="font-weight:700;color:' + color + ';margin-bottom:4px;">' + title + ' (0)</div><div style="color:#888;font-size:12px;">none yet</div></div>';
+    }
+    var items = jobsArr.map(function(j) {
+      var note = j.gmailStatus ? ' — ' + j.gmailStatus : '';
+      return '<li style="margin:2px 0;"><strong>' + j.company + '</strong> &middot; ' + j.title + '<span style="color:#666;">' + note + '</span></li>';
+    }).join('');
+    return '<div style="margin-bottom:14px;"><div style="font-weight:700;color:' + color + ';margin-bottom:4px;">' + title + ' (' + jobsArr.length + ')</div><ul style="margin:0;padding-left:18px;list-style:disc;">' + items + '</ul></div>';
+  }
+
+  var html = '';
+  html += '<div style="font-weight:800;font-size:14px;margin-bottom:10px;">Stage details</div>';
+  html += listBlock('Interviewing',    palette.interviewing, buckets.interviewing);
+  html += listBlock('Offer',           palette.offer,        buckets.offer);
+  html += listBlock('Rejected',        palette.rejected,     buckets.rejected);
+  html += listBlock('Bounced',         palette.bounced,      buckets.bounced);
+  html += listBlock('Awaiting Reply',  palette.awaiting,     buckets.awaiting);
+  document.getElementById('pipelineLists').innerHTML = html;
+}
+
 </script>
 </body>
 </html>
