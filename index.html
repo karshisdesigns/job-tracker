@@ -1145,221 +1145,92 @@ body::before {
   font-family: monospace;
 }
 
-/* ===== CHART TAB (redesigned) ===== */
-
-.interview-stage-section {
-  position: relative; z-index: 1;
-  margin-top: 28px;
-  border-top: var(--border-thin);
-  padding-top: 22px;
-}
-.interview-stage-headline {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 800;
-  font-size: clamp(18px, 2.2vw, 26px);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  margin: 4px 0 18px;
-  color: var(--ink);
-}
-.interview-stage-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-@media (max-width: 980px) { .interview-stage-grid { grid-template-columns: 1fr; } }
-.istage-card {
-  background: white;
-  border: var(--border-thin);
-  box-shadow: var(--shadow-brutal-sm);
-  padding: 14px 16px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-.istage-card:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--ink); }
-.istage-card[data-stage="upcoming"] { border-top: 8px solid var(--haring-orange); background: linear-gradient(180deg, #FFF1E5 0%, white 60%); }
-.istage-card[data-stage="awaiting"] { border-top: 8px solid var(--haring-blue); background: linear-gradient(180deg, #E5EFFB 0%, white 60%); }
-.istage-card[data-stage="next"]     { border-top: 8px solid var(--haring-green); background: linear-gradient(180deg, #DFF4E5 0%, white 60%); }
-.istage-head {
-  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
-}
-.istage-title {
-  font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 13px;
-  letter-spacing: 0.16em; text-transform: uppercase;
-}
-.istage-count {
-  font-family: 'DM Sans', sans-serif; font-weight: 800; font-size: 32px;
-  font-variant-numeric: tabular-nums; line-height: 1;
-}
-.istage-sub { font-size: 11px; color: var(--ink-light); margin-top: -8px; letter-spacing: 0.04em; }
-.istage-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-.istage-item {
-  display: flex; flex-direction: column; gap: 2px;
-  padding: 8px 10px; border-left: 4px solid; background: rgba(255,255,255,0.65);
-}
-.istage-item-name { font-weight: 800; font-size: 13.5px; }
-.istage-item-role { font-size: 12px; color: var(--ink-light); }
-.istage-item-when { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px; }
-.istage-empty { font-size: 12.5px; color: var(--ink-light); font-style: italic; padding: 8px 10px; }
-
-
-.chart-stage {
+/* ===== CHART TAB (minimal, numbers-only, animated) ===== */
+.chart-only {
+  position: relative;
   background: var(--eames-cream);
-  padding: 28px 24px 36px;
   border: var(--border-thick);
   box-shadow: var(--shadow-brutal);
-  position: relative;
+  padding: 28px;
+  overflow: hidden;
+  min-height: 560px;
 }
-.chart-stage::before {
+.chart-only::before {
   content: "";
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 12% 22%, rgba(228,49,43,0.08) 0 16px, transparent 17px),
-    radial-gradient(circle at 88% 78%, rgba(0,114,206,0.08) 0 22px, transparent 23px),
-    radial-gradient(circle at 92% 18%, rgba(255,208,0,0.10) 0 14px, transparent 15px);
+    radial-gradient(circle at 14% 18%, rgba(228,49,43,0.10) 0 22px, transparent 23px),
+    radial-gradient(circle at 88% 24%, rgba(255,208,0,0.12) 0 18px, transparent 19px),
+    radial-gradient(circle at 22% 78%, rgba(0,114,206,0.10) 0 28px, transparent 29px),
+    radial-gradient(circle at 78% 82%, rgba(0,166,81,0.10) 0 24px, transparent 25px),
+    radial-gradient(circle at 50% 50%, rgba(255,107,43,0.06) 0 60px, transparent 61px);
   pointer-events: none;
+  z-index: 0;
 }
-.chart-header { position: relative; z-index: 1; margin-bottom: 18px; }
-.chart-eyebrow {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ink-light);
-}
-.chart-headline {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 800;
-  font-size: clamp(22px, 3.2vw, 36px);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  margin: 6px 0 0;
-  color: var(--ink);
-}
-.chart-hero-num {
-  display: inline-block;
-  padding: 0 10px;
-  background: var(--haring-yellow);
-  border: var(--border-thin);
-  box-shadow: var(--shadow-brutal-sm);
-  font-variant-numeric: tabular-nums;
-  margin: 0 2px;
-}
-.chart-hero-num-accent { background: var(--haring-green); color: white; }
+.chart-canvas-only { position: relative; z-index: 1; }
+.chart-canvas-only svg { width: 100%; height: auto; display: block; }
 
-.chart-kpi-row {
-  position: relative; z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  margin: 22px 0 26px;
+/* Floating ambient dots */
+.chart-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+  filter: blur(0.5px);
+  animation: chartOrbFloat 12s ease-in-out infinite;
 }
-.chart-kpi {
-  background: white;
-  border: var(--border-thin);
-  box-shadow: var(--shadow-brutal-sm);
-  padding: 14px 16px 12px;
-  position: relative;
-  transition: transform 0.18s ease;
-}
-.chart-kpi:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
-.chart-kpi[data-kind="found"]        { border-color: var(--haring-blue);   background: #EBF4FB; }
-.chart-kpi[data-kind="fit"]          { border-color: var(--haring-pink);   background: #FCE9F2; }
-.chart-kpi[data-kind="applied"]      { border-color: var(--haring-orange); background: #FFEEE2; }
-.chart-kpi[data-kind="interviewing"] { border-color: var(--haring-green);  background: var(--haring-green); color: white; }
-.chart-kpi-num {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 800;
-  font-size: clamp(28px, 4.4vw, 56px);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-}
-.chart-kpi-label {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  margin-top: 8px;
-  opacity: 0.85;
+@keyframes chartOrbFloat {
+  0%   { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(18px, -12px) scale(1.08); }
+  50%  { transform: translate(-10px, 14px) scale(0.95); }
+  75%  { transform: translate(12px, 8px) scale(1.05); }
+  100% { transform: translate(0, 0) scale(1); }
 }
 
-.chart-grid {
-  position: relative; z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
-  gap: 24px;
-  align-items: start;
-}
-@media (max-width: 980px) {
-  .chart-grid { grid-template-columns: 1fr; }
-  .chart-kpi-row { grid-template-columns: repeat(2, 1fr); }
-}
-.chart-canvas {
-  background: white;
-  border: var(--border-thin);
-  box-shadow: var(--shadow-brutal-sm);
-  padding: 18px;
-}
-.chart-canvas svg { width: 100%; height: auto; display: block; }
-
-.chart-side { display: flex; flex-direction: column; gap: 12px; }
-.outcome-card {
-  background: white;
-  border: var(--border-thin);
-  border-left-width: 8px;
-  box-shadow: var(--shadow-brutal-sm);
-  padding: 12px 14px;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-.outcome-card:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
-.outcome-card-head {
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: 12px; margin-bottom: 6px;
-}
-.outcome-card-title {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 800;
-  font-size: 13px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-.outcome-card-count {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 800;
-  font-size: 22px;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-.outcome-card-empty {
-  color: var(--ink-light);
-  font-size: 12px;
-  font-style: italic;
-}
-.outcome-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 4px 0 0;
-  font-size: 12.5px;
-  line-height: 1.45;
-}
-.outcome-card li { padding: 3px 0; border-top: 1px dashed rgba(0,0,0,0.1); }
-.outcome-card li:first-child { border-top: 0; }
-.outcome-card li strong { font-weight: 700; }
-.outcome-card li span { color: var(--ink-light); }
-
-/* Bar grow + flow draw animations */
+/* Bar grow */
 @keyframes chartBarGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-@keyframes chartFlowFade { from { opacity: 0; } to { opacity: var(--flow-opacity, 0.55); } }
-@keyframes chartLabelIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
-.chart-bar { transform-origin: bottom center; animation: chartBarGrow 0.7s cubic-bezier(.22,1,.36,1) both; }
-.chart-flow { animation: chartFlowFade 0.9s ease-out both; }
-.chart-label-top, .chart-label-num { animation: chartLabelIn 0.6s ease-out both; }
+.chart-bar { transform-origin: bottom center; animation: chartBarGrow 0.85s cubic-bezier(.22,1,.36,1) both; }
+
+/* Flow line draw using stroke-dashoffset */
+@keyframes chartFlowDraw {
+  from { stroke-dashoffset: var(--flow-len, 800); opacity: 0; }
+  20%  { opacity: var(--flow-opacity, 0.55); }
+  to   { stroke-dashoffset: 0; opacity: var(--flow-opacity, 0.55); }
+}
+.chart-flow {
+  stroke-dasharray: var(--flow-len, 800);
+  stroke-dashoffset: var(--flow-len, 800);
+  animation: chartFlowDraw 1.4s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* Number count-in */
+@keyframes chartNumIn {
+  from { opacity: 0; transform: scale(0.6); }
+  60%  { opacity: 1; transform: scale(1.15); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.chart-num {
+  transform-origin: center center;
+  transform-box: fill-box;
+  animation: chartNumIn 0.8s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* Pulse on the highlight (interviewing) bar */
+@keyframes chartPulse {
+  0%, 100% { filter: drop-shadow(4px 4px 0 #1A1A1A) drop-shadow(0 0 0 rgba(0,166,81,0)); }
+  50%      { filter: drop-shadow(4px 4px 0 #1A1A1A) drop-shadow(0 0 18px rgba(0,166,81,0.85)); }
+}
+.chart-pulse { animation: chartBarGrow 0.85s cubic-bezier(.22,1,.36,1) both, chartPulse 2.4s ease-in-out 1.4s infinite; }
+
+/* Connector dot animation (traveling along path) */
+@keyframes chartDotTravel {
+  0%   { offset-distance: 0%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
 
 </style>
 </head>
@@ -1529,18 +1400,11 @@ body::before {
     </div>
     <!-- Chart Tab -->
     <div id="tab-pipeline" style="display:none;">
-        <div class="chart-stage" id="chartStage">
-            <div class="chart-header">
-                <div class="chart-eyebrow">Application Pipeline · live state</div>
-                <h2 class="chart-headline">From <span id="chartHeroFound" class="chart-hero-num">0</span> roles to <span id="chartHeroInterviews" class="chart-hero-num chart-hero-num-accent">0</span> interviews in progress</h2>
-            </div>
-            <div class="chart-kpi-row">
-                <div class="chart-kpi" data-kind="found"><div class="chart-kpi-num" data-target="0">0</div><div class="chart-kpi-label">Total</div></div>
-                <div class="chart-kpi" data-kind="applied"><div class="chart-kpi-num" data-target="0">0</div><div class="chart-kpi-label">Applied</div></div>
-                <div class="chart-kpi chart-kpi-bright" data-kind="interviewing"><div class="chart-kpi-num" data-target="0">0</div><div class="chart-kpi-label">Interviewing</div></div>
-                <div class="chart-kpi" data-kind="offer"><div class="chart-kpi-num" data-target="0">0</div><div class="chart-kpi-label">Offers</div></div>
-            </div>
-            <div class="chart-grid">
+        <div class="chart-only" id="chartOnly">
+            <div id="pipelineSankey" class="chart-canvas-only"></div>
+        </div>
+    </div>
+<div class="chart-grid">
                 <div class="chart-canvas" id="pipelineSankey"></div>
                 <div class="chart-side" id="pipelineLists"></div>
             </div>
@@ -6349,67 +6213,64 @@ function isApplied(j) {
 
 function renderPipeline() {
   var jobs = (typeof JOBS !== 'undefined') ? JOBS : [];
-  // ── Mirror Active Postings Application Pipeline numbers (uses getJobState localStorage)
-  var total = 0, applied = 0, interviewing = 0, offers = 0, rejected = 0, hidden = 0;
+
+  // Use Active Postings 'Application Pipeline' semantics so numbers match what Alex sees elsewhere
+  var total = 0, applied = 0, interviewing = 0, offers = 0, rejected = 0;
   jobs.forEach(function(job) {
     var s = (typeof getJobState === 'function') ? (getJobState(job.id).status || 'not-started') : (job.defaultStatus || 'not-started');
-    if (s === 'not-interested') { hidden++; return; }
+    if (s === 'not-interested') return;
     total++;
     if (s === 'applied' || s === 'in-progress') applied++;
     if (s === 'interviewing') interviewing++;
     if (s === 'offer') offers++;
     if (s === 'rejected') rejected++;
   });
-
-  // Animate KPI numbers
-  function animateNum(el, target) {
-    var start = 0, dur = 900, t0 = performance.now();
-    function step(t) {
-      var p = Math.min(1, (t - t0) / dur);
-      var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(start + (target - start) * eased);
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-  var kpiVals = { found: total, applied: applied, interviewing: interviewing, offer: offers };
-  document.querySelectorAll('#tab-pipeline .chart-kpi').forEach(function(el) {
-    var kind = el.getAttribute('data-kind');
-    var num = el.querySelector('.chart-kpi-num');
-    if (kpiVals[kind] === undefined) return;
-    num.setAttribute('data-target', kpiVals[kind]);
-    animateNum(num, kpiVals[kind]);
-  });
-  var heroFound = document.getElementById('chartHeroFound');
-  var heroInt = document.getElementById('chartHeroInterviews');
-  if (heroFound) animateNum(heroFound, total);
-  if (heroInt) animateNum(heroInt, interviewing);
-
-  // ── SVG funnel using the same status semantics
   var awaiting = Math.max(0, applied - interviewing - offers - rejected);
-  var W = 940, H = 460, pad = 18;
-  var stageX = [pad, 230, 460, 700];
-  var stageW = 168;
-  var fullH = 320;
-  var topPad = 92;
+
+  // Clear ambient orbs and re-spawn (so the animation restarts on each tab open)
+  var stage = document.getElementById('chartOnly');
+  if (stage) {
+    stage.querySelectorAll('.chart-orb').forEach(function(o){ o.remove(); });
+    var orbColors = ['#E4312B','#FFD000','#00A651','#0072CE','#F472B6','#FF6B2B'];
+    for (var i = 0; i < 6; i++) {
+      var o = document.createElement('div');
+      o.className = 'chart-orb';
+      var size = 24 + Math.random() * 60;
+      o.style.width = size + 'px';
+      o.style.height = size + 'px';
+      o.style.background = orbColors[i % orbColors.length];
+      o.style.left = (5 + Math.random() * 88) + '%';
+      o.style.top = (5 + Math.random() * 85) + '%';
+      o.style.animationDelay = (-Math.random() * 12) + 's';
+      o.style.animationDuration = (10 + Math.random() * 8) + 's';
+      stage.appendChild(o);
+    }
+  }
+
+  // ── SVG funnel (numbers only, no labels)
+  var W = 1080, H = 560, pad = 24;
+  var stageX = [pad + 4, 280, 540, 820];
+  var stageW = 200;
+  var fullH = 420;
+  var topPad = 70;
   var palette = {
     found: '#0072CE', applied: '#FF6B2B', interviewing: '#00A651',
-    offer: '#FFD000', rejected: '#E4312B', awaiting: '#5C6B3C', hidden: '#999999'
+    offer: '#FFD000', rejected: '#E4312B', awaiting: '#5C6B3C'
   };
-  function barH(c) { return total > 0 ? Math.max(6, fullH * (c / total)) : 6; }
+  function barH(c) { return total > 0 ? Math.max(8, fullH * (c / total)) : 8; }
   function barTopY(c) { return topPad + (fullH - barH(c)); }
   function barMidY(c) { return barTopY(c) + barH(c) / 2; }
 
   var outcomes = [
-    { key: 'interviewing', label: 'INTERVIEWING', count: interviewing, color: palette.interviewing },
-    { key: 'offer',        label: 'OFFER',        count: offers,       color: palette.offer },
-    { key: 'rejected',     label: 'REJECTED',     count: rejected,     color: palette.rejected },
-    { key: 'awaiting',     label: 'AWAITING REPLY', count: awaiting,   color: palette.awaiting }
+    { key: 'interviewing', count: interviewing, color: palette.interviewing },
+    { key: 'offer',        count: offers,       color: palette.offer },
+    { key: 'rejected',     count: rejected,     color: palette.rejected },
+    { key: 'awaiting',     count: awaiting,     color: palette.awaiting }
   ];
-  var slotPad = 6;
+  var slotPad = 8;
   var raw = outcomes.map(function(o) {
     var ratio = applied > 0 ? o.count / Math.max(applied, 1) : 0;
-    var h = o.count > 0 ? Math.max(28, ratio * (fullH - slotPad * (outcomes.length - 1))) : 22;
+    var h = o.count > 0 ? Math.max(40, ratio * (fullH - slotPad * (outcomes.length - 1))) : 30;
     return Object.assign({}, o, { h: h });
   });
   var sumH = raw.reduce(function(s, o) { return s + o.h; }, 0);
@@ -6418,179 +6279,91 @@ function renderPipeline() {
   var cy = topPad;
   raw.forEach(function(o) { o.y = cy; o.h = o.h * scale; cy += o.h + slotPad; });
 
+  function pathLen(x1, y1, x2, y2) {
+    // Approx length of cubic — distance between endpoints * 1.2 for the curve
+    var dx = x2 - x1, dy = y2 - y1;
+    return Math.sqrt(dx * dx + dy * dy) * 1.2 + 60;
+  }
+
   var svg = '';
-  svg += '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:\'DM Sans\',sans-serif;">';
+  svg += '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="font-family:\'DM Sans\',sans-serif;">';
   svg += '<defs>';
-  svg += '<filter id="brutalShadow" x="-5%" y="-5%" width="115%" height="115%">';
+  svg += '<filter id="brutalShadow2" x="-10%" y="-10%" width="125%" height="125%">';
   svg += '<feOffset in="SourceAlpha" dx="4" dy="4"/><feFlood flood-color="#1A1A1A"/><feComposite in2="SourceAlpha" operator="in"/>';
   svg += '<feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>';
   svg += '</filter>';
-  svg += '<pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#1A1A1A" opacity="0.18"/></pattern>';
+  svg += '<pattern id="dots2" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#1A1A1A" opacity="0.16"/></pattern>';
   svg += '</defs>';
-  svg += '<rect x="0" y="' + (topPad - 12) + '" width="' + W + '" height="' + (fullH + 24) + '" fill="url(#dots)" opacity="0.6"/>';
+  svg += '<rect x="0" y="' + (topPad - 12) + '" width="' + W + '" height="' + (fullH + 24) + '" fill="url(#dots2)" opacity="0.55"/>';
 
-  function flow(x1, y1, x2, y2, color, opacity, thickness, delay) {
+  // Flow lines
+  function drawFlow(x1, y1c, x2, y2c, color, opacity, thickness, delay) {
     var x1r = x1 + stageW;
     var x2l = x2;
     var midX = (x1r + x2l) / 2;
-    var p = 'M ' + x1r + ',' + y1 + ' C ' + midX + ',' + y1 + ' ' + midX + ',' + y2 + ' ' + x2l + ',' + y2;
-    return '<path class="chart-flow" style="--flow-opacity:' + opacity + ';animation-delay:' + delay + 's;" d="' + p + '" stroke="' + color + '" stroke-width="' + thickness + '" fill="none" stroke-linecap="round"/>';
+    var p = 'M ' + x1r + ',' + y1c + ' C ' + midX + ',' + y1c + ' ' + midX + ',' + y2c + ' ' + x2l + ',' + y2c;
+    var len = pathLen(x1r, y1c, x2l, y2c);
+    return '<path class="chart-flow" style="--flow-opacity:' + opacity + ';--flow-len:' + len + ';animation-delay:' + delay + 's;" d="' + p + '" stroke="' + color + '" stroke-width="' + thickness + '" fill="none" stroke-linecap="round"/>';
   }
-  // Found -> Applied
-  svg += flow(stageX[0], barMidY(total), stageX[1], barMidY(applied), palette.applied, 0.5, Math.max(8, barH(applied) * 0.7), 0.25);
-  // Applied -> Outcomes (single Interviewing flow on stage 2->3, then split into outcomes on stage 3->4)
-  svg += flow(stageX[1], barMidY(applied), stageX[2], barMidY(applied), palette.applied, 0.35, Math.max(8, barH(applied) * 0.7), 0.32);
+  svg += drawFlow(stageX[0], barMidY(total), stageX[1], barMidY(applied), palette.applied, 0.55, Math.max(10, barH(applied) * 0.7), 0.35);
+  svg += drawFlow(stageX[1], barMidY(applied), stageX[2], barMidY(interviewing), palette.interviewing, 0.55, Math.max(10, barH(interviewing) * 0.85), 0.55);
   raw.forEach(function(o, i) {
-    svg += flow(stageX[2], barMidY(applied), stageX[3], o.y + o.h / 2, o.color, o.count > 0 ? 0.55 : 0.18, Math.max(4, o.h * 0.7), 0.4 + i * 0.06);
+    svg += drawFlow(stageX[2], barMidY(interviewing), stageX[3], o.y + o.h / 2, o.color, o.count > 0 ? 0.6 : 0.18, Math.max(6, o.h * 0.6), 0.75 + i * 0.07);
   });
 
-  function bigBar(x, count, color, label, sub, delay) {
+  // Big bars (numbers only inside)
+  function bigBar(x, count, color, delay, isPulse) {
     var h = barH(count);
     var y = barTopY(count);
+    var fontSize = Math.min(96, Math.max(36, h * 0.55));
+    var cls = isPulse ? 'chart-bar chart-pulse' : 'chart-bar';
     return [
-      '<rect class="chart-bar" style="animation-delay:' + delay + 's;" filter="url(#brutalShadow)" x="' + x + '" y="' + y + '" width="' + stageW + '" height="' + h + '" fill="' + color + '" stroke="#1A1A1A" stroke-width="2"><title>' + label + ': ' + count + '</title></rect>',
-      '<text class="chart-label-top" style="animation-delay:' + (delay + 0.15) + 's;" x="' + (x + stageW / 2) + '" y="' + (topPad - 30) + '" text-anchor="middle" font-size="13" font-weight="800" letter-spacing="2.6" fill="#1A1A1A">' + label + '</text>',
-      '<text class="chart-label-top" style="animation-delay:' + (delay + 0.18) + 's;" x="' + (x + stageW / 2) + '" y="' + (topPad - 14) + '" text-anchor="middle" font-size="11" font-weight="600" fill="#555">' + sub + '</text>',
-      '<text class="chart-label-num" style="animation-delay:' + (delay + 0.25) + 's;" x="' + (x + stageW / 2) + '" y="' + (y + h / 2 + 14) + '" text-anchor="middle" font-size="42" font-weight="800" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,0.45);stroke-width:1.5px;">' + count + '</text>'
+      '<rect class="' + cls + '" style="animation-delay:' + delay + 's;" filter="url(#brutalShadow2)" x="' + x + '" y="' + y + '" width="' + stageW + '" height="' + h + '" fill="' + color + '" stroke="#1A1A1A" stroke-width="2.5"/>',
+      '<text class="chart-num" style="animation-delay:' + (delay + 0.45) + 's;" x="' + (x + stageW / 2) + '" y="' + (y + h / 2 + fontSize * 0.35) + '" text-anchor="middle" font-size="' + fontSize + '" font-weight="900" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,0.45);stroke-width:2px;">' + count + '</text>'
     ].join('');
   }
-  svg += bigBar(stageX[0], total, palette.found, 'TOTAL', 'On the tracker', 0.05);
-  svg += bigBar(stageX[1], applied, palette.applied, 'APPLIED', 'Sent or in convo', 0.18);
-  // Stage 3 = the Interviewing pillar (subset of Applied)
-  svg += bigBar(stageX[2], interviewing, palette.interviewing, 'INTERVIEWING', 'Active conversations', 0.32);
+  svg += bigBar(stageX[0], total, palette.found, 0.05, false);
+  svg += bigBar(stageX[1], applied, palette.applied, 0.20, false);
+  svg += bigBar(stageX[2], interviewing, palette.interviewing, 0.38, true);
 
-  // Stage 4 column header
-  svg += '<text class="chart-label-top" style="animation-delay:0.42s;" x="' + (stageX[3] + stageW / 2) + '" y="' + (topPad - 30) + '" text-anchor="middle" font-size="13" font-weight="800" letter-spacing="2.6" fill="#1A1A1A">OUTCOMES</text>';
-  svg += '<text class="chart-label-top" style="animation-delay:0.45s;" x="' + (stageX[3] + stageW / 2) + '" y="' + (topPad - 14) + '" text-anchor="middle" font-size="11" font-weight="600" fill="#555">By status</text>';
+  // Outcome stack (numbers only)
   raw.forEach(function(o, i) {
-    var h = Math.max(o.h, 22);
-    var d = 0.45 + i * 0.07;
-    var inside = h >= 30;
-    svg += '<rect class="chart-bar" style="animation-delay:' + d + 's;transform-origin:left center;" filter="url(#brutalShadow)" x="' + stageX[3] + '" y="' + o.y + '" width="' + stageW + '" height="' + h + '" fill="' + o.color + '" stroke="#1A1A1A" stroke-width="2"><title>' + o.label + ': ' + o.count + '</title></rect>';
-    if (inside) {
-      svg += '<text class="chart-label-top" style="animation-delay:' + (d + 0.1) + 's;" x="' + (stageX[3] + 12) + '" y="' + (o.y + h / 2 + 5) + '" text-anchor="start" font-size="12" font-weight="800" letter-spacing="1.4" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,0.4);stroke-width:1px;">' + o.label + '</text>';
-      svg += '<text class="chart-label-num" style="animation-delay:' + (d + 0.15) + 's;" x="' + (stageX[3] + stageW - 12) + '" y="' + (o.y + h / 2 + 8) + '" text-anchor="end" font-size="22" font-weight="800" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,0.4);stroke-width:1px;">' + o.count + '</text>';
-    } else {
-      svg += '<text class="chart-label-top" style="animation-delay:' + (d + 0.1) + 's;" x="' + (stageX[3] + stageW + 8) + '" y="' + (o.y + h / 2 + 4) + '" text-anchor="start" font-size="12" font-weight="800" letter-spacing="1.4" fill="#1A1A1A">' + o.label + ' · ' + o.count + '</text>';
-    }
+    var h = Math.max(o.h, 30);
+    var d = 0.55 + i * 0.08;
+    var fs = Math.min(48, Math.max(20, h * 0.55));
+    svg += '<rect class="chart-bar" style="animation-delay:' + d + 's;transform-origin:left center;" filter="url(#brutalShadow2)" x="' + stageX[3] + '" y="' + o.y + '" width="' + stageW + '" height="' + h + '" fill="' + o.color + '" stroke="#1A1A1A" stroke-width="2.5"/>';
+    svg += '<text class="chart-num" style="animation-delay:' + (d + 0.45) + 's;" x="' + (stageX[3] + stageW / 2) + '" y="' + (o.y + h / 2 + fs * 0.35) + '" text-anchor="middle" font-size="' + fs + '" font-weight="900" fill="#fff" style="paint-order:stroke;stroke:rgba(0,0,0,0.45);stroke-width:2px;">' + o.count + '</text>';
   });
 
   svg += '</svg>';
   document.getElementById('pipelineSankey').innerHTML = svg;
 
-  // ── Sidebar: outcome cards (also using local-state buckets so numbers match)
-  function bucketByState(stateName) {
-    return jobs.filter(function(j) {
-      var s = (typeof getJobState === 'function') ? (getJobState(j.id).status || 'not-started') : (j.defaultStatus || 'not-started');
-      if (stateName === 'awaiting') {
-        return (s === 'applied' || s === 'in-progress');
+  // Number count-up overlay (animate the numbers from 0 to target)
+  function animateText(elsAndTargets) {
+    var t0 = performance.now();
+    var dur = 1100;
+    function step(t) {
+      var p = Math.min(1, (t - t0) / dur);
+      var eased = 1 - Math.pow(1 - p, 3);
+      elsAndTargets.forEach(function(et) {
+        et.el.textContent = Math.round(et.target * eased);
+      });
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  setTimeout(function() {
+    var nums = document.querySelectorAll('#pipelineSankey .chart-num');
+    var pairs = [];
+    nums.forEach(function(el) {
+      var t = parseInt(el.textContent, 10);
+      if (!isNaN(t)) {
+        el.textContent = '0';
+        pairs.push({ el: el, target: t });
       }
-      return s === stateName;
     });
-  }
-  var sideBuckets = {
-    interviewing: bucketByState('interviewing'),
-    offer:        bucketByState('offer'),
-    rejected:     bucketByState('rejected'),
-    awaiting:     bucketByState('awaiting')
-  };
-  function escapeHtml(s) { return (s || '').replace(/[&<>]/g, function(c) { return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
-  function card(o, jobsArr) {
-    var inner;
-    if (!jobsArr.length) {
-      inner = '<div class="outcome-card-empty">none yet</div>';
-    } else {
-      inner = '<ul>' + jobsArr.map(function(j) {
-        var note = j.gmailStatus ? '<span> &middot; ' + escapeHtml(j.gmailStatus.slice(0, 60)) + '</span>' : '';
-        return '<li><strong>' + escapeHtml(j.company) + '</strong> <span>· ' + escapeHtml(j.title) + '</span>' + note + '</li>';
-      }).join('') + '</ul>';
-    }
-    return '<div class="outcome-card" style="border-left-color:' + o.color + ';">' +
-           '<div class="outcome-card-head"><div class="outcome-card-title" style="color:' + o.color + ';">' + o.label + '</div>' +
-           '<div class="outcome-card-count">' + jobsArr.length + '</div></div>' + inner + '</div>';
-  }
-  var sideHtml = '';
-  sideHtml += card({ label: 'INTERVIEWING',    color: palette.interviewing }, sideBuckets.interviewing);
-  sideHtml += card({ label: 'OFFER',           color: palette.offer        }, sideBuckets.offer);
-  sideHtml += card({ label: 'REJECTED',        color: palette.rejected     }, sideBuckets.rejected);
-  sideHtml += card({ label: 'AWAITING REPLY',  color: palette.awaiting     }, sideBuckets.awaiting);
-  document.getElementById('pipelineLists').innerHTML = sideHtml;
-
-  // ── Interview Stages (gmailStatus-based, catches everything Gmail captured)
-  var todayISO = new Date().toISOString().slice(0, 10);
-  function dateInString(s) {
-    var m = (s || '').match(/(\d{4}[-/]\d{1,2}[-/]\d{1,2})|(\d{1,2}\/\d{1,2}(?:\/\d{2,4})?)/);
-    if (!m) return null;
-    var raw = m[0];
-    if (raw.indexOf('-') !== -1) return raw.slice(0, 10);
-    var parts = raw.split('/');
-    var year = parts.length === 3 && parts[2].length === 4 ? parts[2] : (parts.length === 3 ? '20' + parts[2] : '2026');
-    return year + '-' + parts[0].padStart(2, '0') + '-' + parts[1].padStart(2, '0');
-  }
-  function classifyInterview(j) {
-    var s = (j.gmailStatus || '').toLowerCase();
-    var b = (j.gmailBadge || '').toLowerCase();
-    if (!(s || b)) return null;
-    if (s.indexOf('reject') !== -1 || s.indexOf('declined') !== -1 || s.indexOf('passed') !== -1 || s.indexOf('not selected') !== -1) return null;
-    if (s.indexOf('bounce') !== -1 || s.indexOf('bad email') !== -1) return null;
-    if (s.indexOf('next-round') !== -1 || s.indexOf('next round') !== -1 || s.indexOf('final round') !== -1 || s.indexOf('round 2') !== -1) return 'next';
-    if (s.indexOf('reschedul') !== -1 || s.indexOf('scheduled') !== -1 || s.indexOf('confirmed') !== -1 || s.indexOf('shortlist') !== -1) {
-      // Use date if present to decide upcoming vs past
-      var d = dateInString(j.gmailStatus);
-      if (d && d >= todayISO) return 'upcoming';
-      return 'awaiting';
-    }
-    if (s.indexOf('interview') !== -1 || s.indexOf('homework') !== -1 || s.indexOf('reference') !== -1 || s.indexOf('awaiting') !== -1 || b === 'interview' || b.indexOf('interview') !== -1) {
-      var d2 = dateInString(j.gmailStatus);
-      if (d2 && d2 >= todayISO) return 'upcoming';
-      return 'awaiting';
-    }
-    return null;
-  }
-
-  var iStages = { upcoming: [], awaiting: [], next: [] };
-  jobs.forEach(function(j) {
-    var k = classifyInterview(j);
-    if (k && iStages[k]) iStages[k].push(j);
-  });
-
-  function whenFromStatus(j) {
-    var d = dateInString(j.gmailStatus);
-    if (d) {
-      var today = new Date(); today.setHours(0,0,0,0);
-      var dt = new Date(d + 'T00:00:00');
-      var days = Math.round((dt - today) / 86400000);
-      if (days === 0) return 'TODAY';
-      if (days === 1) return 'TOMORROW';
-      if (days > 1 && days <= 14) return 'IN ' + days + ' DAYS';
-      if (days < 0 && days >= -14) return Math.abs(days) + ' DAY' + (days === -1 ? '' : 'S') + ' AGO';
-      return d;
-    }
-    if (j.gmailDate) return j.gmailDate;
-    return '';
-  }
-
-  function stageItem(j, color) {
-    return '<li class="istage-item" style="border-left-color:' + color + ';">' +
-           '<div class="istage-item-name">' + escapeHtml(j.company) + '</div>' +
-           '<div class="istage-item-role">' + escapeHtml(j.title) + '</div>' +
-           '<div class="istage-item-when" style="color:' + color + ';">' + escapeHtml(whenFromStatus(j)) + '</div>' +
-           '</li>';
-  }
-  function stageCard(stage, title, sub, color, list) {
-    var body = list.length
-      ? '<ul class="istage-list">' + list.map(function(j) { return stageItem(j, color); }).join('') + '</ul>'
-      : '<div class="istage-empty">none right now</div>';
-    return '<div class="istage-card" data-stage="' + stage + '">' +
-           '<div class="istage-head"><div class="istage-title" style="color:' + color + ';">' + title + '</div>' +
-           '<div class="istage-count" style="color:' + color + ';">' + list.length + '</div></div>' +
-           '<div class="istage-sub">' + sub + '</div>' + body + '</div>';
-  }
-  var interviewHtml = '';
-  interviewHtml += stageCard('upcoming', 'UPCOMING', 'Interview already on the calendar', '#FF6B2B', iStages.upcoming);
-  interviewHtml += stageCard('awaiting', 'AWAITING REPLY', 'Interview done · waiting on the firm', '#0072CE', iStages.awaiting);
-  interviewHtml += stageCard('next',     'NEXT ROUND',     'Advanced past the first round',          '#00A651', iStages.next);
-  document.getElementById('interviewStageGrid').innerHTML = interviewHtml;
+    animateText(pairs);
+  }, 500);
 }
 </script>
 </body>
