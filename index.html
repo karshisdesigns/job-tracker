@@ -5208,42 +5208,110 @@ function updateOutreachStats() {
 function updateInterviewBox() {
   const box = document.getElementById('interviewBox');
   if (!box) return;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
   const interviews = [];
+
+  function pushFrom(job, source, dateStr, timeStr) {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return;
+    if (d < today) return; // skip past interviews
+    interviews.push({
+      company: job.company,
+      date: d,
+      dateStr: dateStr,
+      timeStr: timeStr || '',
+      source: source
+    });
+  }
+
+  // Source A: job.deadline string (legacy field)
+  // Source B: job.gmailStatus (Gmail-driven, richer)
   for (const job of JOBS) {
-    const s = getJobState(job.id).status;
-    if (s === 'interviewing' && job.deadline) {
-      const dateMatch = job.deadline.match(/(\w+ \d+, \d{4})/);
-      const timeMatch = job.deadline.match(/(\d+:\d+\s*[ap]m)/i);
-      if (dateMatch) {
-        const d = new Date(dateMatch[1]);
-        interviews.push({
-          company: job.company,
-          date: d,
-          dateStr: dateMatch[1],
-          timeStr: timeMatch ? timeMatch[1] : '',
-          detail: job.deadline
-        });
+    const candidates = [];
+    if (job.deadline) candidates.push(job.deadline);
+    if (job.gmailStatus) candidates.push(job.gmailStatus);
+
+    let bestDate = null;
+    let bestStr = '';
+    let bestTime = '';
+    for (const text of candidates) {
+      // Try ISO YYYY-MM-DD first
+      let m = text.match(/(\d{4}[-/]\d{1,2}[-/]\d{1,2})/);
+      let dStr = null;
+      if (m) {
+        dStr = m[1].replace(/\//g, '-');
+      } else {
+        // Try "March 24, 2026" / "Apr 30, 2026" / "Tue, March 24, 2026"
+        const longDate = text.match(/(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)?,?\s*(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{1,2}(?:,?\s*\d{4})?/);
+        if (longDate) dStr = longDate[0].replace(/^(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s*/, '');
+        else {
+          // Try M/D format ("4/30", "4/30/26")
+          m = text.match(/(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?/);
+          if (m) {
+            const yr = m[3] ? (m[3].length === 2 ? '20' + m[3] : m[3]) : String(today.getFullYear());
+            dStr = yr + '-' + m[1].padStart(2,'0') + '-' + m[2].padStart(2,'0');
+          }
+        }
+      }
+      if (!dStr) continue;
+      const d = new Date(dStr);
+      if (isNaN(d.getTime())) continue;
+      if (d < today) continue;
+      const tm = text.match(/(\d{1,2}:\d{2}\s*(?:am|pm)|\d{1,2}\s*(?:am|pm))/i);
+      if (!bestDate || d < bestDate) {
+        bestDate = d;
+        bestStr = dStr;
+        bestTime = tm ? tm[1] : '';
       }
     }
+    if (bestDate) {
+      interviews.push({
+        company: job.company,
+        date: bestDate,
+        dateStr: bestStr,
+        timeStr: bestTime
+      });
+    }
   }
+
   interviews.sort((a, b) => a.date - b.date);
-  if (interviews.length === 0) {
+  // De-dup by company (keep earliest)
+  const seen = new Set();
+  const uniq = [];
+  for (const iv of interviews) {
+    if (seen.has(iv.company)) continue;
+    seen.add(iv.company);
+    uniq.push(iv);
+  }
+
+  if (uniq.length === 0) {
     box.style.display = 'none';
-    document.getElementById('scoreLegend').style.top = '120px';
+    const sl = document.getElementById('scoreLegend');
+    if (sl) sl.style.top = '120px';
     return;
   }
+
   let html = '<div class="interview-box-title">Upcoming Interviews</div>';
-  for (const iv of interviews) {
-    const dayName = iv.date.toLocaleDateString('en-US', { weekday: 'short' });
-    html += `<div class="interview-box-item">
-      <div class="interview-box-company">${iv.company}</div>
-      <div class="interview-box-date">${dayName}, ${iv.dateStr}${iv.timeStr ? ' at ' + iv.timeStr : ''}</div>
-    </div>`;
+  for (const iv of uniq.slice(0, 5)) {
+    const opts = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+    const pretty = iv.date.toLocaleDateString('en-US', opts);
+    const todayMid = new Date(); todayMid.setHours(0,0,0,0);
+    const days = Math.round((iv.date - todayMid) / 86400000);
+    let when = pretty;
+    if (days === 0) when = 'TODAY' + (iv.timeStr ? ' at ' + iv.timeStr : '');
+    else if (days === 1) when = 'TOMORROW' + (iv.timeStr ? ' at ' + iv.timeStr : '');
+    else when = pretty + (iv.timeStr ? ' at ' + iv.timeStr : '');
+    html += '<div class="interview-box-item">' +
+      '<div class="interview-box-company">' + iv.company + '</div>' +
+      '<div class="interview-box-date">' + when + '</div>' +
+      '</div>';
   }
   box.innerHTML = html;
   box.style.display = '';
   const boxHeight = box.offsetHeight;
-  document.getElementById('scoreLegend').style.top = (120 + boxHeight + 14) + 'px';
+  const sl = document.getElementById('scoreLegend');
+  if (sl) sl.style.top = (120 + boxHeight + 14) + 'px';
 }
 // ─────────────────────────────────────────────────────────
 // TABS
