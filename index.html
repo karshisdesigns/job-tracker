@@ -6199,6 +6199,8 @@ showTab = function(tab) {
   origShowTab(tab);
   const legend = document.getElementById('scoreLegend');
   if (legend) legend.style.display = tab === 'active' ? '' : 'none';
+  const ibox = document.getElementById('interviewBox');
+  if (ibox) ibox.style.display = (tab === 'pipeline') ? 'none' : '';
   if (tab === 'outreach' && !outreachMap) {
     setTimeout(initMap, 100);
   }
@@ -6313,10 +6315,10 @@ function renderPipeline() {
   var nNextRound = interviewSub.next.length;
 
   // GEOMETRY
-  var W = 1700, H = 980;
-  var marginTop = 70, marginBottom = 70, marginLeft = 220, marginRight = 220;
-  var nodeW = 60;
-  var nodeGap = 30;
+  var W = 2400, H = 1000;
+  var marginTop = 70, marginBottom = 70, marginLeft = 200, marginRight = 200;
+  var nodeW = 72;
+  var nodeGap = 32;
   var availH = H - marginTop - marginBottom;
 
   var palette = {
@@ -6472,7 +6474,7 @@ function renderPipeline() {
       var labelY = n.cy - 8;
       svg += drawTextWithBackdrop(labelX, labelY, labelAnchor, n.label, 16, 700, '#1A1A1A', delay + 0.55, 12, 6);
       var numY = n.cy + 42;
-      svg += '<text class="sk-num" style="animation-delay:' + (delay + 0.65) + 's;paint-order:stroke;stroke:rgba(255,248,240,0.9);stroke-width:5px;" x="' + labelX + '" y="' + numY + '" text-anchor="' + labelAnchor + '" font-size="60" font-weight="900" fill="#1A1A1A" data-target="' + n.value + '">' + n.value + '</text>';
+      svg += '<text class="sk-num" style="animation-delay:' + (delay + 0.65) + 's;paint-order:stroke;stroke:rgba(255,248,240,0.9);stroke-width:5px;" x="' + labelX + '" y="' + numY + '" text-anchor="' + labelAnchor + '" font-size="76" font-weight="900" fill="#1A1A1A" data-target="' + n.value + '">' + n.value + '</text>';
     });
   });
 
