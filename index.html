@@ -1158,7 +1158,7 @@ body::before {
   box-shadow: var(--shadow-brutal);
   padding: 32px;
   overflow: hidden;
-  min-height: 600px;
+  min-height: 760px;
 }
 .sankey-stage::before {
   content: "";
@@ -1284,7 +1284,7 @@ body::before {
   </div>
   <div class="legend-color-row">
     <span class="legend-swatch" style="background:#F1F1F1;border-color:#CCC;opacity:0.5;"></span>
-    <span class="score-legend-label">Not Interested</span>
+    <span class="score-legend-label">Waiting to Hear Back</span>
   </div>
   <div class="legend-section-title">Gmail Check</div>
   <div class="legend-color-row">
@@ -1326,7 +1326,7 @@ body::before {
             <button class="filter-btn active" onclick="setFilter('not-started', this)">Not Started</button>
             <button class="filter-btn" onclick="setFilter('applied', this)">Applied</button>
             <button class="filter-btn" onclick="setFilter('interviewing', this)">Interviewing</button>
-            <button class="filter-btn" onclick="setFilter('not-interested', this)">Not Interested</button>
+            <button class="filter-btn" onclick="setFilter('not-interested', this)">Waiting to Hear Back</button>
             <input type="text" class="search-box" placeholder="Search company or role..." onkeyup="searchCards(this.value)">
         </div>
         <div id="activeCards" class="timeline"></div>
@@ -5541,7 +5541,7 @@ function renderJobCard(job) {
             <option value="interviewing" ${js.status==='interviewing'?'selected':''}>Interviewing</option>
             <option value="offer" ${js.status==='offer'?'selected':''}>Offer</option>
             <option value="rejected" ${js.status==='rejected'?'selected':''}>Rejected</option>
-            <option value="not-interested" ${js.status==='not-interested'?'selected':''}>Not Interested</option>
+            <option value="not-interested" ${js.status==='not-interested'?'selected':''}>Waiting to Hear Back</option>
           </select>
           <div class="card-btns">
             <button class="btn-apply" onclick="openEmailModal('${job.id}')">Apply</button>
@@ -5671,7 +5671,7 @@ function renderOutreach() {
               <option value="interviewing" ${os.status==='interviewing'?'selected':''}>Response</option>
               <option value="offer" ${os.status==='offer'?'selected':''}>Interview</option>
               <option value="rejected" ${os.status==='rejected'?'selected':''}>No Interest</option>
-              <option value="not-interested" ${os.status==='not-interested'?'selected':''}>Not Interested</option>
+              <option value="not-interested" ${os.status==='not-interested'?'selected':''}>Waiting to Hear Back</option>
             </select>
             <div class="card-btns">
               <button class="btn-contact" onclick="openOutreachModal('${o.id}')">Contact</button>
@@ -6190,7 +6190,7 @@ function isApplied(j) {
 function renderPipeline() {
   var jobs = (typeof JOBS !== 'undefined') ? JOBS : [];
 
-  // ── Counts via getJobState (matches Active Postings KPIs)
+  // ── Counts via getJobState
   var total = 0, applied = 0, interviewingState = 0, offers = 0, rejected = 0;
   jobs.forEach(function(job) {
     var s = (typeof getJobState === 'function') ? (getJobState(job.id).status || 'not-started') : (job.defaultStatus || 'not-started');
@@ -6202,12 +6202,9 @@ function renderPipeline() {
     if (s === 'rejected') rejected++;
   });
 
-  // ── Broader interview / outcome detection from gmailStatus + gmailBadge so the
-  //    Sankey shows the real downstream story even where status hasn't been set.
   function isAppliedJob(j) {
     var s = (typeof getJobState === 'function') ? (getJobState(j.id).status || 'not-started') : (j.defaultStatus || 'not-started');
-    if (s === 'not-interested' || s === 'not-started') return false;
-    return true;
+    return !(s === 'not-interested' || s === 'not-started');
   }
   function classifyOutcome(j) {
     var gs = (j.gmailStatus || '').toLowerCase();
@@ -6226,7 +6223,6 @@ function renderPipeline() {
     if (!outcomeBuckets[k]) outcomeBuckets[k] = [];
     outcomeBuckets[k].push(j);
   });
-  // Recount with consistent semantics so flows balance
   var nApplied   = appliedJobs.length;
   var nNotApplied = total - nApplied;
   var nInterview = outcomeBuckets.interviewing.length;
@@ -6235,7 +6231,6 @@ function renderPipeline() {
   var nAwaiting  = outcomeBuckets.awaiting.length;
   var nOffer     = outcomeBuckets.offer.length;
 
-  // From Interviewing → sub-stages
   function dateInString(s) {
     var m = (s || '').match(/(\d{4}[-/]\d{1,2}[-/]\d{1,2})/);
     if (!m) return null;
@@ -6261,15 +6256,15 @@ function renderPipeline() {
   var nAwaitDecide = interviewSub['awaiting-decision'].length;
   var nNextRound = interviewSub.next.length;
 
-  // ── Spawn ambient orbs
+  // Spawn ambient orbs
   var stage = document.getElementById('sankeyStage');
   if (stage) {
     stage.querySelectorAll('.sk-orb').forEach(function(o){ o.remove(); });
     var orbColors = ['#E4312B','#FFD000','#00A651','#0072CE','#F472B6','#FF6B2B'];
-    for (var i = 0; i < 7; i++) {
+    for (var i = 0; i < 8; i++) {
       var o = document.createElement('div');
       o.className = 'sk-orb';
-      var size = 80 + Math.random() * 180;
+      var size = 100 + Math.random() * 220;
       o.style.width = size + 'px';
       o.style.height = size + 'px';
       o.style.background = orbColors[i % orbColors.length];
@@ -6281,34 +6276,22 @@ function renderPipeline() {
     }
   }
 
-  // ─────────────────────────────────────────────────────────────────
-  // SANKEY GEOMETRY
-  // ─────────────────────────────────────────────────────────────────
-  var W = 1200, H = 640;
-  var marginTop = 50, marginBottom = 50, marginLeft = 60, marginRight = 60;
-  var nodeW = 28;
-  var nodeGap = 14;
+  // ─── BIGGER GEOMETRY ────────────────────────────────────────────
+  var W = 1500, H = 880;
+  var marginTop = 70, marginBottom = 70, marginLeft = 200, marginRight = 200;
+  var nodeW = 44;
+  var nodeGap = 24;
   var availH = H - marginTop - marginBottom;
 
-  // Define columns and nodes
   var palette = {
-    total:       '#0072CE',
-    applied:     '#FF6B2B',
-    notApplied:  '#777777',
-    interview:   '#00A651',
-    rejected:    '#E4312B',
-    bounced:     '#6B4226',
-    awaiting:    '#F472B6',
-    offer:       '#FFD000',
-    upcoming:    '#FF6B2B',
-    awaitDecide: '#0072CE',
-    nextRound:   '#00A651'
+    total: '#0072CE', applied: '#FF6B2B', notApplied: '#777',
+    interview: '#00A651', rejected: '#E4312B', bounced: '#6B4226',
+    awaiting: '#F472B6', offer: '#FFD000',
+    upcoming: '#FF6B2B', awaitDecide: '#0072CE', nextRound: '#00A651'
   };
 
   var columns = [
-    [
-      { id: 'total', label: 'TOTAL', value: total, color: palette.total }
-    ],
+    [{ id: 'total', label: 'TOTAL', value: total, color: palette.total }],
     [
       { id: 'applied',    label: 'APPLIED',     value: nApplied,    color: palette.applied },
       { id: 'notApplied', label: 'NOT STARTED', value: nNotApplied, color: palette.notApplied }
@@ -6326,64 +6309,47 @@ function renderPipeline() {
       { id: 'nextRound',   label: 'NEXT ROUND',        value: nNextRound,   color: palette.nextRound }
     ]
   ];
-
-  // Filter zero-value nodes from cols 2+ to keep the chart clean
   columns[2] = columns[2].filter(function(n) { return n.value > 0; });
   columns[3] = columns[3].filter(function(n) { return n.value > 0; });
 
-  // Compute scale: max column total height -> fits availH
   var colTotals = columns.map(function(col) { return col.reduce(function(s,n){ return s + n.value; }, 0); });
   var maxColTotal = Math.max.apply(null, colTotals);
-  // value -> pixel height
   function vToPx(v) {
-    var totalGapPx = (Math.max(1, columns[0].length) - 1) * nodeGap; // not really used per-col, just ensure >0
-    return v * (availH - 60) / Math.max(maxColTotal, 1);
+    return v * (availH - 100) / Math.max(maxColTotal, 1);
   }
-
-  // X positions (4 columns)
   var nCols = columns.length;
   var colXStep = (W - marginLeft - marginRight - nodeW) / (nCols - 1);
   var colX = columns.map(function(_, i) { return marginLeft + i * colXStep; });
 
-  // Layout: stack nodes top-down, vertically centered
   columns.forEach(function(col, ci) {
     var colTotal = col.reduce(function(s,n){ return s + vToPx(n.value); }, 0);
     var totalGap = (col.length - 1) * nodeGap;
     var colHeight = colTotal + totalGap;
     var y = marginTop + (availH - colHeight) / 2;
     col.forEach(function(n) {
-      n.h = Math.max(8, vToPx(n.value));
+      n.h = Math.max(14, vToPx(n.value));
       n.x = colX[ci];
       n.y = y;
       n.cx = n.x + nodeW / 2;
       n.cy = n.y + n.h / 2;
-      // For ribbon source/dest tracking, maintain a "consumed" pointer per node side
-      n.outConsumed = 0; // pixels consumed on right side
-      n.inConsumed = 0;  // pixels consumed on left side
+      n.outConsumed = 0;
+      n.inConsumed = 0;
       y += n.h + nodeGap;
     });
   });
 
-  // Build flows (source col idx, source id, dest col idx, dest id, value)
   var flows = [];
-
-  // Col 0 -> Col 1
-  flows.push({ s: ['total'],      t: 'applied',    v: nApplied,    color: palette.applied });
-  flows.push({ s: ['total'],      t: 'notApplied', v: nNotApplied, color: palette.notApplied });
-
-  // Col 1 -> Col 2 (only from APPLIED; NOT STARTED terminates)
+  flows.push({ s: ['total'], t: 'applied',    v: nApplied,    color: palette.applied });
+  flows.push({ s: ['total'], t: 'notApplied', v: nNotApplied, color: palette.notApplied });
   ['interview', 'awaiting', 'rejected', 'bounced', 'offer'].forEach(function(tid) {
     var node = columns[2].find(function(n) { return n.id === tid; });
     if (node) flows.push({ s: ['applied'], t: tid, v: node.value, color: node.color });
   });
-
-  // Col 2 -> Col 3 (only from INTERVIEWING)
   ['upcoming', 'awaitDecide', 'nextRound'].forEach(function(tid) {
     var node = columns[3].find(function(n) { return n.id === tid; });
     if (node) flows.push({ s: ['interview'], t: tid, v: node.value, color: node.color });
   });
 
-  // Helper: find node by id across all columns
   function findNode(id) {
     for (var ci = 0; ci < columns.length; ci++) {
       var n = columns[ci].find(function(n) { return n.id === id; });
@@ -6391,12 +6357,6 @@ function renderPipeline() {
     }
     return null;
   }
-
-  // Now compute ribbon paths. For each flow:
-  //   src: the rightmost col where s[0] lives (we use s[0])
-  //   dst: t
-  //   sy0..sy1: vertical extent on src right edge
-  //   dy0..dy1: vertical extent on dst left edge
   function buildRibbonPath(src, srcY0, srcY1, dst, dstY0, dstY1) {
     var x1 = src.x + nodeW;
     var x2 = dst.x;
@@ -6410,41 +6370,33 @@ function renderPipeline() {
     return p;
   }
 
-  // Render SVG
   var svg = '';
   svg += '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="font-family:\'DM Sans\',sans-serif;">';
-
-  // Defs: gradients per ribbon (source -> dest color)
   svg += '<defs>';
-  var gradId = 0;
   var ribbonDefs = [];
-  flows.forEach(function(flow) {
+  flows.forEach(function(flow, i) {
     var src = findNode(flow.s[0]).node;
     var dst = findNode(flow.t).node;
-    var id = 'rgrad' + (gradId++);
+    var id = 'rgrad' + i;
     flow.gradId = id;
     ribbonDefs.push(
       '<linearGradient id="' + id + '" x1="0" x2="1" y1="0" y2="0" gradientUnits="objectBoundingBox">' +
-      '<stop offset="0%" stop-color="' + src.color + '" stop-opacity="0.78"/>' +
-      '<stop offset="100%" stop-color="' + dst.color + '" stop-opacity="0.78"/>' +
+      '<stop offset="0%" stop-color="' + src.color + '" stop-opacity="0.85"/>' +
+      '<stop offset="100%" stop-color="' + dst.color + '" stop-opacity="0.85"/>' +
       '</linearGradient>'
     );
   });
   svg += ribbonDefs.join('');
-  // Glow filter for nodes
   svg += '<filter id="skGlow" x="-30%" y="-30%" width="160%" height="160%">' +
-         '<feGaussianBlur stdDeviation="3" result="b"/>' +
+         '<feGaussianBlur stdDeviation="4" result="b"/>' +
          '<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>' +
          '</filter>';
   svg += '</defs>';
 
-  // Render ribbons (under nodes). Track consumed positions on each side.
+  // Ribbons
   flows.forEach(function(flow, idx) {
-    var srcInfo = findNode(flow.s[0]);
-    var dstInfo = findNode(flow.t);
-    if (!srcInfo || !dstInfo) return;
-    var src = srcInfo.node;
-    var dst = dstInfo.node;
+    var src = findNode(flow.s[0]).node;
+    var dst = findNode(flow.t).node;
     var thickness = vToPx(flow.v);
     var srcY0 = src.y + src.outConsumed;
     var srcY1 = srcY0 + thickness;
@@ -6453,38 +6405,55 @@ function renderPipeline() {
     var dstY1 = dstY0 + thickness;
     dst.inConsumed += thickness;
     var path = buildRibbonPath(src, srcY0, srcY1, dst, dstY0, dstY1);
-    var op = 0.62;
-    svg += '<path class="sk-ribbon" style="--ribbon-op:' + op + ';animation-delay:' + (0.35 + idx * 0.07) + 's;" d="' + path + '" fill="url(#' + flow.gradId + ')" stroke="' + flow.color + '" stroke-width="0.5" stroke-opacity="0.4"/>';
+    svg += '<path class="sk-ribbon" style="--ribbon-op:0.72;animation-delay:' + (0.35 + idx * 0.07) + 's;" d="' + path + '" fill="url(#' + flow.gradId + ')" stroke="' + flow.color + '" stroke-width="0.5" stroke-opacity="0.5"/>';
   });
 
-  // Render nodes (over ribbons). Big colored bricks with shadow.
+  // Nodes + labels with backdrop pills for legibility
+  function drawTextWithBackdrop(x, y, anchor, text, fontSize, fontWeight, fillColor, delay, padX, padY) {
+    // Approximate width based on font metrics
+    var charW = fontSize * 0.55;
+    var w = Math.max(charW * (text.length || 1), 18);
+    var bgX = anchor === 'end' ? (x - w - padX) : (x - padX);
+    var bgY = y - fontSize + (padY * 0.2);
+    var bgW = w + padX * 2;
+    var bgH = fontSize + padY * 1.2;
+    return [
+      '<rect class="sk-label" style="animation-delay:' + delay + 's;" x="' + bgX + '" y="' + bgY + '" width="' + bgW + '" height="' + bgH + '" rx="4" fill="rgba(11,12,16,0.78)" stroke="rgba(255,255,255,0.06)"/>',
+      '<text class="sk-label" style="animation-delay:' + (delay + 0.05) + 's;" x="' + x + '" y="' + y + '" text-anchor="' + anchor + '" font-size="' + fontSize + '" font-weight="' + fontWeight + '" fill="' + fillColor + '">' + text + '</text>'
+    ].join('');
+  }
+
   columns.forEach(function(col, ci) {
     col.forEach(function(n, ni) {
-      var delay = 0.05 + ci * 0.12 + ni * 0.04;
+      var delay = 0.05 + ci * 0.14 + ni * 0.05;
       var pulseClass = n.pulse ? ' sk-pulse' : '';
-      svg += '<rect class="sk-node' + pulseClass + '" style="animation-delay:' + delay + 's;" x="' + n.x + '" y="' + n.y + '" width="' + nodeW + '" height="' + n.h + '" fill="' + n.color + '" stroke="#1A1A1A" stroke-width="2" filter="url(#skGlow)"><title>' + n.label + ': ' + n.value + '</title></rect>';
+      svg += '<rect class="sk-node' + pulseClass + '" style="animation-delay:' + delay + 's;" x="' + n.x + '" y="' + n.y + '" width="' + nodeW + '" height="' + n.h + '" fill="' + n.color + '" stroke="#1A1A1A" stroke-width="2.5" filter="url(#skGlow)"><title>' + n.label + ': ' + n.value + '</title></rect>';
 
-      // Number inside the node (if tall enough) or to the side
-      var fs = Math.min(28, Math.max(14, n.h * 0.55));
+      // Determine label position
       var labelX, labelAnchor;
-      if (ci === columns.length - 1) {
-        labelX = n.x - 10;
+      if (ci === 0) {
+        labelX = n.x - 18;
         labelAnchor = 'end';
+      } else if (ci === columns.length - 1) {
+        labelX = n.x + nodeW + 18;
+        labelAnchor = 'start';
       } else {
-        labelX = n.x + nodeW + 10;
+        labelX = n.x + nodeW + 18;
         labelAnchor = 'start';
       }
-      // Number (bold, large)
-      svg += '<text class="sk-num" style="animation-delay:' + (delay + 0.55) + 's;" x="' + labelX + '" y="' + (n.cy + 8) + '" text-anchor="' + labelAnchor + '" font-size="26" font-weight="900" fill="#fff" data-target="' + n.value + '">' + n.value + '</text>';
-      // Label (small, uppercase, below the number)
-      svg += '<text class="sk-label" style="animation-delay:' + (delay + 0.65) + 's;" x="' + labelX + '" y="' + (n.cy - 16) + '" text-anchor="' + labelAnchor + '" font-size="10" font-weight="700" letter-spacing="2.4" fill="#A8B0BC">' + n.label + '</text>';
+      // Label (small, uppercase) above the number
+      var labelY = n.cy - 6;
+      svg += drawTextWithBackdrop(labelX, labelY, labelAnchor, n.label, 14, 700, '#A8B0BC', delay + 0.55, 10, 4);
+      // Big number below the label
+      var numY = n.cy + 30;
+      svg += '<text class="sk-num" style="animation-delay:' + (delay + 0.65) + 's;" x="' + labelX + '" y="' + numY + '" text-anchor="' + labelAnchor + '" font-size="44" font-weight="900" fill="#fff" data-target="' + n.value + '" style="paint-order:stroke;stroke:rgba(0,0,0,0.7);stroke-width:3px;">' + n.value + '</text>';
     });
   });
 
   svg += '</svg>';
   document.getElementById('pipelineSankey').innerHTML = svg;
 
-  // ── Number count-up
+  // Number count-up
   setTimeout(function() {
     var nums = document.querySelectorAll('#pipelineSankey .sk-num');
     var pairs = [];
@@ -6496,7 +6465,7 @@ function renderPipeline() {
       }
     });
     var t0 = performance.now();
-    var dur = 1200;
+    var dur = 1300;
     function step(t) {
       var p = Math.min(1, (t - t0) / dur);
       var eased = 1 - Math.pow(1 - p, 3);
@@ -6504,7 +6473,7 @@ function renderPipeline() {
       if (p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
-  }, 600);
+  }, 700);
 }
 </script>
 </body>
