@@ -3696,8 +3696,8 @@ const JOBS = [
     source: 'AIA Chicago Job Board',
     cannabis: true,
     deadline: 'Rolling',
-    howToApply: 'Apply via AIA Chicago listing',
-    applyLink: 'https://aiachicago.org/job_posting/manske-dieckmann-thompson-pllc-architect-designer-2-2/',
+    howToApply: 'Email pat@manske.com directly (firm prefers direct contact - "the usual methods all work or feel free to come by")',
+    applyLink: 'mailto:pat@manske.com?subject=Architect%2FDesigner%202%20-%20Alexander%20Karshis',
     postingLink: 'https://aiachicago.org/job_posting/manske-dieckmann-thompson-pllc-architect-designer-2-2/',
     firmWebsite: 'https://www.mdtarchitects.com/',
     roleSketch: 'MDT is a small Chicago practice (founded 1992) doing healthcare, housing, offices, commercial - and notably the cannabis industry. Hybrid, mid-level, $68k base. Requirement is BA in Architecture with 3-4 yrs experience (Alex has 2). ArchiCAD is a plus but not required. The cannabis project history makes this a uniquely good lateral fit for Alex\'s ongoing cannabis pipeline.',
@@ -3720,9 +3720,9 @@ const JOBS = [
     postedISO: '2026-04-30',
     source: 'Indeed',
     deadline: 'Rolling',
-    howToApply: 'Apply via Indeed link',
-    applyLink: 'https://to.indeed.com/aa22clgchhsk',
-    postingLink: 'https://to.indeed.com/aa22clgchhsk',
+    howToApply: 'Apply directly via Woolpert Greenhouse board (recruiting@woolpert.com for inquiries) - bypass Indeed',
+    applyLink: 'https://job-boards.greenhouse.io/woolpert/jobs/4194979009',
+    postingLink: 'https://job-boards.greenhouse.io/woolpert/jobs/4194979009',
     firmWebsite: 'https://woolpert.com/',
     roleSketch: 'Woolpert is a national AEC firm posting three Mission Critical (data center) Architectural Designer roles in Chicago at three different bands. Mission critical/data center work is a high-growth corner of architecture and pulls heavily on Revit production, code analysis, and CD documentation - Alex\'s exact strengths from DxU. Multiple bands posted ($57.8-$72.2k, $65.8-$82.3k, $75.4-$94.3k) suggests they will fit candidate to band.',
     defaultStatus: 'not-started',
@@ -3744,11 +3744,11 @@ const JOBS = [
     postedISO: '2026-04-30',
     source: 'Indeed',
     deadline: 'Rolling',
-    howToApply: 'Apply via Indeed link',
+    howToApply: 'Confirm correct Horizonworks entity via Indeed posting first; then email directly via company site (Indeed link is fallback)',
     applyLink: 'https://to.indeed.com/aa7xrvkty6cn',
     postingLink: 'https://to.indeed.com/aa7xrvkty6cn',
     firmWebsite: 'https://horizonworks.com/',
-    roleSketch: 'Chicago APM (Construction) role at Horizonworks. Salary band starts in Alex\'s zone and stretches well above. APM responsibilities (RFIs, submittals, schedule support, subcontractor coordination) align with Alex\'s Bluebeam, Revit and BIM 360 toolkit. Posted yesterday (4/30) - apply early.',
+    roleSketch: 'Chicago APM (Construction) role at Horizonworks. Salary band starts in Alex\'s zone and stretches well above. APM responsibilities (RFIs, submittals, schedule support, subcontractor coordination) align with Alex\'s Bluebeam, Revit and BIM 360 toolkit. NOTE: Several Chicago firms use the Horizonworks name - verify the firm via the Indeed posting before applying. Two candidates: HorizonWorks LLC at 4131 S State St (horizonworksgroup@gmail.com) and Horizon Construction Team. Posted yesterday (4/30).',
     defaultStatus: 'not-started',
     gmailStatus: '',
     gmailDate: '',
@@ -4997,7 +4997,7 @@ function renderJobCard(job) {
             <option value="interviewing" ${js.status==='interviewing'?'selected':''}>Interviewing</option>
             <option value="offer" ${js.status==='offer'?'selected':''}>Offer</option>
             <option value="rejected" ${js.status==='rejected'?'selected':''}>Rejected</option>
-            <option value="not-interested" ${js.status==='not-interested'?'selected':''}>Waiting to Hear Back</option>
+            <option value="not-interested" ${js.status==='not-interested'?'selected':''}>Not Interested</option>
           </select>
           <div class="card-btns">
             <button class="btn-apply" onclick="openEmailModal('${job.id}')">Apply</button>
