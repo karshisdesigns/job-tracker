@@ -3799,7 +3799,6 @@ const JOBS = [
       ,
       {
         id: 'gti-cpg-cpm',
-        isNew: true,
         company: 'Green Thumb Industries (GTI)',
         title: 'Construction Project Manager (Manufacturing/CPG)',
         score: 5,
@@ -3824,7 +3823,6 @@ const JOBS = [
       },
       {
         id: 'jawatts-apm',
-        isNew: true,
         company: 'J A Watts, LLC',
         title: 'Assistant Project Manager I',
         score: 3,
@@ -3848,7 +3846,6 @@ const JOBS = [
       },
       {
         id: 'uic-iqmp-pm',
-        isNew: true,
         company: 'University of Illinois',
         title: 'Design and Construction Project Manager - IQMP',
         score: 3,
@@ -3865,6 +3862,54 @@ const JOBS = [
         postingLink: 'https://to.indeed.com/aajkpw9rv78t',
         firmWebsite: 'https://www.uic.edu/',
         roleSketch: 'University of Illinois is hiring a Design and Construction Project Manager for the IQMP (Institutional Quality Management Plan) program. UIC capital projects is an Owner\'s side / facilities + capital construction PM role - Alex\'s DxU CD experience translates directly to reviewing consultant deliverables, RFI/ASI workflow, and construction admin on the institutional side. Salary is in the comfortable middle of Alex\'s range. Public sector benefits + state pension are a nice add. Posted yesterday on Indeed.',
+        defaultStatus: 'not-started',
+        gmailStatus: '',
+        gmailDate: '',
+        gmailBadge: ''
+      },
+      {
+        id: 'studiotalo',
+        isNew: true,
+        company: 'Studio Talo Architecture',
+        title: 'Architectural Omnivore',
+        score: 4,
+        salary: 'Based on experience',
+        location: 'Evanston, IL',
+        address: 'Near Dempster Purple Line / 3 blocks from two Metra stations, Evanston, IL',
+        remote: 'On-site',
+        posted: 'Apr 28, 2026',
+        postedISO: '2026-04-28',
+        source: 'AIA Chicago Job Board',
+        deadline: 'Open until filled',
+        howToApply: 'Apply via AIA Chicago Job Board posting (Apply Now button on listing).',
+        applyLink: 'https://aiachicago.org/job_posting/studio-talo-architecture-architectural-omnivore/',
+        postingLink: 'https://aiachicago.org/job_posting/studio-talo-architecture-architectural-omnivore/',
+        firmWebsite: 'https://www.studiotalo.com/',
+        roleSketch: 'Studio Talo is a small Evanston firm explicitly seeking a highly motivated designer early in their career to be mentored by a principal. The Architectural Omnivore framing means doing every part of architecture: zoning analysis, existing-building documentation, design options modeling, detail drawing, site visits, and direct comms with clients, consultants, code officials, and contractors. Requirements list 1-5 years experience, B.Arch or M.Arch, AXP enrollment, Revit proficiency - which is exactly Alex (M.Arch + 2 yrs at DxU as primary Revit lead). Likely the strongest fit posted in the last week.',
+        defaultStatus: 'not-started',
+        gmailStatus: '',
+        gmailDate: '',
+        gmailBadge: ''
+      },
+      {
+        id: 'westmoreland-pa',
+        isNew: true,
+        company: 'the STUDIO @ Westmoreland Farm',
+        title: 'Project Architect',
+        score: 3,
+        salary: '$75,000 - $90,000',
+        location: 'Chicago area (TBD)',
+        address: 'Site visits local + occasional out-of-state travel - main studio TBD',
+        remote: 'On-site',
+        posted: 'Apr 28, 2026',
+        postedISO: '2026-04-28',
+        source: 'AIA Chicago Job Board',
+        deadline: 'Open until filled',
+        howToApply: 'Email resume + PDF portfolio to rloope@studioatwf.com.',
+        applyLink: 'mailto:rloope@studioatwf.com',
+        postingLink: 'https://aiachicago.org/job_posting/the-studio-westmoreland-farm-project-architect-2/',
+        firmWebsite: 'https://www.studioatwf.com/',
+        roleSketch: 'Small architecture practice posted on AIA Chicago, advancing DD and CDs collaboratively with principals, clients, and consultants. Open to all levels of experience - explicitly says so. Salary $75-90k lands cleanly in Alex range. Some local site visits and occasional out-of-state travel. Posting is light on specifics, which suggests a relationship hire by a small firm. Apply with portfolio.',
         defaultStatus: 'not-started',
         gmailStatus: '',
         gmailDate: '',
@@ -4421,6 +4466,46 @@ karshisdesigns.webflow.io`
     subject: 'Interior Architect II - III - Alexander Karshis',
     body: `Howdy Shive-Hattery Team,\n\nI came across your Interior Architect II - III posting on Indeed and wanted to apply. The Chicago studio\'s reputation for fast-paced commercial and corporate interiors work is exactly the environment I am looking for. I have 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects, where I owned CDs and construction administration on multiple commercial interiors packages.\n\nI am Revit, AutoCAD, Adobe Suite, BIM 360, and Bluebeam fluent, comfortable in client-facing meetings, and consistently catch documentation issues before they reach the field.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`
   },
+  'studiotalo': {
+    to: '',
+    cc: '',
+    subject: 'Architectural Omnivore - Alexander Karshis',
+    body: `Howdy Studio Talo Team,
+
+I came across your Architectural Omnivore listing on the AIA Chicago Job Board and wanted to apply. The framing - mentorship from a principal, real responsibility, and the chance to do every part of architecture in a small firm - is exactly the environment I am looking for at this stage of my career.
+
+Over the past 2 years at DxU Architects in Chicago I have served as primary Revit documentation lead on commercial TI and mixed-use projects, owning CDs and construction administration on multiple commercial interiors packages. I came up doing zoning analysis, existing-building documentation, detail drawing, and direct coordination with consultants and contractors - the same omnivore range your posting describes.
+
+I hold a Master of Architecture and Master of Industrial Design from the University of Houston, am AXP-active, and run my own design consultancy (Karshis Designs) on the side. I am Revit, AutoCAD, Adobe Suite, BIM 360, and Bluebeam fluent, and comfortable in client-facing meetings.
+
+My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.
+
+Have a great day,
+Alexander Karshis
+Chicago, IL
+karshisdesigns.webflow.io`
+  },
+  'westmoreland-pa': {
+    to: 'rloope@studioatwf.com',
+    cc: '',
+    subject: 'Project Architect - Alexander Karshis',
+    body: `Howdy,
+
+I came across the Project Architect listing for the STUDIO @ Westmoreland Farm on the AIA Chicago Job Board and am writing to apply. The collaborative model with principals, clients, and consultants on DD and CD work is well aligned with how I have been operating at DxU.
+
+Over the past 2 years at DxU Architects I have served as primary Revit documentation lead on commercial TI and mixed-use projects, owning CDs and construction administration across multiple commercial interiors packages. I have been the first set of eyes on consultant deliverables, RFI/ASI workflow, and field documentation, and I consistently catch documentation issues before they reach the field.
+
+I hold a Master of Architecture and Master of Industrial Design from the University of Houston, am AXP-active, and run my own design consultancy (Karshis Designs) on the side. I am Revit, AutoCAD, Adobe Suite, BIM 360, and Bluebeam fluent, and comfortable with both office work and site visits.
+
+I have attached my resume and PDF portfolio for your review.
+
+My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.
+
+Have a great day,
+Alexander Karshis
+Chicago, IL
+karshisdesigns.webflow.io`
+  },
 };
 const OUTREACH_DRAFTS = {
   'dspace': {
@@ -4917,7 +5002,6 @@ const SOCIAL_LEADS = [
       ,
       {
         id: 'linkedin-jymbii-050126',
-        isNew: true,
         source: 'linkedin',
         poster: 'LinkedIn Top Job Picks',
         posterTitle: 'Recommended Jobs digest',
@@ -4932,7 +5016,6 @@ const SOCIAL_LEADS = [
       },
       {
         id: 'fca-rejection-050126',
-        isNew: true,
         source: 'linkedin',
         poster: 'Status Update',
         posterTitle: 'Application Outcome',
@@ -4942,6 +5025,36 @@ const SOCIAL_LEADS = [
         link: 'https://aiachicago.org/job_posting/full-circle-architects-architectural-designer/',
         postedTime: 'May 1, 2026',
         postedISO: '2026-05-01',
+        score: 3,
+        cannabis: false
+      },
+      {
+        id: 'linkedin-jobot-pm-050326',
+        isNew: true,
+        source: 'linkedin',
+        poster: 'LinkedIn Job Alerts',
+        posterTitle: 'Daily Job Alert digest',
+        company: 'Jobot (recruiter)',
+        role: 'Project Manager (Commercial Construction)',
+        snippet: 'Jobot Project Manager (Commercial Construction) job alert from LinkedIn on the morning of 5/3. Jobot is a recruiting agency that fronts roles for client GCs and owners. Worth opening on LinkedIn to see whether the underlying client is in Alex range; if it is a $90-110k commercial construction PM role for a real Chicago firm, it is worth a direct apply.',
+        link: 'https://www.linkedin.com/jobs/search/?keywords=Jobot%20Project%20Manager%20Commercial%20Construction',
+        postedTime: 'May 3, 2026 - 8:42 AM CT',
+        postedISO: '2026-05-03',
+        score: 3,
+        cannabis: false
+      },
+      {
+        id: 'linkedin-search-appearances-050226',
+        isNew: true,
+        source: 'linkedin',
+        poster: 'LinkedIn Notifications',
+        posterTitle: 'Profile search notification',
+        company: 'Various',
+        role: 'Profile views',
+        snippet: 'Your profile is popular - 12 search appearances notification from LinkedIn on 5/2 mid-day. Following the late-April Corgan profile-search insight, this is another batch of recruiter and hiring-manager searches Alex should open in-app to identify the searchers. Worth scanning the search appearances list for any architecture, construction, or cannabis recruiter or principal whose firm is hiring.',
+        link: 'https://www.linkedin.com/me/search-appearances/',
+        postedTime: 'May 2, 2026 - 10:42 AM CT',
+        postedISO: '2026-05-02',
         score: 3,
         cannabis: false
       }
