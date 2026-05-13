@@ -173,7 +173,7 @@ body::before {
   font-weight: 800;
 }
 .p-label {
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   color: var(--ink-light);
   font-weight: 700;
   text-transform: uppercase;
@@ -184,6 +184,8 @@ body::before {
 .p-applied .p-num { color: var(--haring-blue); }
 .p-interview .p-num { color: var(--haring-orange); }
 .p-offer .p-num { color: var(--haring-green); }
+.p-waiting .p-num { color: var(--haring-red, #E4312B); }
+.p-active .p-num { color: var(--haring-purple, #7C3AED); }
 /* ── FILTERS ── */
 .filter-bar {
   display: flex;
@@ -4518,7 +4520,7 @@ function renderJobCard(job) {
   const remoteTag = job.remote !== 'Unknown' ?
     `<span class="meta-tag ${job.remote.toLowerCase().includes('hybrid') ? 'tag-hybrid' : 'tag-remote'}">${job.remote}</span>` : '';
   return `
-    <div class="job-card ${scoreClass}" id="card-${job.id}" data-score="${job.score}" data-company="${job.company.toLowerCase()}" data-title="${job.title.toLowerCase()}" data-status="${js.status}">
+    <div class="job-card ${scoreClass}" id="card-${job.id}" data-score="${job.score}" data-company="${job.company.toLowerCase()}" data-title="${job.title.toLowerCase()}" data-status="${js.status}" data-gmailstatus="${(job.gmailStatus || '').toLowerCase()}" data-gmailbadge="${(job.gmailBadge || '').toLowerCase()}">
       <div class="card-color-bar"></div>
       <div class="card-inner">
         <div class="card-main">
