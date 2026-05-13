@@ -189,10 +189,19 @@ body::before {
 /* ── FILTERS ── */
 .filter-bar {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   margin-bottom: 20px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
+  justify-content: space-between;
+}
+.filter-bar-left {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
 }
 .filter-label {
   font-family: 'Space Grotesk', sans-serif;
@@ -224,13 +233,13 @@ body::before {
   color: white;
 }
 .search-box {
-  margin-left: auto;
   background: white;
   border: var(--border-thin);
   padding: 7px 14px;
   font-size: 0.82rem;
   outline: none;
-  width: 220px;
+  width: 240px;
+  flex-shrink: 0;
   font-family: 'DM Sans', sans-serif;
 }
 .search-box:focus {
@@ -1482,6 +1491,12 @@ body::before {
                     <div class="p-applied"><div class="p-num" id="p-applied">0</div><div class="p-label">Applied</div></div>
                 </div>
                 <div class="progress-step">
+                    <div class="p-waiting"><div class="p-num" id="p-waiting">0</div><div class="p-label">Waiting</div></div>
+                </div>
+                <div class="progress-step">
+                    <div class="p-active"><div class="p-num" id="p-active">0</div><div class="p-label">Active</div></div>
+                </div>
+                <div class="progress-step">
                     <div class="p-interview"><div class="p-num" id="p-interview">0</div><div class="p-label">Interviewing</div></div>
                 </div>
                 <div class="progress-step">
@@ -1490,12 +1505,14 @@ body::before {
             </div>
         </div>
         <div class="filter-bar">
-            <span class="filter-label">Status:</span>
-            <button class="filter-btn" onclick="setFilter('all', this)">All</button>
-            <button class="filter-btn active" onclick="setFilter('not-started', this)">Not Started</button>
-            <button class="filter-btn" onclick="setFilter('applied', this)">Applied</button>
-            <button class="filter-btn" onclick="setFilter('interviewing', this)">Interviewing</button>
-            <button class="filter-btn" onclick="setFilter('not-interested', this)">Waiting to Hear Back</button>
+            <div class="filter-bar-left">
+                <span class="filter-label">Status:</span>
+                <button class="filter-btn" onclick="setFilter('all', this)">All</button>
+                <button class="filter-btn active" onclick="setFilter('not-started', this)">Not Started</button>
+                <button class="filter-btn" onclick="setFilter('applied', this)">Applied</button>
+                <button class="filter-btn" onclick="setFilter('interviewing', this)">Interviewing</button>
+                <button class="filter-btn" onclick="setFilter('waiting', this)">Waiting to Hear Back</button>
+            </div>
             <input type="text" class="search-box" placeholder="Search company or role..." onkeyup="searchCards(this.value)">
         </div>
         <div id="activeCards" class="timeline"></div>
@@ -4811,14 +4828,25 @@ function searchCards(val) {
 function applyFilter() {
   document.querySelectorAll('.job-card').forEach(card => {
     const s = card.dataset.status;
+    const gs = (card.dataset.gmailstatus || '').toLowerCase();
+    const gb = (card.dataset.gmailbadge || '').toLowerCase();
     const company = card.dataset.company || '';
     const title = card.dataset.title || '';
     const matchSearch = !searchTerm || company.includes(searchTerm) || title.includes(searchTerm);
     let matchFilter = true;
+    const isRejected = s === 'rejected' || gs.indexOf('reject') !== -1 || gb === 'rejected';
+    const isBounced = gs.indexOf('bounce') !== -1 || gs.indexOf('bad email') !== -1 || gb === 'bounced';
+    const isInterviewing = !isRejected && (s === 'interviewing' || s === 'in-progress' ||
+      gs.indexOf('interview') !== -1 || gs.indexOf('homework') !== -1 ||
+      gs.indexOf('reference') !== -1 || gs.indexOf('shortlist') !== -1 ||
+      gb.indexOf('interview') !== -1 || gb === 'follow-up sent');
+    const isApplied = s === 'applied' || s === 'in-progress' || s === 'interviewing' ||
+      gb === 'applied' || gs.indexOf('applied') !== -1 || gs.indexOf('sent') !== -1;
     if (activeFilter === 'all') matchFilter = s !== 'not-interested';
     else if (activeFilter === 'not-started') matchFilter = s === 'not-started';
-    else if (activeFilter === 'applied') matchFilter = s === 'applied' || s === 'in-progress';
-    else if (activeFilter === 'interviewing') matchFilter = s === 'interviewing';
+    else if (activeFilter === 'applied') matchFilter = isApplied;
+    else if (activeFilter === 'interviewing') matchFilter = isInterviewing;
+    else if (activeFilter === 'waiting') matchFilter = isApplied && !isInterviewing && !isRejected && !isBounced;
     else if (activeFilter === 'not-interested') matchFilter = s === 'not-interested';
     card.classList.toggle('hidden', !matchFilter || !matchSearch);
     card.classList.toggle('not-interested-card', s === 'not-interested');
@@ -4856,17 +4884,33 @@ function applyOutreachFilter() {
 // STATS
 // ─────────────────────────────────────────────────────────
 function updateStats() {
-  let total = 0, applied = 0, interviewing = 0, offers = 0, hidden = 0;
+  let total = 0, applied = 0, interviewing = 0, offers = 0, hidden = 0, waiting = 0, active = 0;
   for (const job of JOBS) {
     const s = getJobState(job.id).status;
     if (s === 'not-interested') { hidden++; continue; }
     total++;
-    if (s === 'applied' || s === 'in-progress') applied++;
-    if (s === 'interviewing') interviewing++;
-    if (s === 'offer') offers++;
+    const gs = (job.gmailStatus || '').toLowerCase();
+    const gb = (job.gmailBadge || '').toLowerCase();
+    const isRejected = s === 'rejected' || gs.indexOf('reject') !== -1 || gb === 'rejected';
+    const isBounced = gs.indexOf('bounce') !== -1 || gs.indexOf('bad email') !== -1 || gb === 'bounced';
+    const isOffer = s === 'offer' || gs.indexOf('offer') !== -1;
+    const isInterviewing = !isRejected && !isOffer && (
+      s === 'interviewing' || s === 'in-progress' ||
+      gs.indexOf('interview') !== -1 || gs.indexOf('homework') !== -1 ||
+      gs.indexOf('reference') !== -1 || gs.indexOf('shortlist') !== -1 ||
+      gb.indexOf('interview') !== -1 || gb === 'follow-up sent');
+    const isApplied = s === 'applied' || s === 'in-progress' || s === 'interviewing' ||
+      gb === 'applied' || gs.indexOf('applied') !== -1 || gs.indexOf('sent') !== -1;
+    if (isApplied) applied++;
+    if (isInterviewing) interviewing++;
+    if (isOffer) offers++;
+    if (isApplied && !isInterviewing && !isRejected && !isBounced && !isOffer) waiting++;
+    if (!isRejected && !isBounced && s !== 'withdrawn') active++;
   }
   document.getElementById('p-total').textContent = total;
   document.getElementById('p-applied').textContent = applied;
+  document.getElementById('p-waiting').textContent = waiting;
+  document.getElementById('p-active').textContent = active;
   document.getElementById('p-interview').textContent = interviewing;
   document.getElementById('p-offer').textContent = offers;
   document.getElementById('statsBar').innerHTML = `
