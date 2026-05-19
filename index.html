@@ -3222,7 +3222,6 @@ const JOBS = [
   ,
   {
       id: 'bkv-arch-designer-dev',
-      isNew: true,
       company: 'BKV Group',
       title: 'Architectural Designer I (Development)',
       score: 8,
@@ -3246,7 +3245,6 @@ const JOBS = [
     },
   {
       id: 'clayco-arch-designer-2',
-      isNew: true,
       company: 'Clayco / LJC Design & Engineering',
       title: 'Architectural Designer 2',
       score: 8,
@@ -3270,7 +3268,6 @@ const JOBS = [
     },
   {
       id: 'marycook-project-designer',
-      isNew: true,
       company: 'Mary Cook Associates',
       title: 'Project Designer - Interior Design and Architecture',
       score: 8,
@@ -3294,7 +3291,6 @@ const JOBS = [
     },
   {
       id: 'thomas-arch-pa',
-      isNew: true,
       company: 'Thomas Architects',
       title: 'Extraordinary Project Architect',
       score: 6,
@@ -3318,7 +3314,6 @@ const JOBS = [
     },
   {
       id: 'uillinois-iqmp-pm',
-      isNew: true,
       company: 'University of Illinois Urbana-Champaign',
       title: 'Design and Construction Project Manager - IQMP',
       score: 7,
@@ -3342,7 +3337,6 @@ const JOBS = [
     },
   {
       id: 'michaelpage-pm-interiors',
-      isNew: true,
       company: 'Michael Page (Recruiter)',
       title: 'Project Manager - Corporate Interiors',
       score: 7,
@@ -3359,6 +3353,31 @@ const JOBS = [
       postingLink: 'https://to.indeed.com/aawcv8f8979k',
       firmWebsite: 'https://www.michaelpage.com',
       roleSketch: "Recruiter post for a confidential large-scale Chicago GC doing corporate interiors + tenant improvements. $110-135k, requires 4-8 yrs corporate interiors construction. Alex's DxU TI experience is directly relevant; David Oberg (recruiter) is worth a direct call/email after applying. Recruiters represent multiple clients - getting on Michael Page's radar opens doors beyond this single posting.",
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    }
+  ,
+    {
+      id: 'rebel-house-int-sr-designer',
+      isNew: true,
+      company: 'Rebel House LLC',
+      title: 'Intermediate to Senior Interior Designer',
+      score: 5,
+      salary: '$60,000-$90,000',
+      location: 'Winnetka, IL',
+      address: 'Winnetka, IL',
+      remote: 'On-site',
+      posted: 'May 18, 2026',
+      postedISO: '2026-05-18',
+      source: 'Indeed',
+      deadline: 'Rolling',
+      howToApply: 'Apply via Indeed',
+      applyLink: 'https://to.indeed.com/aarnjs9txz4d',
+      postingLink: 'https://to.indeed.com/aarnjs9txz4d',
+      firmWebsite: 'https://www.rebelhousegroup.com/',
+      roleSketch: 'North Shore residential and boutique commercial interior design studio hiring an Intermediate-to-Senior Interior Designer (3-7 yrs) for high-end residential, restaurant, and hospitality interior work. Salary $60-90K is squarely in Alex range. Stretches between mid-level and senior - his 2 yrs DxU commercial TI experience plus Karshis Designs consultancy can be framed as the design-led + documentation-strong hybrid. Note: Winnetka is a 25-30 mile commute from Roscoe Village - confirm remote/hybrid flexibility in cover letter. Worth a swing.',
       defaultStatus: 'not-started',
       gmailStatus: '',
       gmailDate: '',
@@ -3872,6 +3891,27 @@ karshisdesigns.webflow.io`
     to: '',
     subject: 'Project Manager - Corporate Interiors - Alexander Karshis',
     body: `Howdy Michael Page (Recruiter) Hiring Team,\n\nI came across the Project Manager - Corporate Interiors role you are recruiting for and wanted to introduce myself. Corporate interiors and tenant improvements are the exact project types I document day to day at DxU, and I am ready to move into a PM seat at a larger Chicago GC.\n\nFor the past 2 years I have been the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects, where I run full CD packages, RFI/submittal workflows, sub coordination, and client-facing schedule support. Alongside that I operate my own Chicago design consultancy (Karshis Designs) where I own scope, budget, and client communication end to end.\n\nDual master\'s degrees in Architecture and Industrial Design give me a blend of code/CD fluency and a fabrication-side perspective on materials, equipment, and process layout. I think that pairing maps directly onto the work your team is doing.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`
+  }
+,
+  'rebel-house-int-sr-designer': {
+    to: '',
+    subject: 'Intermediate Interior Designer Application - Alexander Karshis',
+    body: `Howdy Rebel House team,
+
+I came across your Intermediate to Senior Interior Designer posting on Indeed and wanted to introduce myself. I am an architectural designer based in Chicago's Roscoe Village neighborhood with 2 years at DxU Architects as the primary Revit documentation lead on commercial tenant improvement and mixed-use projects, plus a parallel design consultancy (Karshis Designs) where I do small-scale residential and boutique commercial work.
+
+I split my training between a Master of Architecture and a Master of Industrial Design at the University of Houston, which means I tend to think about interiors as a system - from the millwork and finish details up through the documentation set that the contractor needs to actually build it. Your North Shore residential and hospitality portfolio is exactly the kind of work I want to do more of.
+
+My toolkit (Revit, AutoCAD, Bluebeam, Adobe Suite, SketchUp, plus shop fabrication) lines up with what you need on the desk, and my DxU TI experience means I can hold my own from schematic design through CA without much hand-holding.
+
+I would love to walk you through my portfolio and learn more about your team and current projects.
+
+My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.
+
+Have a great day,
+Alexander Karshis
+Chicago, IL
+karshisdesigns.webflow.io`
   }
 };
 const OUTREACH_DRAFTS = {
@@ -4515,6 +4555,22 @@ const SOCIAL_LEADS = [
         postedTime: 'May 9, 2026 - 5:42 PM CT',
         postedISO: '2026-05-09',
         score: 3,
+        cannabis: false
+      }
+    ,
+      {
+        id: 'cl-westloop-gc-cpm-051826',
+        isNew: true,
+        source: 'craigslist',
+        poster: 'Anonymous GC (West Loop)',
+        posterTitle: 'General Contractor - Hiring Manager',
+        company: 'Confidential General Contractor',
+        role: 'Commercial Construction Project Manager',
+        snippet: 'General contractor seeking experienced and seasoned project managers. Plan reading and direction a must. Plan takeoffs, sub contractor purchasing and day to day jobsite management. At least 5+ years experience in interior tenant upfits and small core shell structures from the ground up. We are not looking for handymen - must have professional skills and sound experience.',
+        link: 'https://chicago.craigslist.org/chc/trd/d/chicago-commercial-construction-project/7935279295.html',
+        postedTime: 'May 18, 2026 - 10:53 PM CT',
+        postedISO: '2026-05-18',
+        score: 4,
         cannabis: false
       }
     ];
