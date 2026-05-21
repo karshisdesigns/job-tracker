@@ -3384,7 +3384,6 @@ const JOBS = [
     },
     {
       id: 'leoforce-pm-tenant-interiors',
-      isNew: true,
       company: 'LeoForce (Confidential GC)',
       title: 'Project Manager (Tenant Interiors)',
       score: 4,
@@ -3408,7 +3407,6 @@ const JOBS = [
     },
     {
       id: 'unpatterned-interior-designer',
-      isNew: true,
       company: 'Unpatterned',
       title: 'Interior Designer',
       score: 4,
@@ -3425,6 +3423,30 @@ const JOBS = [
       postingLink: 'https://to.indeed.com/aa99dlbtwrkw',
       firmWebsite: 'https://unpatterned.com',
       roleSketch: 'High-end residential interior design lead role at a Ravenswood luxury studio (pattern, color, residential homeowners, new construction + renovations + full furnishings). 4+ years residential experience preferred (stretch - your 2 yrs at DxU is commercial TI, plus Karshis Designs portfolio). AutoCAD required (you have it), SketchUp + Canva a plus. Hybrid Ravenswood is a strong commute win. Salary $60-80K is at your floor but doable. Frame yourself around technical CDs + client management + Karshis residential references.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+    {
+      id: 'resicom-cpm',
+      isNew: true,
+      company: 'The Resicom Group',
+      title: 'Construction Project Manager',
+      score: 4,
+      salary: '$90,000 - $115,000',
+      location: 'Woodridge, IL',
+      address: '7135 Janes Ave, Woodridge, IL 60517',
+      remote: 'On-site',
+      posted: 'May 20, 2026',
+      postedISO: '2026-05-20',
+      source: 'Indeed (JOB_832)',
+      deadline: 'Open until filled',
+      howToApply: 'Apply via Indeed link, then optionally email Howdy note referencing retail rollout focus and Karshis Designs commercial work.',
+      applyLink: 'https://to.indeed.com/aatbf2tpglqx',
+      postingLink: 'https://to.indeed.com/aatbf2tpglqx',
+      firmWebsite: 'https://resicomonline.com/',
+      roleSketch: 'Specialty GC focused on existing retail stores - multi-state remodels, TI, facility maintenance, and rollouts. 54 employees, $11.1M revenue. Strong fit: Alex\'s DxU commercial TI experience + Karshis Designs retail/restaurant references directly translate. Frame around small-to-medium remodels and client communication.',
       defaultStatus: 'not-started',
       gmailStatus: '',
       gmailDate: '',
@@ -3988,6 +4010,22 @@ I spent two years at DxU Architects as the primary Revit documentation lead on c
 Ravenswood is a short hop from my place in Roscoe Village, so the three-day onsite schedule is a real plus, not a friction point.
 
 My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.
+
+Have a great day,
+Alexander Karshis
+Chicago, IL
+karshisdesigns.webflow.io`
+  },
+  'resicom-cpm': {
+    to: 'careers@resicomonline.com',
+    subject: 'Construction Project Manager - Karshis Application',
+    body: `Howdy Resicom team,
+
+I came across your Construction Project Manager opening on Indeed and wanted to reach out - the retail-focused, multi-site remodel work Resicom does is right in my wheelhouse.
+
+For the past 2 years at DxU Architects in Chicago, I have been the primary Revit documentation lead on commercial TI and mixed-use projects, coordinating drawings, subs, and client communication through CDs and CA. Alongside that, I run my own design consultancy, Karshis Designs, which handles small commercial and residential remodels - so I am used to managing the kind of small-to-medium scope where one person owns plan takeoffs, change orders, and day-to-day jobsite coordination.
+
+I would welcome a quick conversation about how I could plug into your project management team. My portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.
 
 Have a great day,
 Alexander Karshis
@@ -4652,8 +4690,23 @@ const SOCIAL_LEADS = [
         postedISO: '2026-05-18',
         score: 4,
         cannabis: false
-      }
-    ];
+      },
+    {
+      id: 'sl-li-shoeb-dpm-052026',
+      isNew: true,
+      source: 'linkedin',
+      poster: 'Shoeb Sayyed',
+      posterTitle: 'SHRM Certified Recruiter - #LicensedToHire',
+      company: 'Undisclosed Client (via Recruiter InMail)',
+      role: 'Project Manager (DPM) - Hoffman Estates, IL (On-site)',
+      snippet: 'With your six-plus years in architectural design and project management, I believe you would be a great fit for a position our client is hiring for. Your experience in turning complex briefs into practical designs really stands out. This opportunity involves managing exciting projects that align with your background in hospitality and adaptive reuse.',
+      link: 'https://www.linkedin.com/messaging/thread/2-ZDY0ZGQwMGQtMWIyMi00MzJhLTg3YjctYTEzN2E2NGQyYzhjXzEwMA==/',
+      postedTime: 'May 20, 2026 6:42pm CT',
+      postedISO: '2026-05-20',
+      score: 3,
+      cannabis: false
+    }
+  ];
 // ─────────────────────────────────────────────────────────
 
     // ── Self-check: verify data loaded correctly ──
