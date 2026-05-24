@@ -3477,7 +3477,6 @@ const JOBS = [
     },
     {
       id: 'brookfield-ggp-strategic-projects-mgr',
-      isNew: true,
       company: 'Brookfield Properties / GGP',
       title: 'Mgr, Strategic Projects',
       score: 4,
@@ -3501,7 +3500,6 @@ const JOBS = [
     },
     {
       id: 'johnson-consulting-re-hospitality-pm',
-      isNew: true,
       company: 'Johnson Consulting (C.H. Johnson)',
       title: 'Real Estate & Hospitality Project Manager',
       score: 4,
@@ -3525,7 +3523,6 @@ const JOBS = [
     },
     {
       id: 'transwestern-project-manager',
-      isNew: true,
       company: 'Transwestern',
       title: 'Project Manager',
       score: 4,
@@ -3542,6 +3539,31 @@ const JOBS = [
       postingLink: 'https://to.indeed.com/aavlcntbhm6p',
       firmWebsite: 'https://transwestern.com',
       roleSketch: 'Transwestern is a top-15 national commercial real estate services firm with a large Chicago office. Their Project Management practice runs owner/tenant capital project oversight - corporate interiors, tenant build-outs, base building upgrades, and ground-up. PM seat is mid-to-senior and the $115-125k range is at the upper edge of Alex target but reasonable for the seniority being asked. Direct alignment with the Verano-style construction PM track he is already interviewing for.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    }
+  ,
+    {
+      id: 'bowa-group-project-engineer',
+      isNew: true,
+      company: 'The Bowa Group Inc',
+      title: 'Construction Project Engineer',
+      score: 4,
+      salary: '$70,000 - $80,000',
+      location: 'Chicago, IL',
+      address: 'Chicago, IL',
+      remote: 'On-site',
+      posted: 'May 22, 2026',
+      postedISO: '2026-05-22',
+      source: 'Indeed',
+      deadline: 'Open until filled',
+      howToApply: 'Apply via Indeed link. Project Engineer is the right rung for someone with 1-4 years of PE/PM exposure - lean on the DxU TI documentation work, Procore familiarity if any, and direct GC handoff experience. Mention Bluebeam/BIM 360 fluency and the cross-functional submittals/RFI track record.',
+      applyLink: 'https://to.indeed.com/aazfxtgvlkf4',
+      postingLink: 'https://to.indeed.com/aazfxtgvlkf4',
+      firmWebsite: 'https://www.bowaconstruction.com',
+      roleSketch: 'Bowa Construction is a Chicago-based GC and CM firm doing general contracting, design-build, and construction management. The Project Engineer role supports the PM and Superintendent on commercial/mixed-use/industrial/school projects - submittals, cost control, scheduling, Procore administration, change orders, and document control. 1-4 years experience target lines up directly with Alex 2 years at DxU as the primary Revit documentation lead. $70-80k is at the low end of Alex range but the PE-to-PM trajectory makes this a strong launching pad into the GC side.',
       defaultStatus: 'not-started',
       gmailStatus: '',
       gmailDate: '',
@@ -4145,6 +4167,10 @@ karshisdesigns.webflow.io`
     body: `Howdy Transwestern team,\n\nI saw the Project Manager posting in the Chicago office and wanted to introduce myself. The work your Project Management group does - tenant rep build-outs, capital projects, owner advisory - is exactly the kind of seat I have been building toward.\n\nFor the past 2 years I have been the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects, owning CD packages, RFI and submittal coordination, shop drawing reviews, and the day-to-day GC and consultant handoff. I am fluent in Revit, BIM 360, Bluebeam, and AutoCAD, and I run my own consultancy, Karshis Designs, alongside the day job, which keeps me close to scope, schedule, and client communication on smaller engagements.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`
   },
 
+  'bowa-group-project-engineer': {
+    subject: 'Construction Project Engineer - Alexander Karshis',
+    body: `Howdy Bowa Construction team,\n\nI saw the Construction Project Engineer posting and wanted to put my name in. The mix of general contracting, design-build, and construction management Bowa does is exactly the kind of seat I have been building toward.\n\nFor the past 2 years I have been the primary Revit documentation lead at DxU Architects on commercial TI and mixed-use projects, owning CD packages, submittal and RFI coordination, shop drawing reviews, and the daily GC and consultant handoff. I am fluent in Revit, BIM 360, Bluebeam, and AutoCAD, comfortable in Procore-style workflows, and I run my own consultancy, Karshis Designs, alongside the day job, which keeps me close to scope, schedule, and client communication.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`
+  },
 };
 const OUTREACH_DRAFTS = {
   'dspace': {
@@ -4816,6 +4842,22 @@ const SOCIAL_LEADS = [
       postedTime: 'May 20, 2026 6:42pm CT',
       postedISO: '2026-05-20',
       score: 3,
+      cannabis: false
+    }
+  ,
+    {
+      id: 'sl-li-polvere-missioncritical-052226',
+      isNew: true,
+      source: 'linkedin',
+      poster: 'Gary Polvere',
+      posterTitle: 'Executive Search Partner | Mechanical & Electrical (MEP) Construction - Barrington Resource Group',
+      company: 'Undisclosed Mission-Critical / Data Center Firm (via Recruiter InMail)',
+      role: 'Architect - Mission-Critical / Data Center Design - Chicago (Confidential Search)',
+      snippet: 'I am reaching out on behalf of a client that may represent a compelling next step in your career - a specialized, entrepreneurial design and engineering firm in Chicago focused exclusively on mission-critical and data center facilities. Tight-knit team, full project lifecycle from proposal generation and conceptual design through construction administration. 5+ years arch design, Revit/AutoCAD/Navisworks/Bluebeam, data center exp preferred but not required, licensure or active pursuit preferred.',
+      link: 'https://www.linkedin.com/messaging/thread/2-NzQwZTFhYTItZGNkMi00MzMyLTk0ZTEtNzY2MjEyNTg4MGIwXzEwMA==/',
+      postedTime: 'May 22, 2026 4:42pm CT',
+      postedISO: '2026-05-22',
+      score: 4,
       cannabis: false
     }
   ];
