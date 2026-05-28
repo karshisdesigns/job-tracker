@@ -245,6 +245,21 @@ body::before {
 .search-box:focus {
   box-shadow: var(--shadow-brutal-sm);
 }
+.search-count {
+  font-size: 0.72rem;
+  color: var(--ink-light);
+  font-family: 'DM Sans', sans-serif;
+  margin-left: 8px;
+  white-space: nowrap;
+  align-self: center;
+}
+.last-updated {
+  font-size: 0.72rem;
+  color: var(--ink-light);
+  margin: 2px 0 0 0;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.02em;
+}
 /* ── TIMELINE ── */
 .timeline {
   position: relative;
@@ -1401,6 +1416,7 @@ body::before {
         <div class="header-title">
             <h1>Alex Karshis <span class="accent">Job Search</span></h1>
             <p>Architecture + Design &bull; Chicago</p>
+            <p class="last-updated">Last updated: <span id="lastUpdatedDate">May 26, 2026</span></p>
         </div>
         <div class="stats-bar" id="statsBar">
             <div class="stat-pill"><strong>0</strong> Roles</div>
@@ -1513,7 +1529,7 @@ body::before {
                 <button class="filter-btn" onclick="setFilter('interviewing', this)">Interviewing</button>
                 <button class="filter-btn" onclick="setFilter('waiting', this)">Waiting to Hear Back</button>
             </div>
-            <input type="text" class="search-box" placeholder="Search company or role..." onkeyup="searchCards(this.value)">
+            <input type="text" class="search-box" id="activeSearchBox" placeholder="Search company, role, location, salary..." oninput="debouncedSearchCards(this.value)"><span class="search-count" id="activeSearchCount"></span>
         </div>
         <div id="activeCards" class="timeline"></div>
     </div>
@@ -4912,7 +4928,7 @@ function renderJobCard(job) {
   const remoteTag = job.remote !== 'Unknown' ?
     `<span class="meta-tag ${job.remote.toLowerCase().includes('hybrid') ? 'tag-hybrid' : 'tag-remote'}">${job.remote}</span>` : '';
   return `
-    <div class="job-card ${scoreClass}" id="card-${job.id}" data-score="${job.score}" data-company="${job.company.toLowerCase()}" data-title="${job.title.toLowerCase()}" data-status="${js.status}" data-gmailstatus="${(job.gmailStatus || '').toLowerCase()}" data-gmailbadge="${(job.gmailBadge || '').toLowerCase()}">
+    <div class="job-card ${scoreClass}" id="card-${job.id}" data-score="${job.score}" data-company="${job.company.toLowerCase()}" data-title="${job.title.toLowerCase()}" data-status="${js.status}" data-gmailstatus="${(job.gmailStatus || '').toLowerCase()}" data-gmailbadge="${(job.gmailBadge || '').toLowerCase()}" data-location="${(job.location || '').toLowerCase()}" data-salary="${(job.salary || '').toLowerCase()}" data-source="${(job.source || '').toLowerCase()}" data-rolesketch="${(job.roleSketch || '').toLowerCase().replace(/"/g, '&quot;')}">
       <div class="card-color-bar"></div>
       <div class="card-inner">
         <div class="card-main">
@@ -5196,18 +5212,34 @@ function setFilter(f, btn) {
   btn.classList.add('active');
   applyFilter();
 }
+let _searchDebounceTimer = null;
+function debouncedSearchCards(val) {
+  clearTimeout(_searchDebounceTimer);
+  _searchDebounceTimer = setTimeout(() => searchCards(val), 140);
+}
 function searchCards(val) {
-  searchTerm = val.toLowerCase();
+  searchTerm = val.toLowerCase().trim();
   applyFilter();
 }
 function applyFilter() {
+  let visibleCount = 0, totalCount = 0;
   document.querySelectorAll('.job-card').forEach(card => {
     const s = card.dataset.status;
     const gs = (card.dataset.gmailstatus || '').toLowerCase();
     const gb = (card.dataset.gmailbadge || '').toLowerCase();
     const company = card.dataset.company || '';
     const title = card.dataset.title || '';
-    const matchSearch = !searchTerm || company.includes(searchTerm) || title.includes(searchTerm);
+    const location = card.dataset.location || '';
+    const salary = card.dataset.salary || '';
+    const source = card.dataset.source || '';
+    const roleSketch = card.dataset.rolesketch || '';
+    const matchSearch = !searchTerm
+      || company.includes(searchTerm)
+      || title.includes(searchTerm)
+      || location.includes(searchTerm)
+      || salary.includes(searchTerm)
+      || source.includes(searchTerm)
+      || roleSketch.includes(searchTerm);
     let matchFilter = true;
     const isRejected = s === 'rejected' || gs.indexOf('reject') !== -1 || gb === 'rejected';
     const isBounced = gs.indexOf('bounce') !== -1 || gs.indexOf('bad email') !== -1 || gb === 'bounced';
@@ -5223,9 +5255,20 @@ function applyFilter() {
     else if (activeFilter === 'interviewing') matchFilter = isInterviewing;
     else if (activeFilter === 'waiting') matchFilter = isApplied && !isInterviewing && !isRejected && !isBounced;
     else if (activeFilter === 'not-interested') matchFilter = s === 'not-interested';
-    card.classList.toggle('hidden', !matchFilter || !matchSearch);
+    const isHidden = !matchFilter || !matchSearch;
+    card.classList.toggle('hidden', isHidden);
     card.classList.toggle('not-interested-card', s === 'not-interested');
+    if (s !== 'not-interested') {
+      totalCount++;
+      if (!isHidden) visibleCount++;
+    }
   });
+  const countEl = document.getElementById('activeSearchCount');
+  if (countEl) {
+    countEl.textContent = searchTerm
+      ? visibleCount + ' of ' + totalCount + ' match'
+      : visibleCount + ' shown';
+  }
 }
 function setOutreachFilter(f, btn) {
   outreachFilter = f;
