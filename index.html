@@ -189,15 +189,15 @@ body::before {
 /* ── FILTERS ── */
 .filter-bar {
   display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 16px;
   flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
 }
 .filter-bar-left {
   display: flex;
-  gap: 8px;
+  gap: 4px;
   align-items: center;
   flex-wrap: wrap;
   flex: 1;
@@ -205,32 +205,38 @@ body::before {
 }
 .filter-label {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 800;
+  font-size: 0.62rem;
+  font-weight: 700;
   color: var(--ink-light);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-right: 4px;
+  letter-spacing: 1px;
+  margin-right: 2px;
+  opacity: 0.7;
 }
 .filter-btn {
-  background: white;
-  border: var(--border-thin);
-  padding: 6px 14px;
-  font-size: 0.78rem;
-  font-weight: 700;
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.18);
+  padding: 3px 9px;
+  font-size: 0.68rem;
+  font-weight: 600;
   cursor: pointer;
-  color: var(--ink);
-  transition: all 0.1s;
+  color: var(--ink-light);
+  transition: all 0.12s ease;
   font-family: 'Space Grotesk', sans-serif;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
+  border-radius: 3px;
+  line-height: 1.4;
 }
 .filter-btn:hover {
   background: var(--haring-yellow);
+  color: var(--ink);
+  border-color: var(--ink);
 }
 .filter-btn.active {
   background: var(--ink);
   color: white;
+  border-color: var(--ink);
 }
 .search-box {
   background: white;
@@ -1416,7 +1422,7 @@ body::before {
         <div class="header-title">
             <h1>Alex Karshis <span class="accent">Job Search</span></h1>
             <p>Architecture + Design &bull; Chicago</p>
-            <p class="last-updated">Last updated: <span id="lastUpdatedDate">May 26, 2026</span></p>
+            <p class="last-updated">Last updated: <span id="lastUpdatedDate">June 2, 2026</span></p>
         </div>
         <div class="stats-bar" id="statsBar">
             <div class="stat-pill"><strong>0</strong> Roles</div>
@@ -3633,7 +3639,6 @@ const JOBS = [
     },
       {
       id: 'bureau-veritas-fca',
-      isNew: true,
       company: 'Bureau Veritas',
       title: 'Facility Condition Assessor',
       score: 3,
@@ -3650,6 +3655,102 @@ const JOBS = [
       postingLink: 'https://to.indeed.com/aatlqnqn9gjw',
       firmWebsite: 'https://www.bureauveritas.us',
       roleSketch: 'Bureau Veritas is a global testing, inspection, and certification firm with a large building advisory practice. The Facility Condition Assessor role is field-heavy - on-site walks of commercial, institutional, and municipal buildings, evaluating structure, envelope (roofing, facade, windows), MEP systems, and interior/exterior finishes, then producing FCA reports with deficiency lists and planning-level repair cost estimates using mobile/iPad inspection software. Bachelor in architecture, engineering, or construction management (or hands-on equivalent), comfort climbing ladders and accessing rooftops, and a clean driving record. Caveat: the posting language references travel throughout Massachusetts up to 50 percent which may indicate a regional template; confirm Chicago-based reporting and IL/Midwest territory before getting too deep. Salary band $75-85k fits Alex middle range. Cross-training opportunity into capital planning and asset management.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+      {
+      id: 'cushwake-apm-datacenter',
+      isNew: true,
+      company: 'Cushman & Wakefield',
+      title: 'Assistant Project Manager, Data Center, Project & Development Services',
+      score: 5,
+      salary: '$106,250 - $125,000',
+      location: 'Chicago, IL',
+      address: 'Chicago, IL',
+      remote: 'On-site',
+      posted: 'May 28, 2026',
+      postedISO: '2026-05-28',
+      source: 'Indeed',
+      deadline: 'Open until filled',
+      howToApply: 'Apply via Indeed today - this is the highest-scoring lead in the queue and aligns with the mission-critical/data center theme that has been surfacing across multiple recruiter touches (Polvere, Bringas). Lead with the 2 years at DxU as primary Revit documentation lead on commercial TI and mixed-use, the BIM 360/Bluebeam/AutoCAD toolkit, and the cross-functional submittal/RFI/shop-drawing rhythm. Frame Karshis Designs consultancy as ownership of scope, schedule, and client liaison on smaller engagements. The role calls out P3/Primavera and cost/budget estimating; honest gap there - flag willingness to pick those up fast. PMP/LEED are preferred not required.',
+      applyLink: 'https://to.indeed.com/aakhmlbjmtsl',
+      postingLink: 'https://to.indeed.com/aakhmlbjmtsl',
+      firmWebsite: 'https://www.cushmanwakefield.com',
+      roleSketch: 'Cushman & Wakefield is a top-3 global commercial real estate services firm. This APM seat sits inside the Project & Development Services group under the Life & Technology Sciences platform - specifically supporting mission-critical and data center owner-rep work for client real estate projects. APM role supports a senior PM as the day-to-day client liaison, coordinates across C&W departments, third-party partners (engineers, architects, GCs), and the client, and owns delivery of multiple complex CRE projects (ground-up, build-to-suit, repositioning, renovations). Qualifications: bachelor in science or mechanical/electrical engineering preferred but design/construction lane equivalence is open. 3-5+ yrs design/construction, 3+ yrs CRE PM. Alex is at 2 yrs DxU + Karshis Designs - a stretch on the YOE bar, but data center build-out is hot and APM rungs at C&W are exactly where Alex needs to land to make the leap into owner-rep PM work. Comp band $106-125K is squarely in Alex top range. Real resume step.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+    {
+      id: 'quanta-apm-ii-qisg',
+      isNew: true,
+      company: 'Quanta Services (QISG)',
+      title: 'Assistant Project Manager II - Energy Infrastructure',
+      score: 4,
+      salary: '$90,000 - $120,000',
+      location: 'Chicago, IL',
+      address: 'Chicago, IL',
+      remote: 'On-site (up to 50% travel)',
+      posted: 'June 1, 2026',
+      postedISO: '2026-06-01',
+      source: 'Indeed',
+      deadline: 'Open until filled',
+      howToApply: 'Apply via Indeed. Quanta requires 2+ yrs construction project experience - Alex is squarely at that bar. Lead with DxU 2-yr Revit documentation lead role on commercial TI, the cross-functional rhythm (engineering/estimating/procurement/construction coordination is the QISG APM II job), and Karshis Designs as ownership of scope, schedule, and vendor coordination. EPC and Power Delivery experience are preferred but not required. Up to 50% travel.',
+      applyLink: 'https://to.indeed.com/aadphsbp72rq',
+      postingLink: 'https://to.indeed.com/aadphsbp72rq',
+      firmWebsite: 'https://www.quantaservices.com',
+      roleSketch: 'Quanta Services is a top-tier energy infrastructure contractor (substation, transmission, distribution, renewables). QISG is their Infrastructure Solutions Group - the in-house EPC/design-build arm that handles planning, engineering, procurement, and construction for energy projects. APM II coordinates engineering, estimating, project controls, procurement, and construction during development and execution phases. Supports the PM on initial project schedule, value engineering, subcontractor/vendor scopes, safety planning, monthly project reviews, RFI submittals, project closeout. Requires bachelor in business, CM, engineering, or equivalent work experience plus 2+ yrs construction project experience - Alex meets the bar. Comp $90-120K is in Alex strong range. Energy/clean-energy lane echoes Bringas/Polvere recruiter signals.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+    {
+      id: 'wsp-associate-pm',
+      isNew: true,
+      company: 'WSP',
+      title: 'Associate Project Manager',
+      score: 4,
+      salary: '$82,000 - $126,600',
+      location: 'Chicago, IL',
+      address: 'Chicago, IL',
+      remote: 'Hybrid (less than 10% overnight travel)',
+      posted: 'June 1, 2026',
+      postedISO: '2026-06-01',
+      source: 'Indeed',
+      deadline: 'Open until filled',
+      howToApply: 'Apply via Indeed. WSP is a top-5 global engineering/professional services firm with 15K+ US employees. This Associate PM seat is on the USPS facilities program - repair, alteration, modification, and light construction oversight of post offices, mail processing, and maintenance facilities. 3+ yrs experience required - Alex is at 2 yrs, slight stretch. Lead with the DxU Revit documentation depth, Bluebeam markup fluency, and the cross-trade coordination story (submittals, RFIs, shop drawings); WSP explicitly lists ability to read blueprints/drawings/specs as a beneficial skill. Mention Karshis Designs as ownership of scope, schedule, and vendor coordination on smaller engagements.',
+      applyLink: 'https://to.indeed.com/aa9hd2gj9xw8',
+      postingLink: 'https://to.indeed.com/aa9hd2gj9xw8',
+      firmWebsite: 'https://www.wsp.com',
+      roleSketch: 'WSP USA is the US operating company of WSP, a top-5 global engineering and professional services firm (15K+ US employees, 300+ offices). This Associate PM seat sits inside the USPS facilities program - light construction, repair, and modification oversight of post offices, mail processing facilities, and maintenance facilities. Owns small-to-medium multi-discipline projects from assignment through closeout, including scope-of-work review, subcontractor bid analysis, cost estimates, change order control, and weekly status reporting. Required: bachelor degree + 3+ yrs experience in repair services, maintenance, or construction management. Alex is at 2 yrs - slight stretch but the architectural CD background is directly applicable to interpreting drawings/specs in a USPS facilities context. Comp $82-127K is solidly in Alex range. Hybrid + low travel (<10% overnight) is lifestyle-friendly.',
+      defaultStatus: 'not-started',
+      gmailStatus: '',
+      gmailDate: '',
+      gmailBadge: ''
+    },
+    {
+      id: 'senga-mid-designer-pa',
+      isNew: true,
+      company: 'Senga Architects, Inc.',
+      title: 'Mid-Level Architectural Designer / Project Architect',
+      score: 3,
+      salary: 'Not specified',
+      location: 'Chicago, IL',
+      address: 'Chicago, IL',
+      remote: 'On-site',
+      posted: 'June 2, 2026',
+      postedISO: '2026-06-02',
+      source: 'AIA Chicago',
+      deadline: 'Open until filled',
+      howToApply: 'Email staff@sengaarch.com with resume, cover letter, and portfolio. The 5-yr minimum is a known stretch - Alex is at 2 yrs - but the posting explicitly says architectural licensure is preferred not required, and Chicago zoning/code knowledge is the technical differentiator. Lead with DxU primary Revit documentation lead role, the depth of CD/permit-set production, and direct comfort with Chicago zoning and Building Code workflows. Bluebeam and Adobe Suite fluency are listed plus. Mention Karshis Designs as evidence of owning scope, schedule, and client communication independently.',
+      applyLink: 'mailto:staff@sengaarch.com',
+      postingLink: 'https://aiachicago.org/job_posting/senga-architects-inc-mid-level-architectural-designer-project-architect-2/',
+      firmWebsite: 'https://sengaarch.com',
+      roleSketch: 'Senga Architects is a Chicago-based MBE/DBE-certified architecture firm doing civic, institutional, commercial, educational, residential, renovation, and building-improvement work for public and private sector clients. The Mid-Level Designer/PA seat owns design concepts through permit sets, CDs, technical details, and CA - exactly the workflow Alex has been running at DxU on commercial TI and mixed-use. Strong knowledge of Chicago zoning, building codes, accessibility standards, and permitting is the key differentiator. Required: 5+ yrs (Alex is at 2 - stretch), Revit required, license preferred but not required. The MBE/DBE certification is meaningful for civic and institutional work pipelines. No salary band published - request in screener.',
       defaultStatus: 'not-started',
       gmailStatus: '',
       gmailDate: '',
@@ -4028,6 +4129,22 @@ karshisdesigns.webflow.io`
   'bureau-veritas-fca': {
     subject: 'Facility Condition Assessor - Alexander Karshis',
     body: `Howdy Bureau Veritas team,\n\nI saw the Facility Condition Assessor posting in Chicago and want to throw my hat in. I spent 2 years at DxU Architects as the primary Revit documentation lead on commercial TI and mixed-use projects - which is exactly the kind of work that translates to walking a building, identifying deficiencies in structure, envelope, MEP, and finishes, and turning field observations into clean, actionable capital planning recommendations. I am fluent in Bluebeam markup workflows, Revit, AutoCAD, and Adobe Suite, and comfortable on iPad-based field tools.\n\nAlongside the day job I run my own design consultancy, Karshis Designs, which keeps me close to scope, schedule, and the practical side of how buildings actually fail in the field - the same lens an FCA report needs. I am Chicago-based and would love to confirm the role is Chicago/IL territory; the posting mentions Massachusetts travel which I wanted to flag in case that is a regional template.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`
+  },
+  'cushwake-apm-datacenter': {
+    subject: 'Assistant Project Manager, Data Center P&D - Alexander Karshis',
+    body: `Howdy Cushman & Wakefield team,\n\nI saw the Assistant Project Manager, Data Center, Project & Development Services posting in Chicago and want to throw my hat in. I spent 2 years at DxU Architects as the primary Revit documentation lead on commercial tenant improvement and mixed-use projects - owning CD packages, RFI and submittal workflows, shop drawing reviews, and the daily handoff with GCs, subs, and consultants. That cross-team rhythm - architect, engineer, contractor, owner - is the same one a C&W APM runs as a day-to-day liaison.\n\nI am fluent in Revit, BIM 360, Bluebeam, and AutoCAD, and comfortable in Procore-style coordination workflows. I am up front on the YOE bar - I am at 2 years - but mission-critical/data center delivery is exactly the lane I want to build into, and I would lean in hard on the Primavera and cost-estimating side. Alongside the day job I run my own consultancy, Karshis Designs, which keeps me close to scope, schedule, vendor coordination, and field-side decisions on smaller engagements.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`
+  },
+  'quanta-apm-ii-qisg': {
+    subject: 'Assistant Project Manager II - Alexander Karshis',
+    body: `Howdy QISG team,\n\nI saw the Assistant Project Manager II posting in Chicago and want to throw my hat in. I spent 2 years at DxU Architects as the primary Revit documentation lead on commercial tenant improvement and mixed-use projects - which means I have lived the cross-functional rhythm an APM II runs: coordinating engineering, estimating, procurement, and construction inputs against a single CD package and schedule. I owned RFI and submittal workflows, shop drawing reviews, and the daily handoff with GCs, subs, and consultants.\n\nI am fluent in Revit, BIM 360, Bluebeam, AutoCAD, and Microsoft Office, and I would lean hard into picking up your project controls and scheduling stack. Energy infrastructure and EPC delivery is the lane I want to build into next. Alongside the day job I run my own consultancy, Karshis Designs, which keeps me close to scope, schedule, vendor coordination, and field-side decisions on smaller engagements.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`
+  },
+  'wsp-associate-pm': {
+    subject: 'Associate Project Manager - Alexander Karshis',
+    body: `Howdy WSP team,\n\nI saw the Associate Project Manager opening in Chicago supporting the USPS facilities program and want to throw my hat in. I spent 2 years at DxU Architects as the primary Revit documentation lead on commercial tenant improvement and mixed-use projects - which means I have built CD packages from blueprints and specs, run subcontractor coordination through RFIs and submittals, and handled scope-of-work reviews and field-condition documentation. That work translates directly to overseeing repair, alteration, and light construction on USPS facilities.\n\nI am fluent in Revit, BIM 360, Bluebeam, AutoCAD, and Microsoft Office, and I am comfortable reading and interpreting architectural, MEP, and structural drawings. Alongside the day job I run my own consultancy, Karshis Designs, which keeps me close to scope, schedule, vendor coordination, and field-side decisions on smaller engagements.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`
+  },
+  'senga-mid-designer-pa': {
+    subject: 'Mid-Level Architectural Designer / Project Architect - Alexander Karshis',
+    body: `Howdy Senga Architects team,\n\nI saw the Mid-Level Architectural Designer / Project Architect posting and want to throw my hat in. I spent 2 years at DxU Architects as the primary Revit documentation lead on commercial tenant improvement and mixed-use projects, which has given me deep hands-on with Chicago zoning, the Chicago Building Code, accessibility standards, and the permitting process - I produce permit sets, CDs, technical details, and run the consultant coordination loop with engineers, contractors, and reviewing agencies. I know the 5-year bar is a stretch on my profile - I am at 2 - but I would point to the depth of my CD ownership and Chicago code fluency as the differentiator.\n\nI am fluent in Revit, Bluebeam, Adobe Creative Suite, AutoCAD, and Microsoft Office. Alongside the day job I run my own consultancy, Karshis Designs, which keeps me close to scope, schedule, and client communication on smaller engagements.\n\nMy portfolio is at karshisdesigns.webflow.io, and click the photo on the About Me page for a surprise.\n\nHave a great day,\nAlexander Karshis\nChicago, IL\nkarshisdesigns.webflow.io`
   },
 };
 const OUTREACH_DRAFTS = {
@@ -4719,7 +4836,6 @@ const SOCIAL_LEADS = [
     },
     {
       id: 'sl-li-bringas-pipermaddox-052026',
-      isNew: true,
       source: 'linkedin',
       poster: 'Gabriel Bringas',
       posterTitle: 'Associate Consultant - EPC & Project Execution at Piper Maddox (Miami, FL)',
