@@ -4566,7 +4566,7 @@ function copyEmailDraft(jobId) {
 
 function renderJobs() {
   const container = document.getElementById('activeCards');
-  const sorted = [...JOBS].filter(j => j.source !== 'Indeed').sort((a, b) => b.postedISO.localeCompare(a.postedISO));
+  const sorted = [...JOBS].sort((a, b) => b.postedISO.localeCompare(a.postedISO));
 
   // Separate NEW jobs from the rest
   const newJobs = sorted.filter(j => j.isNew);
