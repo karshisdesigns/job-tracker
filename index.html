@@ -4713,13 +4713,23 @@ let contactFilter = 'all';
 let hideOldOutreach = false;
 function getJobState(id) {
   const job = JOBS.find(j => j.id === id);
-  if (state[id]) return state[id];
-  // Infer status from gmailBadge if defaultStatus was never updated
-  let inferredStatus = job.defaultStatus;
-  if (inferredStatus === 'not-started' && job.gmailBadge && job.gmailBadge !== '') {
+  const localState = state[id];
+  const fileStatus = (job && job.defaultStatus) || 'not-started';
+  // File wins when it's definitive (applied/rejected/etc) AND local is unset or stale-default
+  if (fileStatus !== 'not-started' && (!localState || localState.status === 'not-started' || !localState.status)) {
+    return {
+      status: fileStatus,
+      notes: (localState && localState.notes) || '',
+      dateApplied: (localState && localState.dateApplied) || (job && job.gmailDate) || ''
+    };
+  }
+  if (localState) return localState;
+  // Inference fallback (existing behavior)
+  let inferredStatus = fileStatus;
+  if (inferredStatus === 'not-started' && job && job.gmailBadge && job.gmailBadge !== '') {
     inferredStatus = 'applied';
   }
-  return { status: inferredStatus, notes: '', dateApplied: job.gmailDate || '' };
+  return { status: inferredStatus, notes: '', dateApplied: (job && job.gmailDate) || '' };
 }
 function setJobField(id, field, value) {
   if (!state[id]) state[id] = getJobState(id);
