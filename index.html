@@ -1535,7 +1535,8 @@ body::before {
                 <button class="filter-btn" onclick="setFilter('applied', this)">Applied</button>
                 <button class="filter-btn" onclick="setFilter('interviewing', this)">Interviewing</button>
                 <button class="filter-btn" onclick="setFilter('waiting', this)">Waiting to Hear Back</button>
-                <button class="filter-btn" onclick="setFilter('died', this)">Died Off</button>
+                <button class="filter-btn" onclick="setFilter('died', this)">Job Died</button>
+                <button class="filter-btn" onclick="setFilter('not-qualified', this)">Not Qualified</button>
             </div>
             <input type="text" class="search-box" id="activeSearchBox" placeholder="Search company, role, location, salary..." oninput="debouncedSearchCards(this.value)"><span class="search-count" id="activeSearchCount"></span>
         </div>
@@ -1595,6 +1596,7 @@ body::before {
                 </div>
             </div>
             <div id="pipelineSankey" class="sankey-canvas"></div>
+            <div id="diedOffList" style="margin-top: 24px; padding: 16px 20px; background:#f5f5f5; border:2px solid #4A5568; border-radius:8px;"></div>
             <div class="sk-modal" id="skModal" onclick="closeSkModal(event)">
                 <div class="sk-modal-box" onclick="event.stopPropagation()">
                     <div class="sk-modal-head">
@@ -5361,7 +5363,7 @@ function renderJobCard(job) {
             <option value="applied" ${js.status==='applied'?'selected':''}>Applied</option>
             <option value="interviewing" ${js.status==='interviewing'?'selected':''}>Interviewing</option>
             <option value="offer" ${js.status==='offer'?'selected':''}>Offer</option>
-            <option value="rejected" ${js.status==='rejected'?'selected':''}>Rejected</option>
+            <option value="rejected" ${js.status==='rejected'?'selected':''}>Not Qualified</option>
             <option value="not-interested" ${js.status==='not-interested'?'selected':''}>Not Interested</option>
           </select>
           <div class="card-btns">
@@ -5670,6 +5672,7 @@ function applyFilter() {
     else if (activeFilter === 'interviewing') matchFilter = isInterviewing;
     else if (activeFilter === 'waiting') matchFilter = isApplied && !isInterviewing && !isRejected && !isBounced && !isDied;
     else if (activeFilter === 'died') matchFilter = isDied;
+    else if (activeFilter === 'not-qualified') matchFilter = isRejected;
     else if (activeFilter === 'not-interested') matchFilter = s === 'not-interested';
     const isHidden = !matchFilter || !matchSearch;
     card.classList.toggle('hidden', isHidden);
@@ -6299,7 +6302,7 @@ function renderPipeline() {
       { id: 'interview', label: 'INTERVIEWING',   value: nInterview, color: palette.interview, pulse: true },
       { id: 'awaiting',  label: 'AWAITING REPLY', value: nAwaiting,  color: palette.awaiting },
       { id: 'died',      label: 'DIED OFF',       value: nDied,      color: palette.died },
-      { id: 'rejected',  label: 'REJECTED',       value: nRejected,  color: palette.rejected },
+      { id: 'rejected',  label: 'NOT QUALIFIED',  value: nRejected,  color: palette.rejected },
       { id: 'bounced',   label: 'BOUNCED',        value: nBounced,   color: palette.bounced },
       { id: 'offer',     label: 'OFFER',          value: nOffer,     color: palette.offer }
     ],
@@ -6443,6 +6446,23 @@ function renderPipeline() {
 
   svg += '</svg>';
   document.getElementById('pipelineSankey').innerHTML = svg;
+  // Render the Died Off detail list at the bottom
+  var diedListEl = document.getElementById('diedOffList');
+  if (diedListEl) {
+    var diedJobs = outcomeBuckets.died || [];
+    if (diedJobs.length === 0) {
+      diedListEl.innerHTML = '<div style="font-weight:700; color:#4A5568;">DIED OFF: 0 jobs (none silent past 45 days yet)</div>';
+    } else {
+      var rows = diedJobs.map(function(j){
+        var eff = j.gmailDate || j.postedISO || '';
+        var d = new Date(eff + 'T00:00:00');
+        if (isNaN(d.getTime())) d = new Date(eff);
+        var days = !isNaN(d.getTime()) ? Math.floor((Date.now() - d.getTime()) / 86400000) : '?';
+        return '<div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed #ccc;"><span><strong>' + j.company + '</strong> &mdash; ' + (j.title || '') + '</span><span style="color:#666;">' + days + ' days silent</span></div>';
+      }).join('');
+      diedListEl.innerHTML = '<div style="font-weight:700; color:#4A5568; margin-bottom:10px; font-size:1.05rem;">DIED OFF (' + diedJobs.length + ') &mdash; applied 45+ days ago, no response</div>' + rows;
+    }
+  }
 
     // Stash bucket data + outcomes so click popups can find them
   window.__skBuckets = {
