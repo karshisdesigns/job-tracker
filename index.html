@@ -1534,6 +1534,7 @@ body::before {
                 <button class="filter-btn" onclick="setFilter('applied', this)">Applied</button>
                 <button class="filter-btn" onclick="setFilter('interviewing', this)">Interviewing</button>
                 <button class="filter-btn" onclick="setFilter('waiting', this)">Waiting to Hear Back</button>
+                <button class="filter-btn" onclick="setFilter('died', this)">Died Off</button>
             </div>
             <input type="text" class="search-box" id="activeSearchBox" placeholder="Search company, role, location, salary..." oninput="debouncedSearchCards(this.value)"><span class="search-count" id="activeSearchCount"></span>
         </div>
@@ -5327,7 +5328,7 @@ function renderJobCard(job) {
   const remoteTag = job.remote !== 'Unknown' ?
     `<span class="meta-tag ${job.remote.toLowerCase().includes('hybrid') ? 'tag-hybrid' : 'tag-remote'}">${job.remote}</span>` : '';
   return `
-    <div class="job-card ${scoreClass}" id="card-${job.id}" data-score="${job.score}" data-company="${job.company.toLowerCase()}" data-title="${job.title.toLowerCase()}" data-status="${js.status}" data-gmailstatus="${(job.gmailStatus || '').toLowerCase()}" data-gmailbadge="${(job.gmailBadge || '').toLowerCase()}" data-location="${(job.location || '').toLowerCase()}" data-salary="${(job.salary || '').toLowerCase()}" data-source="${(job.source || '').toLowerCase()}" data-rolesketch="${(job.roleSketch || '').toLowerCase().replace(/"/g, '&quot;')}">
+    <div class="job-card ${scoreClass}" id="card-${job.id}" data-score="${job.score}" data-company="${job.company.toLowerCase()}" data-title="${job.title.toLowerCase()}" data-status="${js.status}" data-gmailstatus="${(job.gmailStatus || '').toLowerCase()}" data-gmailbadge="${(job.gmailBadge || '').toLowerCase()}" data-location="${(job.location || '').toLowerCase()}" data-salary="${(job.salary || '').toLowerCase()}" data-source="${(job.source || '').toLowerCase()}" data-rolesketch="${(job.roleSketch || '').toLowerCase().replace(/"/g, '&quot;')}" data-effectivedate="${job.gmailDate || job.postedISO || ''}">
       <div class="card-color-bar"></div>
       <div class="card-inner">
         <div class="card-main">
@@ -5648,11 +5649,20 @@ function applyFilter() {
       gb.indexOf('interview') !== -1 || gb === 'follow-up sent');
     const isApplied = s === 'applied' || s === 'in-progress' || s === 'interviewing' ||
       gb === 'applied' || gs.indexOf('applied') !== -1 || gs.indexOf('sent') !== -1;
+    // Died Off: applied 60+ days ago, no interview, no rejection
+    const effDate = card.dataset.effectivedate;
+    let daysSince = 0;
+    if (effDate) {
+      const d = new Date(effDate + 'T00:00:00');
+      daysSince = Math.floor((Date.now() - d.getTime()) / 86400000);
+    }
+    const isDied = isApplied && !isInterviewing && !isRejected && !isBounced && daysSince > 45;
     if (activeFilter === 'all') matchFilter = s !== 'not-interested';
     else if (activeFilter === 'not-started') matchFilter = s === 'not-started';
     else if (activeFilter === 'applied') matchFilter = isApplied;
     else if (activeFilter === 'interviewing') matchFilter = isInterviewing;
-    else if (activeFilter === 'waiting') matchFilter = isApplied && !isInterviewing && !isRejected && !isBounced;
+    else if (activeFilter === 'waiting') matchFilter = isApplied && !isInterviewing && !isRejected && !isBounced && !isDied;
+    else if (activeFilter === 'died') matchFilter = isDied;
     else if (activeFilter === 'not-interested') matchFilter = s === 'not-interested';
     const isHidden = !matchFilter || !matchSearch;
     card.classList.toggle('hidden', isHidden);
@@ -5701,7 +5711,7 @@ function applyOutreachFilter() {
 // STATS
 // ─────────────────────────────────────────────────────────
 function updateStats() {
-  let total = 0, applied = 0, interviewing = 0, offers = 0, hidden = 0, waiting = 0, active = 0;
+  let total = 0, applied = 0, interviewing = 0, offers = 0, hidden = 0, waiting = 0, active = 0, died = 0;
   for (const job of JOBS) {
     const s = getJobState(job.id).status;
     if (s === 'not-interested') { hidden++; continue; }
@@ -5718,10 +5728,19 @@ function updateStats() {
       gb.indexOf('interview') !== -1 || gb === 'follow-up sent');
     const isApplied = s === 'applied' || s === 'in-progress' || s === 'interviewing' ||
       gb === 'applied' || gs.indexOf('applied') !== -1 || gs.indexOf('sent') !== -1;
+    // Died Off: applied 60+ days ago, no interview, no rejection
+    const effDate = job.gmailDate || job.postedISO || '';
+    let daysSince = 0;
+    if (effDate) {
+      const d = new Date(effDate + 'T00:00:00');
+      daysSince = Math.floor((Date.now() - d.getTime()) / 86400000);
+    }
+    const isDied = isApplied && !isInterviewing && !isRejected && !isBounced && !isOffer && daysSince > 45;
     if (isApplied) applied++;
     if (isInterviewing) interviewing++;
     if (isOffer) offers++;
-    if (isApplied && !isInterviewing && !isRejected && !isBounced && !isOffer) waiting++;
+    if (isApplied && !isInterviewing && !isRejected && !isBounced && !isOffer && !isDied) waiting++;
+    if (isDied) died++;
     if (!isRejected && !isBounced && s !== 'withdrawn') active++;
   }
   // Count outreach emails sent (cold outreach)
@@ -5743,6 +5762,7 @@ function updateStats() {
     <div class="stat-pill" style="background:#fff; border:2px solid var(--ink); font-weight:700;" title="Job applications + cold outreach emails sent"><strong>${totalSent}</strong> Total Sent (${applied} jobs + ${outreachEmailed} cold)</div>
     <div class="stat-pill"><span class="stat-dot" style="background:var(--haring-blue)"></span><strong>${applied}</strong> Applied</div>
     <div class="stat-pill"><span class="stat-dot" style="background:var(--haring-orange)"></span><strong>${interviewing}</strong> Interviewing</div>
+    <div class="stat-pill" style="background:#f3f3f3; color:#666;" title="Applied 45+ days ago with no response"><strong>${died}</strong> Died Off</div>
     <div class="stat-pill"><span class="stat-dot" style="background:var(--haring-green)"></span><strong>${offers}</strong> Offers</div>
     ${hidden > 0 ? `<div class="stat-pill" style="opacity:0.5;"><strong>${hidden}</strong> Hidden</div>` : ''}
   `;
