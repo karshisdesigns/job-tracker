@@ -1431,7 +1431,6 @@ body::before {
     <div class="tabs">
         <button class="tab-btn active" onclick="showTab('active')">Active Postings</button>
         <button class="tab-btn" onclick="showTab('all-applied')">All Applied</button>
-        <button class="tab-btn" onclick="showTab('died')">Died Off</button>
         <button class="tab-btn" onclick="showTab('outreach')">Cold Outreach</button>
         <button class="tab-btn" onclick="showTab('pipeline')">Chart</button>
     </div>
@@ -5915,7 +5914,7 @@ function updateInterviewBox() {
 // ─────────────────────────────────────────────────────────
 function showTab(tab) {
   // The 'all-applied' and 'died' tabs reuse tab-active with a preset filter
-  const isActiveLike = (tab === 'active' || tab === 'all-applied' || tab === 'died');
+  const isActiveLike = (tab === 'active' || tab === 'all-applied');
   document.getElementById('tab-active').style.display = isActiveLike ? '' : 'none';
   document.getElementById('tab-outreach').style.display = tab === 'outreach' ? '' : 'none';
   var pipeNode = document.getElementById('tab-pipeline');
@@ -5931,13 +5930,6 @@ function showTab(tab) {
     document.querySelectorAll('#tab-active .filter-btn').forEach(b => {
       const oa = b.getAttribute('onclick') || '';
       b.classList.toggle('active', oa.indexOf("'applied'") !== -1);
-    });
-    applyFilter();
-  } else if (tab === 'died') {
-    activeFilter = 'died';
-    document.querySelectorAll('#tab-active .filter-btn').forEach(b => {
-      const oa = b.getAttribute('onclick') || '';
-      b.classList.toggle('active', oa.indexOf("'died'") !== -1);
     });
     applyFilter();
   } else if (tab === 'active') {
@@ -6231,10 +6223,20 @@ function renderPipeline() {
     if (st === 'offer' || gs.indexOf('offer') !== -1 || gb.indexOf('offer') !== -1) return 'offer';
     if (gs.indexOf('bounce') !== -1 || gs.indexOf('bad email') !== -1) return 'bounced';
     if (st === 'interviewing' || gs.indexOf('interview') !== -1 || gs.indexOf('shortlist') !== -1 || gs.indexOf('homework') !== -1 || gs.indexOf('reference') !== -1 || gs.indexOf('next-round') !== -1 || gs.indexOf('next round') !== -1 || gb.indexOf('interview') !== -1) return 'interviewing';
+    // Awaiting bucket: split by age (45 day cutoff)
+    var effDate = j.gmailDate || j.postedISO || '';
+    if (effDate) {
+      var d = new Date(effDate + 'T00:00:00');
+      if (isNaN(d.getTime())) d = new Date(effDate);
+      if (!isNaN(d.getTime())) {
+        var days = Math.floor((Date.now() - d.getTime()) / 86400000);
+        if (days > 45) return 'died';
+      }
+    }
     return 'awaiting';
   }
   var appliedJobs = jobs.filter(isAppliedJob);
-  var outcomeBuckets = { interviewing: [], rejected: [], bounced: [], awaiting: [], offer: [] };
+  var outcomeBuckets = { interviewing: [], rejected: [], bounced: [], awaiting: [], offer: [], died: [] };
   appliedJobs.forEach(function(j) {
     var k = classifyOutcome(j);
     if (!outcomeBuckets[k]) outcomeBuckets[k] = [];
@@ -6247,6 +6249,7 @@ function renderPipeline() {
   var nBounced   = outcomeBuckets.bounced.length;
   var nAwaiting  = outcomeBuckets.awaiting.length;
   var nOffer     = outcomeBuckets.offer.length;
+  var nDied      = outcomeBuckets.died.length;
 
   function dateInString(s) {
     var m = (s || '').match(/(\d{4}[-/]\d{1,2}[-/]\d{1,2})/);
@@ -6283,7 +6286,7 @@ function renderPipeline() {
   var palette = {
     total: '#0072CE', applied: '#FF6B2B', notApplied: '#9CA3AF',
     interview: '#00A651', rejected: '#E4312B', bounced: '#6B4226',
-    awaiting: '#F472B6', offer: '#FFD000',
+    awaiting: '#F472B6', offer: '#FFD000', died: '#4A5568',
     upcoming: '#FF6B2B', awaitDecide: '#0072CE', nextRound: '#00A651'
   };
   var columns = [
@@ -6295,6 +6298,7 @@ function renderPipeline() {
     [
       { id: 'interview', label: 'INTERVIEWING',   value: nInterview, color: palette.interview, pulse: true },
       { id: 'awaiting',  label: 'AWAITING REPLY', value: nAwaiting,  color: palette.awaiting },
+      { id: 'died',      label: 'DIED OFF',       value: nDied,      color: palette.died },
       { id: 'rejected',  label: 'REJECTED',       value: nRejected,  color: palette.rejected },
       { id: 'bounced',   label: 'BOUNCED',        value: nBounced,   color: palette.bounced },
       { id: 'offer',     label: 'OFFER',          value: nOffer,     color: palette.offer }
