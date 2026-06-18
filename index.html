@@ -6338,8 +6338,8 @@ function renderPipeline() {
       { id: 'nextRound',   label: 'NEXT ROUND',        value: nNextRound,   color: palette.nextRound }
     ]
   ];
-  columns[2] = columns[2].filter(function(n) { return n.value > 0; });
   columns[3] = columns[3].filter(function(n) { return n.value > 0; });
+  if (columns[4]) columns[4] = columns[4].filter(function(n) { return n.value > 0; });
 
   var colTotals = columns.map(function(col) { return col.reduce(function(s,n){ return s + n.value; }, 0); });
   var maxColTotal = Math.max.apply(null, colTotals);
@@ -6366,14 +6366,22 @@ function renderPipeline() {
   });
 
   var flows = [];
-  flows.push({ s: ['total'], t: 'applied',    v: nApplied,    color: palette.applied });
-  flows.push({ s: ['total'], t: 'notApplied', v: nNotApplied, color: palette.notApplied });
-  ['interview', 'awaiting', 'rejected', 'bounced', 'offer'].forEach(function(tid) {
-    var node = columns[2].find(function(n) { return n.id === tid; });
+  // Channels -> Total Reach (each channel's full value flows into total)
+  ['email', 'indeed', 'linkedin', 'webform'].forEach(function(cid) {
+    var cn = columns[0].find(function(n) { return n.id === cid; });
+    if (cn && cn.value > 0) flows.push({ s: [cid], t: 'total', v: cn.value, color: cn.color });
+  });
+  // Total -> Applied + Untracked
+  flows.push({ s: ['total'], t: 'applied',    v: nApplied,                    color: palette.applied });
+  flows.push({ s: ['total'], t: 'notApplied', v: nTotalReach - nApplied,      color: palette.notApplied });
+  // Applied -> outcomes (now in columns[3])
+  ['interview', 'awaiting', 'rejected', 'died', 'bounced', 'offer'].forEach(function(tid) {
+    var node = columns[3].find(function(n) { return n.id === tid; });
     if (node) flows.push({ s: ['applied'], t: tid, v: node.value, color: node.color });
   });
+  // Interview -> sub-interview states (now in columns[4])
   ['upcoming', 'awaitDecide', 'nextRound'].forEach(function(tid) {
-    var node = columns[3].find(function(n) { return n.id === tid; });
+    var node = columns[4] && columns[4].find(function(n) { return n.id === tid; });
     if (node) flows.push({ s: ['interview'], t: tid, v: node.value, color: node.color });
   });
 
