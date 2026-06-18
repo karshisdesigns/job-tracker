@@ -5653,8 +5653,14 @@ function applyFilter() {
     const effDate = card.dataset.effectivedate;
     let daysSince = 0;
     if (effDate) {
-      const d = new Date(effDate + 'T00:00:00');
-      daysSince = Math.floor((Date.now() - d.getTime()) / 86400000);
+      // Try ISO format first; if NaN, try natural parse; if still NaN, treat as old
+      let d = new Date(effDate + 'T00:00:00');
+      if (isNaN(d.getTime())) d = new Date(effDate);
+      if (!isNaN(d.getTime())) {
+        daysSince = Math.floor((Date.now() - d.getTime()) / 86400000);
+      } else {
+        daysSince = 999; // unparseable date = treat as old
+      }
     }
     const isDied = isApplied && !isInterviewing && !isRejected && !isBounced && daysSince > 45;
     if (activeFilter === 'all') matchFilter = s !== 'not-interested';
@@ -5732,8 +5738,13 @@ function updateStats() {
     const effDate = job.gmailDate || job.postedISO || '';
     let daysSince = 0;
     if (effDate) {
-      const d = new Date(effDate + 'T00:00:00');
-      daysSince = Math.floor((Date.now() - d.getTime()) / 86400000);
+      let d = new Date(effDate + 'T00:00:00');
+      if (isNaN(d.getTime())) d = new Date(effDate);
+      if (!isNaN(d.getTime())) {
+        daysSince = Math.floor((Date.now() - d.getTime()) / 86400000);
+      } else {
+        daysSince = 999;
+      }
     }
     const isDied = isApplied && !isInterviewing && !isRejected && !isBounced && !isOffer && daysSince > 45;
     if (isApplied) applied++;
