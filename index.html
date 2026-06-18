@@ -6292,8 +6292,8 @@ function renderPipeline() {
   var nNextRound = interviewSub.next.length;
 
   // GEOMETRY
-  var W = 2600, H = 1100;
-  var marginTop = 50, marginBottom = 50, marginLeft = 160, marginRight = 160;
+  var W = 3000, H = 1100;
+  var marginTop = 50, marginBottom = 50, marginLeft = 180, marginRight = 160;
   var nodeW = 100;
   var nodeGap = 36;
   var availH = H - marginTop - marginBottom;
@@ -6304,11 +6304,25 @@ function renderPipeline() {
     awaiting: '#F472B6', offer: '#FFD000', died: '#4A5568',
     upcoming: '#FF6B2B', awaitDecide: '#0072CE', nextRound: '#00A651'
   };
+  // Channel reach (Gmail audit, 2026 Chicago job search)
+  // Numbers derived from Gmail Sent + Inbox auto-receipts on 2026-06-18
+  var nEmail   = 120;  // Howdy emails sent to firms in current search
+  var nIndeed  = 5;    // Indeed Easy Apply confirmations (2026 only)
+  var nLinkedIn = 1;   // LinkedIn Easy Apply (2026 only)
+  var nWebForm = 20;   // Workday/iCIMS/Lever/Greenhouse/SmartRecruiters/BambooHR receipts (2026)
+  var nTotalReach = nEmail + nIndeed + nLinkedIn + nWebForm; // 146
+
   var columns = [
-    [{ id: 'total', label: 'TOTAL', value: total, color: palette.total }],
+    [
+      { id: 'email',    label: 'EMAIL OUTREACH', value: nEmail,    color: '#0072CE' },
+      { id: 'indeed',   label: 'INDEED',         value: nIndeed,   color: '#1F2937' },
+      { id: 'linkedin', label: 'LINKEDIN',       value: nLinkedIn, color: '#0A66C2' },
+      { id: 'webform',  label: 'WEB FORM',       value: nWebForm,  color: '#6B7280' }
+    ],
+    [{ id: 'total', label: 'TOTAL REACH', value: nTotalReach, color: palette.total }],
     [
       { id: 'applied',    label: 'APPLIED',     value: nApplied,    color: palette.applied },
-      { id: 'notApplied', label: 'NOT A FIT',   value: nNotApplied, color: palette.notApplied }
+      { id: 'notApplied', label: 'UNTRACKED',   value: nTotalReach - nApplied, color: palette.notApplied }
     ],
     [
       { id: 'interview', label: 'INTERVIEWING',   value: nInterview, color: palette.interview, pulse: true },
