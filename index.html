@@ -575,6 +575,18 @@ body::before {
   display: flex;
   flex: 1;
 }
+.applied-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  background: #D1FAE5;
+  border: 2px solid #6EE7B7;
+  border-radius: 6px;
+  color: #065F46;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: default;
+}
 .btn-apply {
   flex: 1;
   background: var(--haring-red);
@@ -5367,7 +5379,7 @@ function renderJobCard(job) {
             <option value="not-interested" ${js.status==='not-interested'?'selected':''}>Not Interested</option>
           </select>
           <div class="card-btns">
-            <button class="btn-apply" onclick="openEmailModal('${job.id}')">Apply</button>
+            ${(js.status === 'not-started') ? `<button class="btn-apply" onclick="openEmailModal('${job.id}')">Apply</button>` : `<span class="applied-tag" title="You have already applied to this role">&#10003; Applied</span>`}
             <button class="btn-details" onclick="toggleDetails('${job.id}')">Details</button>
           </div>
         </div>
