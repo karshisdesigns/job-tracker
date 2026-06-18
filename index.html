@@ -1430,6 +1430,8 @@ body::before {
     </div>
     <div class="tabs">
         <button class="tab-btn active" onclick="showTab('active')">Active Postings</button>
+        <button class="tab-btn" onclick="showTab('all-applied')">All Applied</button>
+        <button class="tab-btn" onclick="showTab('died')">Died Off</button>
         <button class="tab-btn" onclick="showTab('outreach')">Cold Outreach</button>
         <button class="tab-btn" onclick="showTab('pipeline')">Chart</button>
     </div>
@@ -5912,13 +5914,43 @@ function updateInterviewBox() {
 // TABS
 // ─────────────────────────────────────────────────────────
 function showTab(tab) {
-  document.getElementById('tab-active').style.display = tab === 'active' ? '' : 'none';
+  // The 'all-applied' and 'died' tabs reuse tab-active with a preset filter
+  const isActiveLike = (tab === 'active' || tab === 'all-applied' || tab === 'died');
+  document.getElementById('tab-active').style.display = isActiveLike ? '' : 'none';
   document.getElementById('tab-outreach').style.display = tab === 'outreach' ? '' : 'none';
   var pipeNode = document.getElementById('tab-pipeline');
   if (pipeNode) pipeNode.style.display = tab === 'pipeline' ? '' : 'none';
-  document.querySelectorAll('.tab-btn').forEach(function(b, i) {
-    b.classList.toggle('active', (i === 0 && tab === 'active') || (i === 1 && tab === 'outreach') || (i === 2 && tab === 'pipeline'));
+  // Highlight the correct tab button by matching its onclick text
+  document.querySelectorAll('.tab-btn').forEach(function(b) {
+    const onclickAttr = b.getAttribute('onclick') || '';
+    b.classList.toggle('active', onclickAttr.indexOf("'" + tab + "'") !== -1);
   });
+  // Auto-set filter for the synthetic tabs
+  if (tab === 'all-applied') {
+    activeFilter = 'applied';
+    document.querySelectorAll('#tab-active .filter-btn').forEach(b => {
+      const oa = b.getAttribute('onclick') || '';
+      b.classList.toggle('active', oa.indexOf("'applied'") !== -1);
+    });
+    applyFilter();
+  } else if (tab === 'died') {
+    activeFilter = 'died';
+    document.querySelectorAll('#tab-active .filter-btn').forEach(b => {
+      const oa = b.getAttribute('onclick') || '';
+      b.classList.toggle('active', oa.indexOf("'died'") !== -1);
+    });
+    applyFilter();
+  } else if (tab === 'active') {
+    // Reset to default if coming back from a synthetic tab
+    if (activeFilter === 'died') {
+      activeFilter = 'not-started';
+      document.querySelectorAll('#tab-active .filter-btn').forEach(b => {
+        const oa = b.getAttribute('onclick') || '';
+        b.classList.toggle('active', oa.indexOf("'not-started'") !== -1);
+      });
+      applyFilter();
+    }
+  }
   if (tab === 'pipeline' && typeof renderPipeline === 'function') {
     renderPipeline();
   }
