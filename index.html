@@ -1579,9 +1579,9 @@ body::before {
             <button class="filter-btn" onclick="setOutreachFilter('GC', this)">GC</button>
             <button class="filter-btn" onclick="setOutreachFilter('Corporate', this)">Corporate</button>
             <span class="filter-label" style="margin-left:12px;">Contact:</span>
-            <button class="filter-btn contact-filter active" onclick="setContactFilter('all', this)">All</button>
-            <button class="filter-btn contact-filter" onclick="setContactFilter('emailed', this)">Emailed</button>
-            <button class="filter-btn contact-filter" onclick="setContactFilter('not-emailed', this)">Not Emailed</button>
+            <button class="filter-btn contact-filter" onclick="setContactFilter('all', this)">All</button>
+            <button class="filter-btn contact-filter" onclick="setContactFilter('emailed', this)">Already Emailed</button>
+            <button class="filter-btn contact-filter active" onclick="setContactFilter('not-emailed', this)">Not Yet Emailed</button>
         </div>
         <div id="outreachCards" class="timeline"></div>
     </div>
@@ -5144,7 +5144,7 @@ let state = loadState();
 let activeFilter = 'not-started';
 let searchTerm = '';
 let outreachFilter = 'all';
-let contactFilter = 'all';
+let contactFilter = 'not-emailed';
 let hideOldOutreach = false;
 function getJobState(id) {
   const job = JOBS.find(j => j.id === id);
