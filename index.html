@@ -7660,14 +7660,30 @@ function renderJobCard(job) {
   const scoreClass = 'score' + job.score;
   const sc = statusClass(js.status);
   let gmailBadge = '';
-  if (job.gmailBadge === 'gmail-verified') {
+  const gbRaw = (job.gmailBadge || '').toString();
+  const gbLower = gbRaw.toLowerCase();
+  const gsLower = (job.gmailStatus || '').toLowerCase();
+  if (gbRaw === 'gmail-verified') {
     gmailBadge = `<span class="gmail-badge gmail-verified" title="Gmail checked: application confirmed sent and received">&#9989; Verified ${job.gmailDate}</span>`;
-  } else if (job.gmailBadge === 'gmail-sent') {
+  } else if (gbRaw === 'gmail-sent') {
     gmailBadge = `<span class="gmail-badge gmail-sent" title="Gmail checked: email was sent but no confirmation reply">&#128228; Sent ${job.gmailDate}</span>`;
-  } else if (job.gmailBadge === 'in-progress') {
+  } else if (gbRaw === 'in-progress' || gbLower.indexOf('recruiter') !== -1) {
     gmailBadge = `<span class="gmail-badge gmail-in-progress" title="Recruiter conversation in progress">&#128172; Recruiter Active ${job.gmailDate}</span>`;
-  } else {
+  } else if (gbLower.indexOf('interview') !== -1 || gsLower.indexOf('interview') !== -1) {
+    gmailBadge = `<span class="gmail-badge gmail-sent" style="background:#FED7AA; color:#9A3412; border-color:#FB923C;" title="${(job.gmailStatus || 'Interview stage')}">&#127919; Interview Stage ${job.gmailDate}</span>`;
+  } else if (gbLower.indexOf('bounce') !== -1) {
+    gmailBadge = `<span class="gmail-badge" style="background:#FEE2E2; color:#991B1B; border:1.5px solid #FCA5A5;" title="${(job.gmailStatus || 'Email bounced')}">&#8617;&#65039; Bounced ${job.gmailDate}</span>`;
+  } else if (gbLower.indexOf('rejected') !== -1 || gbLower.indexOf('not qualified') !== -1) {
+    gmailBadge = `<span class="gmail-badge" style="background:#FEE2E2; color:#991B1B; border:1.5px solid #FCA5A5;" title="${(job.gmailStatus || 'Rejected')}">&#10060; Not Qualified ${job.gmailDate}</span>`;
+  } else if (gbLower.indexOf('expired') !== -1) {
+    gmailBadge = `<span class="gmail-badge" style="background:#E5E7EB; color:#6B7280; border:1.5px solid #9CA3AF;" title="${(job.gmailStatus || 'Posting expired')}">&#9203; Expired</span>`;
+  } else if (gbLower.indexOf('applied') !== -1 || gsLower.indexOf('applied') !== -1 || gsLower.indexOf('contacted') !== -1) {
+    gmailBadge = `<span class="gmail-badge gmail-sent" style="background:#DBEAFE; color:#1E40AF; border-color:#60A5FA;" title="${(job.gmailStatus || 'Applied')}">&#128228; Applied ${job.gmailDate}</span>`;
+  } else if (gbRaw === '' && (job.gmailStatus || '') === '') {
     gmailBadge = `<span class="gmail-badge gmail-clear" title="Gmail checked: no prior applications or emails found for this company">&#128270; No Prior Contact</span>`;
+  } else {
+    // Has some kind of status but doesn't match standard buckets - show the badge text
+    gmailBadge = `<span class="gmail-badge gmail-sent" title="${(job.gmailStatus || gbRaw)}">&#128228; ${gbRaw || 'Contacted'} ${job.gmailDate}</span>`;
   }
   const remoteTag = job.remote !== 'Unknown' ?
     `<span class="meta-tag ${job.remote.toLowerCase().includes('hybrid') ? 'tag-hybrid' : 'tag-remote'}">${job.remote}</span>` : '';
