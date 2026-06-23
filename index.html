@@ -9179,18 +9179,47 @@ function renderPipeline() {
   };
   // Channel reach (Gmail audit, 2026 Chicago job search)
   // Numbers derived from Gmail Sent + Inbox auto-receipts on 2026-06-18
-  // Source breakdown from Gmail audit 2026-06-18 (within email outreach by where Alex found the lead)
-  var nCold     = 91;  // Cold / direct emails - no source mentioned, includes 6/17 batch + 5/13 blast
-  var nAIA      = 17;  // Emails where body cites AIA Chicago Job Board
-  var nIndeedEm = 23;  // Emails replying to Indeed postings (Howdy emails citing Indeed)
-  var nRecruit  = 13;  // Recruiter pitch replies (Actalent / 20-20 Foresight / Michael Page / 52x)
-  var nCraigs   = 4;   // Craigslist gigs replied to
-  var nLinkedIn = 1;   // LinkedIn Easy Apply (2026)
-  var nIndeedEZ = 4;   // Indeed Easy Apply (firm-hidden receipts)
-  var nWebForm  = 13;  // Direct Workday/iCIMS/Lever/Greenhouse/BambooHR/etc (2026 distinct)
-  var nEmail    = nCold + nAIA + nIndeedEm + nRecruit + nCraigs;  // Total email outreach: 148
-  var nIndeed   = nIndeedEm + nIndeedEZ;  // Indeed total: 27
-  var nTotalReach = nCold + nAIA + nIndeedEm + nRecruit + nCraigs + nLinkedIn + nIndeedEZ + nWebForm; // 166
+  // DYNAMIC channel counts - auto-updates as Alex applies to more jobs
+  // Computes from JOBS array (sourced by .source field) + OUTREACH (contacted firms)
+  var nCold = 0, nAIA = 0, nIndeedEm = 0, nRecruit = 0, nCraigs = 0;
+  var nLinkedIn = 0, nIndeedEZ = 0, nWebForm = 0;
+  
+  // Count applied JOBS by source channel
+  for (var i = 0; i < jobs.length; i++) {
+    var jj = jobs[i];
+    var st = (typeof getJobState === 'function') ? (getJobState(jj.id).status || 'not-started') : (jj.defaultStatus || 'not-started');
+    // Skip not-applied entries
+    var gs2 = (jj.gmailStatus || '').toLowerCase();
+    var gb2 = (jj.gmailBadge || '').toLowerCase();
+    var isApp2 = st === 'applied' || st === 'interviewing' || st === 'rejected' || st === 'died' || st === 'offer' ||
+                 gb2 === 'applied' || gs2.indexOf('applied') !== -1 || gs2.indexOf('sent') !== -1;
+    if (!isApp2 || st === 'not-interested') continue;
+    
+    var src = (jj.source || '').toLowerCase();
+    var title2 = (jj.title || '').toLowerCase();
+    
+    if (title2.indexOf('indeed easy apply') !== -1) nIndeedEZ++;
+    else if (src.indexOf('aia') !== -1) nAIA++;
+    else if (src.indexOf('linkedin') !== -1) nLinkedIn++;
+    else if (src.indexOf('craigslist') !== -1) nCraigs++;
+    else if (src.indexOf('recruiter') !== -1 || src.indexOf('actalent') !== -1 || src.indexOf('michael page') !== -1 || src.indexOf('20-20') !== -1) nRecruit++;
+    else if (src.indexOf('indeed') !== -1) nIndeedEm++;
+    else if (src.indexOf('careers') !== -1 || src.indexOf('workday') !== -1 || src.indexOf('icims') !== -1 || src.indexOf('lever') !== -1 || src.indexOf('greenhouse') !== -1 || src.indexOf('bamboohr') !== -1 || src.indexOf('paylocity') !== -1) nWebForm++;
+    else nCold++;
+  }
+  
+  // Count cold outreach emails sent (OUTREACH array)
+  var outreachEmailed = 0;
+  if (typeof OUTREACH !== 'undefined') {
+    for (var oi = 0; oi < OUTREACH.length; oi++) {
+      if (OUTREACH[oi].why && /\[Contacted /.test(OUTREACH[oi].why)) outreachEmailed++;
+    }
+  }
+  nCold += outreachEmailed;
+  
+  var nEmail    = nCold + nAIA + nIndeedEm + nRecruit + nCraigs;
+  var nIndeed   = nIndeedEm + nIndeedEZ;
+  var nTotalReach = nCold + nAIA + nIndeedEm + nRecruit + nCraigs + nLinkedIn + nIndeedEZ + nWebForm;
 
   var columns = [
     [
