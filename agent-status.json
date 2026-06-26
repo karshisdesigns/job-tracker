@@ -1,9 +1,9 @@
 {
-  "updated": "2026-06-26T00:12:56.670839-05:00",
+  "updated": "2026-06-26T00:19:54.161568-05:00",
   "agents": {
     "coordinator": {
-      "lastRun": "2026-06-26T00:12:56.670839-05:00",
-      "lastSummary": "Manual sweep: +4 verified adds (Resicom, F.E. Moran, Unlimited Fire Restoration, RBD). 3 dupes skipped, superintendents/sub-65K/signage filtered.",
+      "lastRun": "2026-06-26T00:19:54.161568-05:00",
+      "lastSummary": "Non-aggregator sweep: +4 from AIA Chicago + Built In (GREC, Bisnow owner-rep, PMA, UL Solutions). Indeed/LinkedIn now fallback-only. Tracker got a Source filter.",
       "nextRun": "4 AM / 4 PM"
     },
     "lane-scouts": {},
@@ -26,6 +26,11 @@
     }
   },
   "activity": [
+    {
+      "ts": "2026-06-26T00:19:54.161568-05:00",
+      "agent": "coordinator",
+      "text": "Non-aggregator sweep +4 (AIA + Built In); Source filter added to tracker (bdf3518)"
+    },
     {
       "ts": "2026-06-26T00:12:56.670839-05:00",
       "agent": "coordinator",
