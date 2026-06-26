@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-26T00:26:13.346228-05:00",
+  "updated": "2026-06-26T09:22:37.496922-05:00",
   "agents": {
     "coordinator": {
       "lastRun": "2026-06-26T00:26:13.346228-05:00",
@@ -22,10 +22,27 @@
     },
     "application-kit": {},
     "inbox-triage": {
-      "nextRun": "7:30 AM"
+      "nextRun": "7:30 AM",
+      "lastSummary": "0 reply-today (Sevan + FitzGerald already answered today), 2 verify, 6 junk",
+      "lastRun": "2026-06-26T09:22:37.496922-05:00"
     }
   },
   "activity": [
+    {
+      "ts": "2026-06-26T09:22:37.496922-05:00",
+      "agent": "inbox-triage",
+      "text": "Heads-up: GitHub PAT 'Job Tracker Daily Push' expires ~7/2; sent FitzGerald reply claims Twinmotion/Lumion + supervisory"
+    },
+    {
+      "ts": "2026-06-26T09:22:37.496922-05:00",
+      "agent": "inbox-triage",
+      "text": "Verify: Cella/Caterpillar PM LinkedIn re-engage (draft in followups); CUNY study awaiting availability"
+    },
+    {
+      "ts": "2026-06-26T09:22:37.496922-05:00",
+      "agent": "inbox-triage",
+      "text": "Inbox triage 6/26: Sevan (Mertic) and FitzGerald (Kuss) confirmed ANSWERED today; 0 new reply-today"
+    },
     {
       "ts": "2026-06-26T00:26:13.346228-05:00",
       "agent": "coordinator",
