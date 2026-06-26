@@ -1,9 +1,9 @@
 {
-  "updated": "2026-06-26T00:19:54.161568-05:00",
+  "updated": "2026-06-26T00:26:13.346228-05:00",
   "agents": {
     "coordinator": {
-      "lastRun": "2026-06-26T00:19:54.161568-05:00",
-      "lastSummary": "Non-aggregator sweep: +4 from AIA Chicago + Built In (GREC, Bisnow owner-rep, PMA, UL Solutions). Indeed/LinkedIn now fallback-only. Tracker got a Source filter.",
+      "lastRun": "2026-06-26T00:26:13.346228-05:00",
+      "lastSummary": "Swept new sources + Craigslist: +3 (Novak + Apex via CMAA Career HQ; 1 Craigslist construction PM flagged verify). GovernmentJobs/SelectLeaders had no clean Chicago in-lane hit this pass.",
       "nextRun": "4 AM / 4 PM"
     },
     "lane-scouts": {},
@@ -26,6 +26,11 @@
     }
   },
   "activity": [
+    {
+      "ts": "2026-06-26T00:26:13.346228-05:00",
+      "agent": "coordinator",
+      "text": "New-source + Craigslist sweep: +3 (CMAA x2, Craigslist) (a959277)"
+    },
     {
       "ts": "2026-06-26T00:19:54.161568-05:00",
       "agent": "coordinator",
