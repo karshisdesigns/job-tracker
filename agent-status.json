@@ -1,7 +1,9 @@
 {
-  "updated": "2026-06-25T23:17:04.442763-05:00",
+  "updated": "2026-06-26T00:12:56.670839-05:00",
   "agents": {
     "coordinator": {
+      "lastRun": "2026-06-26T00:12:56.670839-05:00",
+      "lastSummary": "Manual sweep: +4 verified adds (Resicom, F.E. Moran, Unlimited Fire Restoration, RBD). 3 dupes skipped, superintendents/sub-65K/signage filtered.",
       "nextRun": "4 AM / 4 PM"
     },
     "lane-scouts": {},
@@ -24,6 +26,11 @@
     }
   },
   "activity": [
+    {
+      "ts": "2026-06-26T00:12:56.670839-05:00",
+      "agent": "coordinator",
+      "text": "Manual sweep pushed +4 PM/coordinator roles (beaf23c)"
+    },
     {
       "ts": "2026-06-25T23:17:04.442763-05:00",
       "agent": "system",
