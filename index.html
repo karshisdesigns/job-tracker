@@ -1445,6 +1445,7 @@ body::before {
         <button class="tab-btn active" onclick="showTab('active')">Active Postings</button>
         <button class="tab-btn" onclick="showTab('all-applied')">All Applied</button>
         <button class="tab-btn" onclick="showTab('outreach')">Cold Outreach</button>
+        <button class="tab-btn" onclick="showTab('local')">Local Search</button>
         <button class="tab-btn" onclick="showTab('pipeline')">Chart</button>
     </div>
 </header>
@@ -1597,6 +1598,29 @@ body::before {
             <button class="filter-btn contact-filter active" onclick="setContactFilter('not-emailed', this)">Not Yet Emailed</button>
         </div>
         <div id="outreachCards" class="timeline"></div>
+    </div>
+    <!-- Local Search Tab -->
+    <div id="tab-local" style="display:none;">
+        <div class="progress-section">
+            <div class="progress-title">Local Firm Targets &mdash; Google Maps Sweep</div>
+            <div class="progress-steps">
+                <div class="progress-step"><div class="p-total"><div class="p-num" id="l-total">0</div><div class="p-label">Firms</div></div></div>
+                <div class="progress-step"><div class="p-applied"><div class="p-num" id="l-arch">0</div><div class="p-label">Architecture</div></div></div>
+                <div class="progress-step"><div class="p-interview"><div class="p-num" id="l-gc">0</div><div class="p-label">GC / CM</div></div></div>
+                <div class="progress-step"><div class="p-offer"><div class="p-num" id="l-other">0</div><div class="p-label">Other</div></div></div>
+            </div>
+        </div>
+        <div class="filter-bar">
+            <div class="filter-bar-left">
+                <span class="filter-label">Type:</span>
+                <button class="filter-btn active" onclick="setLocalFilter('all', this)">All</button>
+                <button class="filter-btn" onclick="setLocalFilter('Architecture', this)">Architecture</button>
+                <button class="filter-btn" onclick="setLocalFilter('GC', this)">GC / CM</button>
+                <button class="filter-btn" onclick="setLocalFilter('Other', this)">Other</button>
+            </div>
+            <input type="text" class="search-box" id="localSearchBox" placeholder="Search firm, area, role..." oninput="filterLocalCards(this.value)">
+        </div>
+        <div id="localCards" class="timeline"></div>
     </div>
     <!-- Chart Tab -->
     <div id="tab-pipeline" style="display:none;">
@@ -7786,6 +7810,269 @@ const OUTREACH_DRAFTS = {
 // ─────────────────────────────────────────
 // SOCIAL MEDIA LEADS
 // ─────────────────────────────────────────
+const LOCAL_SEARCH = [
+  {
+    "company": "LBBA Architects",
+    "area": "Chicago (West Loop / Greektown)",
+    "type": "Architecture",
+    "careersUrl": "https://aiachicago.org/job_posting/lbba-architects-project-architect-designer-7/",
+    "role": "Project Architect / Designer (5-8 yrs, multi-unit housing, $75-88K) - posted 05/26/26",
+    "apply": "lbbahiring@lbba.com",
+    "hook": "Just-organization-certified affordable housing firm; mid-level PA role wants deep Chicago Building & Zoning Code knowledge  -  Alex's local code experience is a direct fit."
+  },
+  {
+    "company": "WJW Architects",
+    "area": "River North (401 W Superior St, Ste 400)",
+    "type": "Architecture",
+    "careersUrl": "https://aiachicago.org/job_posting/wjw-architects-project-manager/",
+    "role": "Project Manager + Project Architect (7+ yrs, affordable housing, senior living, residential healthcare, $81-106K) - posted 05/17-18/26",
+    "apply": "careers@wjwarchitects.com",
+    "hook": "Mission-driven Chicago firm doing affordable housing, senior living and community redevelopment; PM role explicitly takes ArchiCad OR Revit, broadening fit; walkable from Lakeview-adjacent commute."
+  },
+  {
+    "company": "Legat Architects",
+    "area": "Loop + Oak Brook",
+    "type": "Architecture",
+    "careersUrl": "https://www.legat.com/careers/",
+    "role": "Project Manager + Project Architect + Project Associate (Illinois studios; PA role 7-15 yrs, K-12 + healthcare + commercial)",
+    "apply": "careers@legat.com",
+    "hook": "Employee-owned, named Midwest's top large firm by The Architect's Newspaper 2025; broad portfolio (commercial, civic, healthcare, education, transportation) means Alex's TI/commercial chops translate."
+  },
+  {
+    "company": "Eckenhoff Saunders (ESA)",
+    "area": "Loop - One Prudential Plaza (130 E Randolph St, Ste 1850)",
+    "type": "Architecture",
+    "careersUrl": "https://esadesign.com/careers/",
+    "role": "Architect + Interior Designer (mid-level, workplace / hospitality / healthcare / commercial / multi-family)",
+    "apply": "https://esadesign.com/careers/ (online form; cover letter + resume + portfolio one PDF)",
+    "hook": "50+ person, 40-year-old Chicago firm with active Architect + Interior Designer openings; portfolio spans the commercial/hospitality lane Alex has built his book in."
+  },
+  {
+    "company": "BE Architects",
+    "area": "Chicago - commercial interiors firm (fully remote OK)",
+    "type": "Architecture",
+    "careersUrl": "https://aiachicago.org/job_posting/be-architects-architectural-associate/",
+    "role": "Architectural Associate / Architect Level I (commercial interiors, corporate, occasional hospitality)",
+    "apply": "sarah@be-architects.com",
+    "hook": "Small but fast-growing firm built entirely on corporate interiors / TI work  -  Alex's exact bread-and-butter; founder-led, flexible work, frequent socials."
+  },
+  {
+    "company": "Reed Construction",
+    "area": "Chicago (downtown)",
+    "type": "GC",
+    "careersUrl": "https://jobs.smartrecruiters.com/ReedConstruction/",
+    "role": "Project Manager - Interiors + Project Manager - Commercial Interiors + Assistant PM Interiors + Project Engineer Interiors ($77-122K)",
+    "apply": "https://jobs.smartrecruiters.com/ReedConstruction/ (SmartRecruiters)",
+    "hook": "5th-generation family GC since 1893 doing healthcare, investment property and educational TI; multiple Interiors PM/APM slots open right now and a pipeline of design-driven corporate clients."
+  },
+  {
+    "company": "Krusinski Construction Company",
+    "area": "Oak Brook (2107 Swift Dr)",
+    "type": "GC",
+    "careersUrl": "https://www.krusinski.com/careers/",
+    "role": "Senior Project Manager + Project Coordinator + Director of Safety + Project Executive (Industrial / F&B)",
+    "apply": "https://www.krusinski.com/careers/ (online form)",
+    "hook": "Sectors include Corporate Office/Interiors, Healthcare, Higher Ed, Multi-Family, Hospitality/Retail  -  Sr PM is sector-agnostic so Alex's TI portfolio lands cleanly; Oak Brook is reverse-commute friendly."
+  },
+  {
+    "company": "Executive Construction Inc (ECI)",
+    "area": "Chicago (downtown; 175+ staff, two offices)",
+    "type": "GC",
+    "careersUrl": "https://ecibuild.com/openings/",
+    "role": "Project Manager + Project Manager - Mission Critical + Senior PM + Assistant PM",
+    "apply": "info@ecibuild.com (708-236-3300)",
+    "hook": "$300M-revenue GC with 50+ years of Fortune 500 corporate interiors work plus mission-critical/life-sciences; Glassdoor reviews call out clear advancement path, perfect for an APM/PM with TI background."
+  },
+  {
+    "company": "Premier Design + Build Group",
+    "area": "Chicagoland HQ (employee-owned, 'Chicago's Fast 50' x5 years)",
+    "type": "GC",
+    "careersUrl": "https://www.pdbgroup.com/careers",
+    "role": "Project Management openings across Commercial / Interiors / Industrial / Office / Adaptive Reuse / Residential / Healthcare",
+    "apply": "hr@pdbgroup.com (also Paycor portal: https://recruitingbypaycor.com/career/CareerHome.action?clientId=8a7883d08d19fedb018d233ba1d0088d)",
+    "hook": "Employee-owned, awarded Crain's Fast 50 five years running, fast-growing across Adaptive Reuse + Interiors + Office  -  exactly where Alex's commercial TI background scales into an APM/PM seat."
+  },
+  {
+    "company": "OKW Architects",
+    "area": "Chicago",
+    "type": "Architecture",
+    "careersUrl": "https://www.okwarchitects.com/careers",
+    "role": "Project Architect (5+ yrs) - currently 'We are currently hiring for: project architect'",
+    "apply": "careers@okwarchitects.com",
+    "hook": "50-person Chicago firm with $22M revenue, growing portfolio nationwide; needs licensed-track mid-level architects  -  Alex's mid-career TI/commercial experience fits the spec."
+  },
+  {
+    "company": "SCB (Solomon Cordwell Buenz)",
+    "area": "Loop (Chicago HQ)",
+    "type": "Architecture",
+    "careersUrl": "https://scb.com/careers/",
+    "role": "Always-open 'Submit Your Portfolio' CTA + recurring Project Architect / Sr Interior Designer / Campus Environments roles via LinkedIn",
+    "apply": "https://scb.com/careers/ (portfolio submission form)",
+    "hook": "International architecture/interiors/planning firm founded 1931, big Chicago hospitality and high-rise residential book; standing 'always looking' CTA makes cold outreach legit and they actively promote Studio Leaders into Chicago."
+  },
+  {
+    "company": "Hartshorne Plunkard Architecture (HPA)",
+    "area": "Near North - 315 W Walton, Chicago 60610",
+    "type": "Architecture",
+    "careersUrl": "https://hparchitecture.com/careers/",
+    "role": "Architectural Associate I (entry-3 yrs) + Interior Architecture Associate (active job opportunity links posted 01/26 + 08/25)",
+    "apply": "careers@hparchitecture.com",
+    "hook": "Big multifamily and adaptive reuse book across Chicago; explicitly lists Interiors Associate plus an Associate I track  -  Alex can sit on either side with his interiors and CD experience."
+  },
+  {
+    "company": "Walgreens (Walgreens Boots Alliance)",
+    "area": "Deerfield (corporate HQ)",
+    "type": "Corporate",
+    "careersUrl": "https://jobs.walgreens.com/en/job/deerfield/program-project-manager-facilities/1242/49106219104",
+    "role": "Program/Project Manager Facilities (manages national store rollouts, fixture installs, GC + vendor management)",
+    "apply": "https://jobs.walgreens.com (online apply)",
+    "hook": "Corporate facilities PM role at a Fortune retailer literally hiring outside GCs to do retail rollouts; Alex's commercial TI experience + ability to manage multi-site programs is a clean translation."
+  },
+  {
+    "company": "Ulta Beauty",
+    "area": "Bolingbrook (corporate HQ)",
+    "type": "Retail",
+    "careersUrl": "https://careers.ulta.com/careers/jobs/476237?lang=en-us",
+    "role": "Program Manager Construction ($66-88K; G&D team  -  new store openings + reengineering existing locations)",
+    "apply": "https://careers.ulta.com (iCIMS apply)",
+    "hook": "In-house construction PM at a 1,400-store retailer that prides itself on store-design refresh cycles; exactly the brand-standards retail rollout lane Alex flagged as open to."
+  },
+  {
+    "company": "Northwestern Medicine",
+    "area": "Chicago (Streeterville campus) - hospitals + 200 ambulatory sites",
+    "type": "Other",
+    "careersUrl": "https://jobs.nm.org/job/chicago/project-manager-planning-and-construction/27763/91700416304",
+    "role": "Project Manager - Planning and Construction + Project Manager - Construction/Design ($56-82/hr; 10+ yrs healthcare planning/design/CM)",
+    "apply": "https://jobs.nm.org (online apply, REQID 194057 + 179971)",
+    "hook": "Owner-side healthcare PM running test fits + scope dev + construction admin across NM's 11 hospitals  -  Alex's architectural background lets him own scope and test-fit work in-house."
+  },
+  {
+    "company": "FGM Architects",
+    "area": "Chicago studio (plus 7 other US offices)",
+    "type": "Architecture",
+    "careersUrl": "https://www.fgmarchitects.com/job-openings/",
+    "role": "Open Roles posted at /job-openings (firm certified Great Place To Work 2026; PK-12, higher ed, multifamily/mixed-use, civic, corporate practice areas)",
+    "apply": "https://www.fgmarchitects.com/job-openings/ (online form)",
+    "hook": "Employee-owned (ESOP), 'Great Place To Work' certified 2026 with 93% positive employee rating; broad practice areas mean Alex's commercial + multifamily work both translate."
+  },
+  {
+    "company": "Cordogan Clark & Associates",
+    "area": "Chicago (716 N Wells St) + Aurora HQ",
+    "type": "Architecture",
+    "careersUrl": "https://www.cordoganclark.com/careers.html",
+    "role": "Always-open 'qualified individuals' across architecture, MEP, structural, planning, interiors, graphic design",
+    "apply": "careers@cordoganclark.com (chicago@cordoganclark.com for office-specific)",
+    "hook": "100+ professional architecture-engineering-planning-construction firm; explicit 'expanding company' messaging plus broad service offering means Alex's TI/commercial profile maps cleanly to multiple practice groups."
+  },
+  {
+    "company": "Englewood Construction (ECI)",
+    "area": "Lemont (80 Main St)",
+    "type": "GC",
+    "careersUrl": "https://eci.build/about-us/",
+    "role": "Always-open hire pipeline (per company news, 5+ recent PM hires); national rollouts for Dick's, Hobby Lobby, Outback, BJ's Brewhouse, American Girl, Macy's, Gap, Aldi, Burlington",
+    "apply": "careers@eci.build (847-233-9200)",
+    "hook": "Retail / restaurant / hospitality / senior living rollout GC  -  literally the lane Alex specified ('chain rollouts'); they pride themselves on rapidly onboarding experienced PMs/APMs."
+  },
+  {
+    "company": "Holabird & Root",
+    "area": "Chicago (Loop, historic firm)",
+    "type": "Architecture",
+    "careersUrl": "https://www.holabird.com/careers",
+    "role": "Always-open: 'Holabird & Root is always interested in bright and talented individuals' (architecture / interiors / sustainability / K-12 / higher ed / workplace / hospitality / labs / historic)",
+    "apply": "holabird@holabird.com",
+    "hook": "133-year-old Chicago architecture institution with broad sector coverage including Workplace, Hospitality and Living; the 'always interested' CTA is a clean cold-email opening."
+  },
+  {
+    "company": "ParkFowler Plus",
+    "area": "Chicago - West Loop (625 W Adams, 19th Floor)",
+    "type": "Architecture",
+    "careersUrl": "https://parkfowler.plus/contact/",
+    "role": "Junior to Mid-Level Architect / Architectural Designer (3-8 yrs) + Mid to Senior-Level Interior Architect / Interior Designer (5-10 yrs) - active 2026 listings, deadline 5/29/26 or until filled",
+    "apply": "careers@pf.plus",
+    "hook": "Woman/minority-owned successor to Brininstool + Lynch; actively hiring on BOTH architectural and interior sides; Alex can apply to either based on portfolio framing."
+  },
+  {
+    "company": "CannonDesign",
+    "area": "Chicago, IL (one of 22 US/global offices)",
+    "type": "Architecture",
+    "careersUrl": "https://www.cannondesign.com/careers/architect-ii-2613",
+    "role": "Architect II - Chicago, IL (live on Greenhouse) + 153 firm-wide openings across Architecture, Interior Design, Engineering",
+    "apply": "https://www.cannondesign.com/careers (Greenhouse apply)",
+    "hook": "Project Architect V salary band $108-136K in Chicago; firm explicitly recruiting 'bold thinkers and problem solvers'  -  Alex's commercial / mid-career profile fits Architect II/III tiers."
+  },
+  {
+    "company": "The Childs Dreyfus Group (CDG)",
+    "area": "River North (70 W Hubbard St, Ste 300)",
+    "type": "Architecture",
+    "careersUrl": "https://www.childsdreyfus.com/careers/",
+    "role": "Interior Designer + Senior Interior Designer (commercial / hospitality / multi-family / student housing) - PDF job descriptions linked on careers page",
+    "apply": "https://www.childsdreyfus.com/careers/#apply-now (online form)",
+    "hook": "Integrated architecture/interior design firm with growing commercial + hospitality book; firm stated it's adding 5-8 designers and 2-3 AEs  -  high-velocity hiring window."
+  },
+  {
+    "company": "W.B. Olson, Inc. ('The Construction People')",
+    "area": "Northbrook",
+    "type": "GC",
+    "careersUrl": "https://wbo.com/careers/",
+    "role": "Always-open: 'We're always looking for good people'  -  sectors include Healthcare, Education, Performing Arts, Institutional, Industrial, Parks/Rec",
+    "apply": "https://wbo.com/careers/ (email shown via cf-protect; resume to hiring inbox)",
+    "hook": "55-year-old family CM/GC running public/institutional/municipal projects with strong reverse-commute access from Lakeview; standing 'tell us what role you want' CTA is built for cold emails."
+  },
+  {
+    "company": "Path Construction",
+    "area": "Arlington Heights (125 E Algonquin Rd; founded 2008)",
+    "type": "GC",
+    "careersUrl": "https://pathcc.com/careers/",
+    "role": "Project Manager - Public Construction + Project Manager - Multi-Family ($80-120K) + APM (2+ yrs) + Project Manager - Wastewater",
+    "apply": "https://pathcc.com/careers/ (online apply)",
+    "hook": "Rapidly growing GC with sectors spanning Healthcare, Retail, Multi-Family, Self-Storage, Hospitality, Senior Living, Restaurant  -  exactly the asset classes on Alex's open list."
+  },
+  {
+    "company": "Linn-Mathes Inc.",
+    "area": "Chicago - West Loop (309 S Green St)",
+    "type": "GC",
+    "careersUrl": "http://www.linn-mathes.com/contact-commercial-construction-building-chicago/",
+    "role": "Always-open hire pipeline (third-generation family GC; commercial, industrial, mixed-use, residential, hospitality/hotel)",
+    "apply": "https://www.linn-mathes.com/contact (web form; HQ phone 312-243-7100)",
+    "hook": "Third-generation Chicago commercial GC with strong hospitality/hotel book  -  direct fit for Alex's hospitality TI portfolio; West Loop office is walkable from Lakeview transit."
+  },
+  {
+    "company": "Bowa Construction",
+    "area": "Chicago HQ (African-American-owned GC)",
+    "type": "GC",
+    "careersUrl": "https://bowaconstruction.com/careers/",
+    "role": "Multiple Project Manager and Project Coordinator roles via ADP portal (markets: Aviation, Healthcare, Sci/Tech, Retail & Hospitality, Higher Ed, Multi-Unit/Affordable, Corporate Interiors, K-12, Mission Critical)",
+    "apply": "https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=3e33d2a2-d47d-4c1e-8327-9616377c2180&ccId=9200860427421_2&lang=en_US",
+    "hook": "Chicago-headquartered minority-owned firm with 100+ employees and 250+ completed projects across the exact sectors (Corporate Interiors, Retail & Hospitality, Higher Ed) Alex is targeting."
+  },
+  {
+    "company": "Tilton, Kelly + Bell (TKB)",
+    "area": "Chicago - Loop studio (Women-Owned Business Enterprise / WBE)",
+    "type": "Architecture",
+    "careersUrl": "https://tiltonkellybell.com/",
+    "role": "Recurring Senior Interior Designer + Intermediate Architect openings (corporate + public sector + higher ed + healthcare; hybrid)",
+    "apply": "lfarley@tiltonkellybell.com",
+    "hook": "WBE-certified architecture/interiors firm specializing in public/corporate/higher-ed; staff explicitly diverse-hire focused; loop studio with bike storage + fitness + great commute access."
+  },
+  {
+    "company": "DLR Group",
+    "area": "Chicago - 333 W Wacker Dr, Ste 850 (along the Riverwalk)",
+    "type": "Architecture",
+    "careersUrl": "https://www.dlrgroup.com/careers/",
+    "role": "Mission Critical Project Architect (national) + Architectural Design Summer Intern Chicago (Summer 2026); 119 firm-wide openings; Chicago studio leads Hospitality + Workplace + Justice/Civic + K-12",
+    "apply": "https://www.dlrgroup.com/careers/ (online portal; jcicora@dlrgroup.com for BD intro)",
+    "hook": "100% employee-owned integrated design firm; Chicago studio explicitly leads Hospitality + Workplace which match Alex's TI/hospitality portfolio; Mission Critical role is a real lane he's already open to."
+  },
+  {
+    "company": "Hines",
+    "area": "Chicago office (one of 30+ countries) - global real estate developer/owner",
+    "type": "RealEstate",
+    "careersUrl": "https://www.hines.com/careers",
+    "role": "Construction Project Manager / Owner's Rep openings (commercial, office, mixed-use; firm ranked 2025-26 U.S. News Best Companies to Work For)",
+    "apply": "https://www.hines.com/careers (Workday apply)",
+    "hook": "Owner-side construction PM at the firm behind River Point (1.1M sf West Loop tower); Alex's architectural CD/CA experience translates cleanly into Hines's owner-rep PM role, which they actively staff out of the Chicago office."
+  }
+];
 const SOCIAL_LEADS = [
     {
       id: 'sl-craigslist-cad',
@@ -9195,6 +9482,8 @@ function showTab(tab) {
   document.getElementById('tab-outreach').style.display = tab === 'outreach' ? '' : 'none';
   var pipeNode = document.getElementById('tab-pipeline');
   if (pipeNode) pipeNode.style.display = tab === 'pipeline' ? '' : 'none';
+  var localNode = document.getElementById('tab-local');
+  if (localNode) localNode.style.display = tab === 'local' ? '' : 'none';
   // Highlight the correct tab button by matching its onclick text
   document.querySelectorAll('.tab-btn').forEach(function(b) {
     const onclickAttr = b.getAttribute('onclick') || '';
@@ -9419,6 +9708,80 @@ function toggleMap() {
 }
 
 // Show/hide legend based on active tab
+
+// ─────────────────────────────────────────────────────────
+// LOCAL SEARCH TAB  (Google Maps firm sweep, read-only)
+// ─────────────────────────────────────────────────────────
+var localTypeFilter = 'all';
+var localSearchQuery = '';
+function renderLocal() {
+  var c = document.getElementById('localCards');
+  if (!c || typeof LOCAL_SEARCH === 'undefined') return;
+  var tc = {'Architecture':'type-architecture','GC':'type-gc','Corporate':'type-corporate','RealEstate':'type-realestate','Retail':'type-corporate','Other':'type-designbuild'};
+  var html = '';
+  LOCAL_SEARCH.forEach(function(f, i) {
+    var cls = tc[f.type] || 'type-architecture';
+    var isEmail = f.apply && f.apply.indexOf('@') !== -1 && f.apply.indexOf('http') === -1;
+    var applyTag = '';
+    if (f.apply) {
+      applyTag = isEmail
+        ? '<span class="meta-tag"><a href="mailto:' + f.apply + '" style="color:inherit;text-decoration:none;">&#9993; ' + f.apply + '</a></span>'
+        : '<span class="meta-tag"><a href="' + f.apply + '" target="_blank" style="color:inherit;text-decoration:none;">&#128279; Apply</a></span>';
+    }
+    var careersTag = f.careersUrl
+      ? '<span class="meta-tag"><a href="' + f.careersUrl + '" target="_blank" style="color:var(--haring-blue);text-decoration:none;font-weight:700;">&#127760; Careers</a></span>'
+      : '';
+    var searchStr = (f.company + ' ' + f.area + ' ' + f.role + ' ' + f.type).toLowerCase().replace(/"/g, '');
+    html += '<div class="outreach-card" data-type="' + f.type + '" data-search="' + searchStr + '">'
+      + '<div class="card-color-bar"></div>'
+      + '<div class="card-inner">'
+      + '<div class="card-main">'
+      + '<div class="card-row-1"><span class="card-source">Maps Sweep</span><span class="firm-type-tag ' + cls + '">' + f.type + '</span></div>'
+      + '<div class="card-row-2"><span class="card-company"><a href="' + (f.careersUrl || '#') + '" target="_blank" style="color:inherit;text-decoration:none;border-bottom:2px solid var(--haring-blue);">' + f.company + '</a></span></div>'
+      + '<div class="card-row-3"><span class="card-address"><a href="https://www.google.com/maps/search/' + encodeURIComponent(f.company + ' Chicago') + '" target="_blank" style="color:inherit;text-decoration:none;" title="Open in Google Maps">&#128205; ' + f.area + '</a></span></div>'
+      + '<div class="card-tags">' + careersTag + applyTag + '</div>'
+      + '</div>'
+      + '<div class="card-actions"><div class="card-btns"><button class="btn-details" onclick="toggleDetails(\'local-' + i + '\')">Details</button></div></div>'
+      + '</div>'
+      + '<div class="card-details" id="details-local-' + i + '">'
+      + '<div class="detail-row"><div class="detail-label">Role Seen</div><div class="detail-value">' + (f.role || 'See careers page') + '</div></div>'
+      + '<div class="detail-row"><div class="detail-label">Why Reach Out</div><div class="role-sketch-box">' + f.hook + '</div></div>'
+      + '<div class="detail-row"><div class="detail-label">Apply</div><div class="detail-value">' + (f.apply || 'See careers page') + '</div></div>'
+      + '</div>'
+      + '</div>';
+  });
+  c.innerHTML = html;
+  updateLocalStats();
+  applyLocalFilter();
+}
+function updateLocalStats() {
+  if (typeof LOCAL_SEARCH === 'undefined') return;
+  function setn(id, n){ var e = document.getElementById(id); if (e) e.textContent = n; }
+  setn('l-total', LOCAL_SEARCH.length);
+  setn('l-arch', LOCAL_SEARCH.filter(function(f){return f.type==='Architecture';}).length);
+  setn('l-gc', LOCAL_SEARCH.filter(function(f){return f.type==='GC';}).length);
+  setn('l-other', LOCAL_SEARCH.filter(function(f){return f.type!=='Architecture' && f.type!=='GC';}).length);
+}
+function setLocalFilter(t, btn) {
+  localTypeFilter = t;
+  document.querySelectorAll('#tab-local .filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  applyLocalFilter();
+}
+function filterLocalCards(q) { localSearchQuery = (q || '').toLowerCase(); applyLocalFilter(); }
+function applyLocalFilter() {
+  document.querySelectorAll('#tab-local .outreach-card').forEach(function(card){
+    var t = card.getAttribute('data-type');
+    var typeOk;
+    if (localTypeFilter === 'all') typeOk = true;
+    else if (localTypeFilter === 'Other') typeOk = (t !== 'Architecture' && t !== 'GC');
+    else typeOk = (t === localTypeFilter);
+    var q = localSearchQuery;
+    var searchOk = !q || (card.getAttribute('data-search') || '').indexOf(q) !== -1;
+    card.style.display = (typeOk && searchOk) ? '' : 'none';
+  });
+}
+
 const origShowTab = showTab;
 showTab = function(tab) {
   origShowTab(tab);
@@ -9441,6 +9804,7 @@ showTab = function(tab) {
 
 renderJobs();
 renderOutreach();
+renderLocal();
 updateStats();
 updateOutreachStats();
 updateInterviewBox();
