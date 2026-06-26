@@ -1555,6 +1555,18 @@ body::before {
             </div>
             <input type="text" class="search-box" id="activeSearchBox" placeholder="Search company, role, location, salary..." oninput="debouncedSearchCards(this.value)"><span class="search-count" id="activeSearchCount"></span>
         </div>
+                <div class="filter-bar">
+            <div class="filter-bar-left">
+                <span class="filter-label">Source:</span>
+                <button class="filter-btn src-btn active" onclick="setSourceFilter('all', this)">All</button>
+                <button class="filter-btn src-btn" onclick="setSourceFilter('no-agg', this)">Hide Indeed/LinkedIn</button>
+                <button class="filter-btn src-btn" onclick="setSourceFilter('direct', this)">Direct / Careers</button>
+                <button class="filter-btn src-btn" onclick="setSourceFilter('aia', this)">AIA Chicago</button>
+                <button class="filter-btn src-btn" onclick="setSourceFilter('recruiter', this)">Recruiter</button>
+                <button class="filter-btn src-btn" onclick="setSourceFilter('indeed', this)">Indeed</button>
+                <button class="filter-btn src-btn" onclick="setSourceFilter('linkedin', this)">LinkedIn</button>
+            </div>
+        </div>
         <div id="activeCards" class="timeline"></div>
     </div>
     <!-- Outreach Tab -->
@@ -9159,9 +9171,16 @@ function updateOutreachStatus(id, sel) {
 // ─────────────────────────────────────────────────────────
 // FILTERS
 // ─────────────────────────────────────────────────────────
+let sourceFilter = 'all';
+function setSourceFilter(f, btn) {
+  sourceFilter = f;
+  document.querySelectorAll('#tab-active .src-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter();
+}
 function setFilter(f, btn) {
   activeFilter = f;
-  document.querySelectorAll('#tab-active .filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#tab-active .filter-btn:not(.src-btn)').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   applyFilter();
 }
@@ -9224,7 +9243,14 @@ function applyFilter() {
     else if (activeFilter === 'died') matchFilter = isDied;
     else if (activeFilter === 'not-qualified') matchFilter = isRejected;
     else if (activeFilter === 'not-interested') matchFilter = s === 'not-interested';
-    const isHidden = !matchFilter || !matchSearch;
+        let matchSource = true;
+    if (sourceFilter === 'no-agg') matchSource = source.indexOf('indeed') === -1 && source.indexOf('linkedin') === -1;
+    else if (sourceFilter === 'indeed') matchSource = source.indexOf('indeed') !== -1;
+    else if (sourceFilter === 'linkedin') matchSource = source.indexOf('linkedin') !== -1;
+    else if (sourceFilter === 'aia') matchSource = source.indexOf('aia') !== -1;
+    else if (sourceFilter === 'recruiter') matchSource = /recruit|actalent|michael page|jobot|teksystem|staffing|engtal|lasalle|robert half|cybercoder/.test(source);
+    else if (sourceFilter === 'direct') matchSource = /direct|career|greenhouse|lever|workday|dayforce|icims|jazzhr|taleo|paylocity|smartrecruiter/.test(source);
+    const isHidden = !matchFilter || !matchSearch || !matchSource;
     card.classList.toggle('hidden', isHidden);
     card.classList.toggle('not-interested-card', s === 'not-interested');
     if (s !== 'not-interested') {
