@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-25T21:55:42.297195-05:00",
+  "updated": "2026-06-25T22:05:55.869085-05:00",
   "agents": {
     "coordinator": {
       "nextRun": "4 AM / 4 PM"
@@ -11,9 +11,27 @@
       "nextRun": "8 AM"
     },
     "weekly-strategist": {
-      "nextRun": "Mon 7 AM"
+      "nextRun": "Mon 7 AM",
+      "lastRun": "2026-06-25T22:05:55.869085-05:00",
+      "lastSummary": "Full diagnosis: ~60 apps, 3-4 interviews, 0 offers. Best lane = Construction/Facilities PM via recruiters. 2 live threads (Sevan, FitzGerald) unanswered; fix cold-email bounces; pull Karshis Designs off resume."
     },
     "application-kit": {}
   },
-  "activity": []
+  "activity": [
+    {
+      "ts": "2026-06-25T22:05:55.869085-05:00",
+      "agent": "weekly-strategist",
+      "text": "Strategist: BRIEF + SKILL updated with lessons; 20-20 Foresight call was canceled 6/18"
+    },
+    {
+      "ts": "2026-06-25T22:05:55.869085-05:00",
+      "agent": "weekly-strategist",
+      "text": "Strategist: cold info@/careers@ emails bounced ~9/20 on 6/17 - verify addresses going forward"
+    },
+    {
+      "ts": "2026-06-25T22:05:55.869085-05:00",
+      "agent": "weekly-strategist",
+      "text": "Strategist: diagnosis done - reply to Sevan (Maura) + FitzGerald (Kuss) today; both live and unanswered"
+    }
+  ]
 }
