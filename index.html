@@ -1558,8 +1558,8 @@ body::before {
                 <div class="filter-bar">
             <div class="filter-bar-left">
                 <span class="filter-label">Source:</span>
-                <button class="filter-btn src-btn active" onclick="setSourceFilter('all', this)">All</button>
-                <button class="filter-btn src-btn" onclick="setSourceFilter('no-agg', this)">Hide Indeed/LinkedIn</button>
+                <button class="filter-btn src-btn" onclick="setSourceFilter('all', this)">All</button>
+                <button class="filter-btn src-btn active" onclick="setSourceFilter('no-agg', this)">Hide Indeed/LinkedIn</button>
                 <button class="filter-btn src-btn" onclick="setSourceFilter('direct', this)">Direct / Careers</button>
                 <button class="filter-btn src-btn" onclick="setSourceFilter('aia', this)">AIA Chicago</button>
                 <button class="filter-btn src-btn" onclick="setSourceFilter('recruiter', this)">Recruiter</button>
@@ -9324,7 +9324,7 @@ function updateOutreachStatus(id, sel) {
 // ─────────────────────────────────────────────────────────
 // FILTERS
 // ─────────────────────────────────────────────────────────
-let sourceFilter = 'all';
+let sourceFilter = 'no-agg';
 function setSourceFilter(f, btn) {
   sourceFilter = f;
   document.querySelectorAll('#tab-active .src-btn').forEach(b => b.classList.remove('active'));
