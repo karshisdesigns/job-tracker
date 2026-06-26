@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-25T22:58:05.733876-05:00",
+  "updated": "2026-06-25T23:17:04.442763-05:00",
   "agents": {
     "coordinator": {
       "nextRun": "4 AM / 4 PM"
@@ -18,9 +18,17 @@
       "lastRun": "2026-06-25T22:05:55.869085-05:00",
       "lastSummary": "Full diagnosis: ~60 apps, 3-4 interviews, 0 offers. Best lane = Construction/Facilities PM via recruiters. 2 live threads (Sevan, FitzGerald) unanswered; fix cold-email bounces; pull Karshis Designs off resume."
     },
-    "application-kit": {}
+    "application-kit": {},
+    "inbox-triage": {
+      "nextRun": "7:30 AM"
+    }
   },
   "activity": [
+    {
+      "ts": "2026-06-25T23:17:04.442763-05:00",
+      "agent": "system",
+      "text": "Upgrades shipped: Inbox-Triage agent added; Chaser now tracks reply-owed (both ways) + 7-day nudges; sweep re-tuned recruiter-first; resume reworked (Karshis closed)."
+    },
     {
       "ts": "2026-06-25T22:58:05.733876-05:00",
       "agent": "reconciler",
