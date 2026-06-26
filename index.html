@@ -1447,6 +1447,7 @@ body::before {
         <button class="tab-btn" onclick="showTab('outreach')">Cold Outreach</button>
         <button class="tab-btn" onclick="showTab('local')">Local Search</button>
         <button class="tab-btn" onclick="showTab('pipeline')">Chart</button>
+        <button class="tab-btn" onclick="showTab('command')">Command Center</button>
     </div>
 </header>
 <div class="main">
@@ -1646,6 +1647,31 @@ body::before {
                 </div>
             </div>
         </div>
+    </div>
+    <!-- Command Center Tab -->
+    <style>
+      .agent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:12px;}
+      .agent-card{border:2px solid var(--ink,#111);border-radius:10px;padding:12px 14px;background:#fff;}
+      .agent-card .ac-top{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+      .ac-dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto;}
+      .ac-dot.ran{background:#10B981;} .ac-dot.pending{background:#F59E0B;} .ac-dot.idle{background:#9CA3AF;} .ac-dot.ondemand{background:#3B82F6;}
+      .ac-name{font-weight:800;font-size:0.95rem;}
+      .ac-cadence{font-size:0.7rem;color:var(--ink-light,#666);text-transform:uppercase;letter-spacing:0.04em;}
+      .ac-role{font-size:0.82rem;margin:7px 0;line-height:1.35;}
+      .ac-meta{font-size:0.73rem;color:var(--ink-light,#666);}
+      .ac-summary{font-size:0.8rem;margin-top:6px;border-left:3px solid var(--haring-blue,#2563EB);padding-left:8px;}
+      .agent-activity .act-item{font-size:0.8rem;padding:6px 2px;border-bottom:1px solid #eee;}
+      .agent-activity .act-when{color:var(--ink-light,#666);font-size:0.72rem;}
+      .agent-activity .act-agent{font-weight:700;}
+    </style>
+    <div id="tab-command" style="display:none;">
+        <div class="progress-section">
+            <div class="progress-title">Agent Command Center</div>
+            <div style="font-size:0.8rem;color:var(--ink-light,#666);margin-bottom:2px;">Status is reported by each agent on its last run. <span id="cc-updated"></span></div>
+        </div>
+        <div id="agentGrid" class="agent-grid"></div>
+        <div class="progress-title" style="margin-top:20px;">Recent Activity</div>
+        <div id="agentActivity" class="agent-activity"></div>
     </div>
 </div>
 <!-- Apply / Email Modal -->
@@ -9358,6 +9384,8 @@ function showTab(tab) {
   if (pipeNode) pipeNode.style.display = tab === 'pipeline' ? '' : 'none';
   var localNode = document.getElementById('tab-local');
   if (localNode) localNode.style.display = tab === 'local' ? '' : 'none';
+  var cmdNode = document.getElementById('tab-command');
+  if (cmdNode) cmdNode.style.display = tab === 'command' ? '' : 'none';
   // Highlight the correct tab button by matching its onclick text
   document.querySelectorAll('.tab-btn').forEach(function(b) {
     const onclickAttr = b.getAttribute('onclick') || '';
@@ -9384,6 +9412,9 @@ function showTab(tab) {
   }
   if (tab === 'pipeline' && typeof renderPipeline === 'function') {
     renderPipeline();
+  }
+  if (tab === 'command' && typeof renderCommand === 'function') {
+    renderCommand();
   }
 }
 // ─────────────────────────────────────────────────────────
@@ -9654,6 +9685,73 @@ function applyLocalFilter() {
     var searchOk = !q || (card.getAttribute('data-search') || '').indexOf(q) !== -1;
     card.style.display = (typeOk && searchOk) ? '' : 'none';
   });
+}
+
+
+// ─────────────────────────────────────────────────────────
+// COMMAND CENTER  (agent team status, reads agent-status.json live)
+// ─────────────────────────────────────────────────────────
+const AGENTS = [
+  {key:'coordinator', name:'Coordinator (Sweep)', cadence:'4 AM + 4 PM daily', role:'Pulls the tracker, dispatches 5 Lane Scouts in parallel, reconciles Gmail, QA-gates, and makes the one daily push.'},
+  {key:'lane-scouts', name:'Lane Scouts (x5)', cadence:'inside each sweep', role:'Parallel search by lane: Construction PM, Designer/Job Captain, data center, local Maps, healthcare/retail. Verify, title-screen, return finds.'},
+  {key:'reconciler', name:'Pipeline Reconciler', cadence:'inside each sweep', role:'Scans Gmail for interview, offer, rejection, and bounce updates and syncs tracker statuses.'},
+  {key:'qa', name:'QA Verifier', cadence:'every push', role:'Blocks any push until the style rules pass and the tracker JS validates (syntax + JSDOM).'},
+  {key:'warm-lead-chaser', name:'Warm-Lead Chaser', cadence:'8 AM daily', role:'Watches warm leads and drafts a follow-up for your review when one goes stale.'},
+  {key:'weekly-strategist', name:'Weekly Strategist', cadence:'Mon 7 AM', role:'Analyzes response rates by lane and source and recommends where to focus the week.'},
+  {key:'application-kit', name:'Application-Kit Drafter', cadence:'on-demand', role:'Paste a JD and it builds the full kit: cover letter, interview prep, form answers, resume tweaks.'}
+];
+function ccTimeAgo(iso){
+  if(!iso) return 'never';
+  var d = new Date(iso); if(isNaN(d.getTime())) return String(iso);
+  var s = (Date.now()-d.getTime())/1000;
+  if(s<0) return 'scheduled';
+  if(s<60) return 'just now';
+  if(s<3600) return Math.floor(s/60)+'m ago';
+  if(s<86400) return Math.floor(s/3600)+'h ago';
+  return Math.floor(s/86400)+'d ago';
+}
+function ccPaint(status){
+  status = status || {};
+  var sa = status.agents || {};
+  var grid = document.getElementById('agentGrid');
+  var act = document.getElementById('agentActivity');
+  var upd = document.getElementById('cc-updated');
+  if(upd) upd.textContent = status.updated ? ('Last status update: ' + ccTimeAgo(status.updated)) : '';
+  if(grid){
+    grid.innerHTML = AGENTS.map(function(a){
+      var s = sa[a.key] || {};
+      var dot='idle', label='Scheduled';
+      if(a.cadence==='on-demand'){ dot='ondemand'; label='On demand'; }
+      if(s.lastRun){ dot='ran'; label='Active'; }
+      else if(a.cadence!=='on-demand'){ dot='pending'; label='Awaiting first run'; }
+      return '<div class="agent-card">'
+        + '<div class="ac-top"><span class="ac-dot '+dot+'"></span><span class="ac-name">'+a.name+'</span></div>'
+        + '<div class="ac-cadence">'+a.cadence+' &middot; '+label+'</div>'
+        + '<div class="ac-role">'+a.role+'</div>'
+        + '<div class="ac-meta">Last run: '+ccTimeAgo(s.lastRun)+(s.nextRun?(' &middot; Next: '+s.nextRun):'')+'</div>'
+        + (s.lastSummary ? '<div class="ac-summary">'+s.lastSummary+'</div>' : '')
+        + '</div>';
+    }).join('');
+  }
+  if(act){
+    var items = status.activity || [];
+    act.innerHTML = items.length
+      ? items.slice(0,20).map(function(i){
+          return '<div class="act-item"><span class="act-when">'+ccTimeAgo(i.ts)+'</span> &middot; <span class="act-agent">'+(i.agent||'')+'</span> '+(i.text||'')+'</div>';
+        }).join('')
+      : '<div class="act-item" style="color:var(--ink-light,#666);">No activity yet. The next 4 AM or 4 PM sweep will post here.</div>';
+  }
+}
+function renderCommand(){
+  if(!document.getElementById('agentGrid')) return;
+  if(typeof fetch === 'function'){
+    fetch('agent-status.json',{cache:'no-store'})
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(ccPaint)
+      .catch(function(){ ccPaint(null); });
+  } else {
+    ccPaint(null);
+  }
 }
 
 const origShowTab = showTab;
