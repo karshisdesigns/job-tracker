@@ -1,17 +1,23 @@
 {
-  "updated": "2026-06-26T10:32:26.564394-05:00",
+  "updated": "2026-06-26T11:00:53.684774-05:00",
   "agents": {
     "coordinator": {
-      "lastRun": "2026-06-26T00:26:13.346228-05:00",
-      "lastSummary": "Swept new sources + Craigslist: +3 (Novak + Apex via CMAA Career HQ; 1 Craigslist construction PM flagged verify). GovernmentJobs/SelectLeaders had no clean Chicago in-lane hit this pass.",
+      "lastRun": "2026-06-26T11:00:53.684774-05:00",
+      "lastSummary": "+9 jobs, +7 local firms, 0 expired, pushed b9ac114. QA pass.",
       "nextRun": "4 AM / 4 PM"
     },
-    "lane-scouts": {},
-    "reconciler": {
-      "lastRun": "2026-06-25T22:58:05.733876-05:00",
-      "lastSummary": "Marked Sevan = Interview and FitzGerald = responded to screening (Alex replied 6/26)."
+    "lane-scouts": {
+      "lastSummary": "5 lanes: A 2 kept, B 0 (all deduped), C 2 kept, D 7 net-new, E 3 kept. Non-aggregator only.",
+      "lastRun": "2026-06-26T11:00:53.684774-05:00"
     },
-    "qa": {},
+    "reconciler": {
+      "lastRun": "2026-06-26T11:00:53.684774-05:00",
+      "lastSummary": "Sevan->Interview (call 7/2 11am CST); McHugh->Applied (ack 6/26); 0 bounces."
+    },
+    "qa": {
+      "lastSummary": "PASS: node syntax OK, JSDOM 0 err, active+local+outreach render, 0 new em dashes.",
+      "lastRun": "2026-06-26T11:00:53.684774-05:00"
+    },
     "warm-lead-chaser": {
       "nextRun": "8 AM",
       "lastSummary": "3 owed-reply drafts ready (Rivetna homework resend, Aidan Baker, Cella/Caterpillar LinkedIn) + OKK monthly check-in; Sevan call set Thu 7/2 11am CST",
@@ -30,6 +36,11 @@
     }
   },
   "activity": [
+    {
+      "ts": "2026-06-26T11:00:53.684774-05:00",
+      "agent": "coordinator",
+      "text": "+9 jobs, +7 local firms, Sevan interview 7/2, pushed b9ac114"
+    },
     {
       "ts": "2026-06-26T10:32:26.564394-05:00",
       "agent": "warm-lead-chaser",
