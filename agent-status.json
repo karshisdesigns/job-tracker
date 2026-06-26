@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-26T09:22:37.496922-05:00",
+  "updated": "2026-06-26T10:32:26.564394-05:00",
   "agents": {
     "coordinator": {
       "lastRun": "2026-06-26T00:26:13.346228-05:00",
@@ -13,7 +13,9 @@
     },
     "qa": {},
     "warm-lead-chaser": {
-      "nextRun": "8 AM"
+      "nextRun": "8 AM",
+      "lastSummary": "3 owed-reply drafts ready (Rivetna homework resend, Aidan Baker, Cella/Caterpillar LinkedIn) + OKK monthly check-in; Sevan call set Thu 7/2 11am CST",
+      "lastRun": "2026-06-26T10:32:26.564394-05:00"
     },
     "weekly-strategist": {
       "nextRun": "Mon 7 AM",
@@ -28,6 +30,11 @@
     }
   },
   "activity": [
+    {
+      "ts": "2026-06-26T10:32:26.564394-05:00",
+      "agent": "warm-lead-chaser",
+      "text": "Drafted 5 follow-ups. Top action: resend Rivetna code homework to crivetna@rivetna.com (it bounced 4/10, Cyrus thinks Alex ghosted). Sevan phone screen now confirmed 7/2 11am CST. Flagged: 20-20 Foresight was DECLINED by Alex 6/18 (not a reschedule); Verano hold (already 2nd nudge)."
+    },
     {
       "ts": "2026-06-26T09:22:37.496922-05:00",
       "agent": "inbox-triage",
