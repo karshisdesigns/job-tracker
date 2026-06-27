@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-27T07:41:16.656224-05:00",
+  "updated": "2026-06-27T08:14:46.242442-05:00",
   "agents": {
     "coordinator": {
       "lastRun": "2026-06-27T04:34:14.519752-05:00",
@@ -20,8 +20,8 @@
     },
     "warm-lead-chaser": {
       "nextRun": "8 AM",
-      "lastSummary": "3 owed-reply drafts ready (Rivetna homework resend, Aidan Baker, Cella/Caterpillar LinkedIn) + OKK monthly check-in; Sevan call set Thu 7/2 11am CST",
-      "lastRun": "2026-06-26T10:32:26.564394-05:00"
+      "lastSummary": "4 follow-up drafts ready (Caterpillar Facilities PM nudge = top action); Verano held to avoid over-nudge; 20-20 Foresight flagged as withdrawn by Alex 6/18",
+      "lastRun": "2026-06-27T08:14:46.242442-05:00"
     },
     "weekly-strategist": {
       "nextRun": "Mon 7 AM",
@@ -36,6 +36,11 @@
     }
   },
   "activity": [
+    {
+      "ts": "2026-06-27T08:14:46.242442-05:00",
+      "agent": "warm-lead-chaser",
+      "text": "Warm-lead chaser: drafted Caterpillar Facilities PM (TEKsystems) nudge + carried Aidan Baker/Rivetna/O'Kelly drafts; Sevan call confirmed 7/2 11am; flagged 20-20 Foresight = withdrawn (not reschedule)"
+    },
     {
       "ts": "2026-06-27T07:41:16.656224-05:00",
       "agent": "inbox-triage",
