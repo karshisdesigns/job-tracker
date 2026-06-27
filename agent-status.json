@@ -1,22 +1,22 @@
 {
-  "updated": "2026-06-26T16:29:42.147651-05:00",
+  "updated": "2026-06-27T04:34:14.519752-05:00",
   "agents": {
     "coordinator": {
-      "lastRun": "2026-06-26T16:29:42.147651-05:00",
-      "lastSummary": "PM sweep: +7 jobs, +7 local firms, pushed 4c9c1e0d; QA pass, Pages built",
+      "lastRun": "2026-06-27T04:34:14.519752-05:00",
+      "lastSummary": "AM sweep: +5 JOBS, +6 LOCAL, pushed 4cb3196d; live render OK",
       "nextRun": "4 AM / 4 PM"
     },
     "lane-scouts": {
-      "lastSummary": "5 lanes parallel: A1 B2 C3 D7 E1 kept after dedupe/title/geo screens",
-      "lastRun": "2026-06-26T16:29:42.147651-05:00"
+      "lastSummary": "5 lanes parallel: A0 B0 C3 D6 E2 net adds (non-aggregator only)",
+      "lastRun": "2026-06-27T04:34:14.519752-05:00"
     },
     "reconciler": {
-      "lastRun": "2026-06-26T16:29:42.147651-05:00",
-      "lastSummary": "Divcon APM -> Rejected; Sevan 7/2 call + Viamontes already logged; 0 bounces"
+      "lastRun": "2026-06-27T04:34:14.519752-05:00",
+      "lastSummary": "FitzGerald date->6/26 (screening answered); 0 bounces; Sevan 7/2 confirmed"
     },
     "qa": {
-      "lastSummary": "PASS: syntax+JSDOM 0 errs (269/29/4), 0 new em dashes, no license/DxU/solar adds",
-      "lastRun": "2026-06-26T16:29:42.147651-05:00"
+      "lastSummary": "PASS: syntax OK, JSDOM 0 err, 274 jobs / 35 local render, 0 new em dashes",
+      "lastRun": "2026-06-27T04:34:14.519752-05:00"
     },
     "warm-lead-chaser": {
       "nextRun": "8 AM",
@@ -36,6 +36,11 @@
     }
   },
   "activity": [
+    {
+      "ts": "2026-06-27T04:34:14.519752-05:00",
+      "agent": "coordinator",
+      "text": "+5 jobs, +6 local firms, cleared 16 isNew, pushed 4cb3196d"
+    },
     {
       "ts": "2026-06-26T16:29:42.147651-05:00",
       "agent": "coordinator",
