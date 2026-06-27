@@ -1,22 +1,22 @@
 {
-  "updated": "2026-06-27T08:14:46.242442-05:00",
+  "updated": "2026-06-27T16:29:47.056576-05:00",
   "agents": {
     "coordinator": {
-      "lastRun": "2026-06-27T04:34:14.519752-05:00",
-      "lastSummary": "AM sweep: +5 JOBS, +6 LOCAL, pushed 4cb3196d; live render OK",
+      "lastRun": "2026-06-27T16:29:47.056576-05:00",
+      "lastSummary": "PM sweep done: +7 jobs, +8 local, 0 expired, pushed 6460645",
       "nextRun": "4 AM / 4 PM"
     },
     "lane-scouts": {
-      "lastSummary": "5 lanes parallel: A0 B0 C3 D6 E2 net adds (non-aggregator only)",
-      "lastRun": "2026-06-27T04:34:14.519752-05:00"
+      "lastSummary": "5 lanes parallel (A/B/C/D/E = 5/5/7/10/4 returned); data-center lane top producer",
+      "lastRun": "2026-06-27T16:29:47.056576-05:00"
     },
     "reconciler": {
-      "lastRun": "2026-06-27T04:34:14.519752-05:00",
-      "lastSummary": "FitzGerald date->6/26 (screening answered); 0 bounces; Sevan 7/2 confirmed"
+      "lastRun": "2026-06-27T16:29:47.056576-05:00",
+      "lastSummary": "0 net-new Gmail changes, 0 bounces; Sevan 7/2 11am call holding"
     },
     "qa": {
-      "lastSummary": "PASS: syntax OK, JSDOM 0 err, 274 jobs / 35 local render, 0 new em dashes",
-      "lastRun": "2026-06-27T04:34:14.519752-05:00"
+      "lastSummary": "PASS: syntax OK, JSDOM 0 errors, active 281 / local 43 / outreach 4",
+      "lastRun": "2026-06-27T16:29:47.056576-05:00"
     },
     "warm-lead-chaser": {
       "nextRun": "8 AM",
@@ -36,6 +36,11 @@
     }
   },
   "activity": [
+    {
+      "ts": "2026-06-27T16:29:47.056576-05:00",
+      "agent": "coordinator",
+      "text": "+7 jobs, +8 local firms, 5 isNew cleared, pushed 64606451"
+    },
     {
       "ts": "2026-06-27T08:14:46.242442-05:00",
       "agent": "warm-lead-chaser",
