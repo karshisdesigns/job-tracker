@@ -1,22 +1,22 @@
 {
-  "updated": "2026-06-28T08:14:27.095089-05:00",
+  "updated": "2026-06-28T16:34:55.627487-05:00",
   "agents": {
     "coordinator": {
-      "lastRun": "2026-06-27T16:29:47.056576-05:00",
-      "lastSummary": "PM sweep done: +7 jobs, +8 local, 0 expired, pushed 6460645",
+      "lastRun": "2026-06-28T16:34:55.627487-05:00",
+      "lastSummary": "PM sweep (day's 1st run): +5 jobs, +5 local; Ryan VDC interview added, 20-20 closed, Lurie reactivated; pushed 3b9990e",
       "nextRun": "4 AM / 4 PM"
     },
     "lane-scouts": {
-      "lastSummary": "5 lanes parallel (A/B/C/D/E = 5/5/7/10/4 returned); data-center lane top producer",
-      "lastRun": "2026-06-27T16:29:47.056576-05:00"
+      "lastSummary": "5 lanes run. A(ConstrPM) 3 kept, B(Designer) 0 (quiet/stale), C(DataCtr) 0 (Intersect renewables flagged), D(Local) 5 net-new firms, E(HC/Retail/Cann) 1 (Five Below remote)",
+      "lastRun": "2026-06-28T16:34:55.627487-05:00"
     },
     "reconciler": {
-      "lastRun": "2026-06-27T16:29:47.056576-05:00",
-      "lastSummary": "0 net-new Gmail changes, 0 bounces; Sevan 7/2 11am call holding"
+      "lastRun": "2026-06-28T16:34:55.627487-05:00",
+      "lastSummary": "Ryan VDC Manager I SHORTLISTED (new screening 6/28); 20-20 Foresight withdrawn->closed; Lurie re-verified LIVE; 0 bounces"
     },
     "qa": {
-      "lastSummary": "PASS: syntax OK, JSDOM 0 errors, active 281 / local 43 / outreach 4",
-      "lastRun": "2026-06-27T16:29:47.056576-05:00"
+      "lastSummary": "PASS - node syntax + JSDOM 0 errors; 286/48/52 cards; 0 new em dashes; no Indeed/LinkedIn/DxU/license/PMP/M.Arch in new content",
+      "lastRun": "2026-06-28T16:34:55.627487-05:00"
     },
     "warm-lead-chaser": {
       "nextRun": "8 AM",
@@ -36,6 +36,11 @@
     }
   },
   "activity": [
+    {
+      "ts": "2026-06-28T16:34:55.627487-05:00",
+      "agent": "coordinator",
+      "text": "+5 jobs, +5 local firms pushed (commit 3b9990e). New: Ryan VDC interview; 20-20 Foresight closed; Lurie reactivated."
+    },
     {
       "ts": "2026-06-28T08:14:27.095089-05:00",
       "agent": "warm-lead-chaser",
@@ -130,11 +135,6 @@
       "ts": "2026-06-25T22:05:55.869085-05:00",
       "agent": "weekly-strategist",
       "text": "Strategist: cold info@/careers@ emails bounced ~9/20 on 6/17 - verify addresses going forward"
-    },
-    {
-      "ts": "2026-06-25T22:05:55.869085-05:00",
-      "agent": "weekly-strategist",
-      "text": "Strategist: diagnosis done - reply to Sevan (Maura) + FitzGerald (Kuss) today; both live and unanswered"
     }
   ]
 }
