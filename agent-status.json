@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-28T07:43:36.914693-05:00",
+  "updated": "2026-06-28T08:14:27.095089-05:00",
   "agents": {
     "coordinator": {
       "lastRun": "2026-06-27T16:29:47.056576-05:00",
@@ -20,8 +20,8 @@
     },
     "warm-lead-chaser": {
       "nextRun": "8 AM",
-      "lastSummary": "4 follow-up drafts ready (Caterpillar Facilities PM nudge = top action); Verano held to avoid over-nudge; 20-20 Foresight flagged as withdrawn by Alex 6/18",
-      "lastRun": "2026-06-27T08:14:46.242442-05:00"
+      "lastSummary": "5 drafts ready; Caterpillar PM nudge = top action; Atlas InMail (verify); 20-20 Foresight closed (withdrawn 6/18); Verano hold to ~7/3",
+      "lastRun": "2026-06-28T08:14:27.095089-05:00"
     },
     "weekly-strategist": {
       "nextRun": "Mon 7 AM",
@@ -36,6 +36,11 @@
     }
   },
   "activity": [
+    {
+      "ts": "2026-06-28T08:14:27.095089-05:00",
+      "agent": "warm-lead-chaser",
+      "text": "Warm-lead chaser 6/28: 5 follow-up drafts ready for review (Caterpillar nudge, Atlas InMail, Rivetna, Aidan Baker, OKK monthly). Flagged 20-20 Foresight closed + PAT expiry ~7/2. Nothing sent."
+    },
     {
       "ts": "2026-06-28T07:43:36.914693-05:00",
       "agent": "inbox-triage",
