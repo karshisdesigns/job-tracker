@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-01T15:03:05.823588-05:00",
+  "updated": "2026-07-01T17:45:25.352038-05:00",
   "agents": {
     "coordinator": {
       "lastRun": "2026-07-01T15:03:05.823588-05:00",
@@ -20,8 +20,8 @@
     },
     "warm-lead-chaser": {
       "nextRun": "8 AM",
-      "lastSummary": "5 drafts ready; Caterpillar PM nudge = top action; Atlas InMail (verify); 20-20 Foresight closed (withdrawn 6/18); Verano hold to ~7/3",
-      "lastRun": "2026-06-28T08:14:27.095089-05:00"
+      "lastSummary": "4 owed (drafts ready), 2 nudge (O'Kelly due, Verano hold); Sevan 7/2 11am top",
+      "lastRun": "2026-07-01T17:45:25.352038-05:00"
     },
     "weekly-strategist": {
       "nextRun": "Mon 7 AM",
@@ -36,6 +36,11 @@
     }
   },
   "activity": [
+    {
+      "ts": "2026-07-01T17:45:25.352038-05:00",
+      "agent": "warm-lead-chaser",
+      "text": "Warm-lead sweep: drafts ready for Tori/TEKsystems, Cella LinkedIn, Aidan Baker, Rivetna; O'Kelly monthly check-in due; Verano hold. Nothing sent."
+    },
     {
       "ts": "2026-07-01T15:03:05.823588-05:00",
       "agent": "coordinator",
@@ -130,11 +135,6 @@
       "ts": "2026-06-26T00:12:56.670839-05:00",
       "agent": "coordinator",
       "text": "Manual sweep pushed +4 PM/coordinator roles (beaf23c)"
-    },
-    {
-      "ts": "2026-06-25T23:17:04.442763-05:00",
-      "agent": "system",
-      "text": "Upgrades shipped: Inbox-Triage agent added; Chaser now tracks reply-owed (both ways) + 7-day nudges; sweep re-tuned recruiter-first; resume reworked (Karshis closed)."
     }
   ]
 }
