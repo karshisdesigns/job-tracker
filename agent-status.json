@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-28T16:34:55.627487-05:00",
+  "updated": "2026-07-01T14:33:21.850545-05:00",
   "agents": {
     "coordinator": {
       "lastRun": "2026-06-28T16:34:55.627487-05:00",
@@ -25,8 +25,8 @@
     },
     "weekly-strategist": {
       "nextRun": "Mon 7 AM",
-      "lastRun": "2026-06-25T22:05:55.869085-05:00",
-      "lastSummary": "Full diagnosis: ~60 apps, 3-4 interviews, 0 offers. Best lane = Construction/Facilities PM via recruiters. 2 live threads (Sevan, FitzGerald) unanswered; fix cold-email bounces; pull Karshis Designs off resume."
+      "lastRun": "2026-07-01T14:33:21.850545-05:00",
+      "lastSummary": "Convert 2 live screens (Sevan 7/2, Ryan VDC); pivot sourcing to BIM/VDC lane, off data-center."
     },
     "application-kit": {},
     "inbox-triage": {
@@ -36,6 +36,11 @@
     }
   },
   "activity": [
+    {
+      "ts": "2026-07-01T14:33:21.850545-05:00",
+      "agent": "weekly-strategist",
+      "text": "Weekly memo 7/1: lean into BIM/VDC + named-contact lane; prep Sevan (7/2) + Ryan VDC screens; Aidan Baker warm lead 49d stale."
+    },
     {
       "ts": "2026-06-28T16:34:55.627487-05:00",
       "agent": "coordinator",
@@ -130,11 +135,6 @@
       "ts": "2026-06-25T22:05:55.869085-05:00",
       "agent": "weekly-strategist",
       "text": "Strategist: BRIEF + SKILL updated with lessons; 20-20 Foresight call was canceled 6/18"
-    },
-    {
-      "ts": "2026-06-25T22:05:55.869085-05:00",
-      "agent": "weekly-strategist",
-      "text": "Strategist: cold info@/careers@ emails bounced ~9/20 on 6/17 - verify addresses going forward"
     }
   ]
 }
