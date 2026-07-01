@@ -1,22 +1,22 @@
 {
-  "updated": "2026-07-01T17:45:25.352038-05:00",
+  "updated": "2026-07-01T17:50:46.272349-05:00",
   "agents": {
     "coordinator": {
-      "lastRun": "2026-07-01T15:03:05.823588-05:00",
-      "lastSummary": "+10 jobs today (7 concurrent + 3 mine), +6 local; union re-merged after a push race; pushed e18f26e9.",
+      "lastRun": "2026-07-01T17:50:46.272349-05:00",
+      "lastSummary": "PM sweep: +3 Local firms, 0 net-new jobs, pushed 6e98838",
       "nextRun": "4 AM / 4 PM"
     },
     "lane-scouts": {
-      "lastSummary": "5 lanes: A +2, B 0 (quiet), C +1 (Prime DC), D +6 local firms, E 0 net-new (healthcare/cannabis empty).",
-      "lastRun": "2026-07-01T15:03:05.823588-05:00"
+      "lastSummary": "5 lanes parallel; A/B/C/E 0 net-new (dup/geo/tracked), D +3 local firms",
+      "lastRun": "2026-07-01T17:50:46.272349-05:00"
     },
     "reconciler": {
-      "lastRun": "2026-07-01T15:03:05.823588-05:00",
-      "lastSummary": "Ryan VDC screening booked 6/29; HKS rejected 6/29; Caterpillar cooling (next-week); 0 new bounces; Sevan 7/2 11am stands."
+      "lastRun": "2026-07-01T17:50:46.272349-05:00",
+      "lastSummary": "0 status changes, 0 bounces since AM; Caterpillar cooling; Sevan 7/2 stands"
     },
     "qa": {
-      "lastSummary": "PASS - syntax OK, JSDOM 0 errors, 296 job/54 local/52 outreach cards, em dashes normalized to 27 legacy, no license/DxU/aggregator in adds.",
-      "lastRun": "2026-07-01T15:03:05.823588-05:00"
+      "lastSummary": "PASS: syntax OK, JSDOM 0 errors, 296/57/52 render, 0 new em dashes",
+      "lastRun": "2026-07-01T17:50:46.272349-05:00"
     },
     "warm-lead-chaser": {
       "nextRun": "8 AM",
@@ -36,6 +36,11 @@
     }
   },
   "activity": [
+    {
+      "ts": "2026-07-01T17:50:46.272349-05:00",
+      "agent": "coordinator",
+      "text": "+3 Local firms (Tandem, O'Malley, Becker); 0 net-new jobs; pushed 6e98838"
+    },
     {
       "ts": "2026-07-01T17:45:25.352038-05:00",
       "agent": "warm-lead-chaser",
@@ -130,11 +135,6 @@
       "ts": "2026-06-26T00:19:54.161568-05:00",
       "agent": "coordinator",
       "text": "Non-aggregator sweep +4 (AIA + Built In); Source filter added to tracker (bdf3518)"
-    },
-    {
-      "ts": "2026-06-26T00:12:56.670839-05:00",
-      "agent": "coordinator",
-      "text": "Manual sweep pushed +4 PM/coordinator roles (beaf23c)"
     }
   ]
 }
