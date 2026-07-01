@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-01T14:33:21.850545-05:00",
+  "updated": "2026-07-01T14:33:59.073324-05:00",
   "agents": {
     "coordinator": {
       "lastRun": "2026-06-28T16:34:55.627487-05:00",
@@ -31,11 +31,16 @@
     "application-kit": {},
     "inbox-triage": {
       "nextRun": "7:30 AM",
-      "lastSummary": "0 reply-today, 1 verify (Atlas Connections), Mortenson app to finish, ~20 junk",
-      "lastRun": "2026-06-28T07:43:36.914693-05:00"
+      "lastSummary": "1 reply-today, 1 verify, ~30 junk",
+      "lastRun": "2026-07-01T14:33:59.073324-05:00"
     }
   },
   "activity": [
+    {
+      "ts": "2026-07-01T14:33:59.073324-05:00",
+      "agent": "inbox-triage",
+      "text": "inbox triage: 1 reply-today (TEKsystems/Caterpillar status update), 1 verify (LinkedIn artonea invite); Ryan VDC Manager I screening booked; HKS rejection logged"
+    },
     {
       "ts": "2026-07-01T14:33:21.850545-05:00",
       "agent": "weekly-strategist",
@@ -130,11 +135,6 @@
       "ts": "2026-06-25T22:58:05.733876-05:00",
       "agent": "reconciler",
       "text": "Sevan + FitzGerald replies confirmed sent; tracker updated"
-    },
-    {
-      "ts": "2026-06-25T22:05:55.869085-05:00",
-      "agent": "weekly-strategist",
-      "text": "Strategist: BRIEF + SKILL updated with lessons; 20-20 Foresight call was canceled 6/18"
     }
   ]
 }
